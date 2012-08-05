@@ -35,13 +35,15 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2,
     b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
     b2MouseJointDef =  Box2D.Dynamics.Joints.b2MouseJointDef,
     b2EdgeShape = Box2D.Collision.Shapes.b2EdgeShape;
+    b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
 var gbox2d = function() {
 
 };
 
 /**
- implmenting the gbengine class, a singleton managing the b2world
+ implmenting the gbengine class, a singleton to handle management of the box2d world, compile movements of box2d bodies, register and fire a custom contact listener and remove bodies from a queue
+
  */
 var gbengine = function() {
     gbengine.init();
@@ -65,9 +67,14 @@ gbengine.init = function() {
     //TODO: set world contact listener
 
     //TODO: schedule update for gbengine.update
+    interval = setInterval(function () {
+        gbengine.update();
+    },1000/30);
+
+    gbengine.update();
 };
 
-gbengine.isntance = null;
+gbengine.instance = null;
 
 /**
  @return the singleton instance of gbengine
@@ -80,7 +87,7 @@ gbengine.getInstance = function() {
 };
 
 gbengine.update = function() {
-
+    console.log("update!")
 };
 
 gbox2d.gbengine = gbengine.getInstance();
