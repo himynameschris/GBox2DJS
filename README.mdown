@@ -1,0 +1,5 @@
+# gbox2d-js #
+*a wrapper library for box2d.js that serves physics body movements up in JSON for client processing*
+
+----------
+this library aims at providing a glue between box2d.js and cocos2d, biult on top of a node.js platform. this module will accomplish the task of serving up changes in the box2d world through json so that cocos2d clients connecting through sockets.io can take the changes and update the display.
