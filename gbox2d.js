@@ -105,12 +105,15 @@ gbengine.prototype.registerReceiver = function(r) {
 };
 
 gbengine.compileJSON = function() {
-/*
-    for(var b = world.m_bodyList; b; b = b.m_next) {
+
+    var updates = { "bodies":[]};
+
+    for(var b = this.world.m_bodyList; b; b = b.m_next) {
         console.log("x:"+ b.GetPosition().x);
+        updates.bodies[updates.bodies.length] = {"x":b.GetPosition().x, "y":b.GetPosition().y};
     };
-*/
-    return "updating";
+
+    return JSON.stringify(updates);
 
 };
 
