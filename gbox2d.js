@@ -66,10 +66,11 @@ gbengine.init = function() {
 
     //TODO: set world contact listener
 
-    //TODO: schedule update for gbengine.update
-    interval = setInterval(function () {
+    this.updateschedule = setInterval(function () {
         gbengine.update();
     },1000/30);
+
+    this.receiver = null;
 
     gbengine.update();
 };
@@ -87,7 +88,30 @@ gbengine.getInstance = function() {
 };
 
 gbengine.update = function() {
-    console.log("update!")
+    this.world.Step(
+        1 / 30 //frame-rate
+        , 8 //velocity iterations
+        , 1 //position iterations
+    );
+
+    if(this.receiver != null) {
+        console.log("updating receiver");
+        this.receiver(this.compileJSON());
+    }
+};
+
+gbengine.prototype.registerReceiver = function(r) {
+  gbengine.receiver = r;
+};
+
+gbengine.compileJSON = function() {
+/*
+    for(var b = world.m_bodyList; b; b = b.m_next) {
+        console.log("x:"+ b.GetPosition().x);
+    };
+*/
+    return "updating";
+
 };
 
 gbox2d.gbengine = gbengine.getInstance();
