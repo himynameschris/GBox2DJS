@@ -87,6 +87,9 @@ gbengine.getInstance = function() {
    return this.instance;
 };
 
+/**
+ this method steps the box2d world and calls the method to compile body positions into a JSON string
+ */
 gbengine.update = function() {
     this.world.Step(
         1 / 30 //frame-rate
@@ -100,10 +103,17 @@ gbengine.update = function() {
     }
 };
 
+/**
+ allows a node.js module to register a function and the receiver of the JSON
+ */
 gbengine.prototype.registerReceiver = function(r) {
   gbengine.receiver = r;
 };
 
+/**
+ compiles the relevant data into a JSON string to send to clients, including:
+ :body positions
+ */
 gbengine.compileJSON = function() {
 
     var updates = { "bodies":[]};
@@ -117,6 +127,33 @@ gbengine.compileJSON = function() {
 
 };
 
+//in the node.js app, gbox2d.gbengine can be used to access the singleton
 gbox2d.gbengine = gbengine.getInstance();
+
+/**
+ implementing the gbnode class, its purpose is to manage information necc to communicate sprite details to the client
+
+ */
+var gbnode = function() {
+    gbnode.init();
+};
+
+/**
+ init the gbnode, setting members to defaults
+
+ */
+gbnode.init = function() {
+
+};
+
+/**
+ static method to create a gbnode from a name, type and frame
+
+ */
+gbnode.create = function(name, type, frame) {
+
+};
+
+gbox2d.gbnode = gbnode;
 
 exports.gbox2d = gbox2d;
