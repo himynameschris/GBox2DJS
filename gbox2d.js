@@ -37,123 +37,75 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2,
     b2EdgeShape = Box2D.Collision.Shapes.b2EdgeShape;
     b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
-var gbox2d = function() {
-
-};
+GBox2D = (typeof GBox2D === 'undefined') ? {} : GBox2D;
 
 /**
- implmenting the gbengine class, a singleton to handle management of the box2d world, compile movements of box2d bodies, register and fire a custom contact listener and remove bodies from a queue
-
+ * Allows a package to create a namespace within GBox2D
+ * From Javascript Patterns book
+ * @param ns_string
  */
-var gbengine = function() {
-    gbengine.init();
-};
+GBox2D.namespace = function(ns_string)
+{
+    var parts = ns_string.split('.'),
+        parent = GBox2D,
+        i = 0;
 
-gbengine.prototype.hello = function() {
-    console.log("hello!");
-};
-
-/**
- initialize a new instance of gbengine
- */
-gbengine.init = function() {
-    var doSleep = true;
-
-    this.world = new b2World(
-        new b2Vec2(0, 10) //gravity
-        , doSleep //allow sleep
-    );
-
-    //TODO: set world contact listener
-
-    this.updateschedule = setInterval(function () {
-        gbengine.update();
-    },1000/30);
-
-    this.receiver = null;
-
-    gbengine.update();
-};
-
-gbengine.instance = null;
-
-/**
- @return the singleton instance of gbengine
- */
-gbengine.getInstance = function() {
-   if(gbengine.instance == null) {
-       this.instance = new gbengine();
-   }
-   return this.instance;
-};
-
-/**
- this method steps the box2d world and calls the method to compile body positions into a JSON string
- */
-gbengine.update = function() {
-    this.world.Step(
-        1 / 30 //frame-rate
-        , 8 //velocity iterations
-        , 1 //position iterations
-    );
-
-    if(this.receiver != null) {
-        console.log("updating receiver");
-        this.receiver(this.compileJSON());
+    // strip redundant leading global
+    if (parts[0] === "RealtimeMultiplayerGame") {
+        parts = parts.slice(1);
     }
+
+    var len = parts.length,
+        aPackage = null;
+    for (i = 0; i < len; i += 1) {
+        var singlePart = parts[i];
+        // create a property if it doesn't exist
+        if (typeof parent[singlePart] === "undefined") {
+            parent[singlePart] = {};
+        }
+        parent = parent[singlePart];
+
+    }
+    return parent;
 };
 
 /**
- allows a node.js module to register a function and the receiver of the JSON
+ * Allows a simple inheritance model
+ * based on http://www.kevs3d.co.uk/dev/canvask3d/scripts/mathlib.js
  */
-gbengine.prototype.registerReceiver = function(r) {
-  gbengine.receiver = r;
-};
+GBox2D.extend = function(subc, superc, overrides)
+{
+    /**
+     * @constructor
+     */
+    var F = function() {};
+    var i;
 
-/**
- compiles the relevant data into a JSON string to send to clients, including:
- :body positions
- */
-gbengine.compileJSON = function() {
+    if (overrides) {
+        F.prototype = superc.prototype;
+        subc.prototype = new F();
+        subc.prototype.constructor = subc;
+        subc.superclass = superc.prototype;
+        if (superc.prototype.constructor == Object.prototype.constructor)   {
+            superc.prototype.constructor = superc;
+        }
+        for (i in overrides) {
+            if (overrides.hasOwnProperty(i)) {
+                subc.prototype[i] = overrides[i];
+            }
+        }
+    } else {
 
-    var updates = { "bodies":[]};
+        subc.prototype.constructor = subc;
+        subc.superclass= superc.prototype;
+        if (superc.prototype.constructor == Object.prototype.constructor)   {
+            superc.prototype.constructor = superc;
+        }
+        for( i in superc.prototype ) {
+            if ( false==subc.prototype.hasOwnProperty(i)) {
+                subc.prototype[i]= superc.prototype[i];
+            }
+        }
 
-    for(var b = this.world.m_bodyList; b; b = b.m_next) {
-        console.log("x:"+ b.GetPosition().x);
-        updates.bodies[updates.bodies.length] = {"x":b.GetPosition().x, "y":b.GetPosition().y};
-    };
-
-    return JSON.stringify(updates);
-
-};
-
-//in the node.js app, gbox2d.gbengine can be used to access the singleton
-gbox2d.gbengine = gbengine.getInstance();
-
-/**
- implementing the gbnode class, its purpose is to manage information necc to communicate sprite details to the client
-
- */
-var gbnode = function() {
-    gbnode.init();
-};
-
-/**
- init the gbnode, setting members to defaults
-
- */
-gbnode.init = function() {
-
-};
-
-/**
- static method to create a gbnode from a name, type and frame
-
- */
-gbnode.create = function(name, type, frame) {
-
-};
-
-gbox2d.gbnode = gbnode;
-
-exports.gbox2d = gbox2d;
+    }
+}
