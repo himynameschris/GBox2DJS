@@ -36,7 +36,7 @@ var engine = GBox2D.GBEngine.prototype.getInstance();
 
 var sendUpdate = function(data) {
 
-    console.log("updating! data: " + data);
+    //console.log("updating! data: " + data);
     sockets.sockets.emit('update', data);
 
 };

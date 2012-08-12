@@ -48,10 +48,10 @@ function ajax (url, ref, cb)
 var socket = io.connect('http://192.168.1.125:3000');
 
 socket.on('update', function (data) {
-    cc.log("caught! data: " + data);
+    //cc.log("caught! data: " + data);
     var updates = JSON.parse(data);
     for(var p = 0; p < updates.bodies.length; p++) {
-        console.log("body " + p + ": x = " + updates.bodies[p].x + " y = " + updates.bodies[p].y);
+        //console.log("body " + p + ": x = " + updates.bodies[p].x + " y = " + updates.bodies[p].y);
     };
 
 });
@@ -81,8 +81,8 @@ var MyLayer = cc.Layer.extend({
 
         // add a "close" icon to exit the progress. it's an autorelease object
         var closeItem = cc.MenuItemImage.create(
-            "client/res/CloseNormal.png",
-            "client/res/CloseSelected.png",
+            "res/CloseNormal.png",
+            "res/CloseSelected.png",
             this,
             function () {
                 history.go(-1);
@@ -110,7 +110,7 @@ var MyLayer = cc.Layer.extend({
         this.addChild(lazyLayer);
 
         // add "Helloworld" splash screen"
-        this.sprite = cc.Sprite.create("client/res/HelloWorld.png");
+        this.sprite = cc.Sprite.create("/client/res/HelloWorld.png");
         this.sprite.setAnchorPoint(cc.p(0.5, 0.5));
         this.sprite.setPosition(cc.p(size.width / 2, size.height / 2));
 
