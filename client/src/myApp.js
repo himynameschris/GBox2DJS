@@ -23,6 +23,38 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+var xmlhttp;
+function ajax (url, ref, cb)
+{
+    if (window.XMLHttpRequest)
+    {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.open("GET",url,true);
+    xmlhttp.send();
+
+    xmlhttp.onreadystatechange=function()
+    {
+        cc.log(xmlhttp.responseText);
+        ref[cb](xmlhttp.responseText);
+    };
+};
+
+var socket = io.connect('http://192.168.1.125:3000');
+
+socket.on('update', function (data) {
+    cc.log("caught! data: " + data);
+    var updates = JSON.parse(data);
+    for(var p = 0; p < updates.bodies.length; p++) {
+        console.log("body " + p + ": x = " + updates.bodies[p].x + " y = " + updates.bodies[p].y);
+    };
+
+});
 
 var MyLayer = cc.Layer.extend({
     isMouseDown:false,
@@ -31,6 +63,10 @@ var MyLayer = cc.Layer.extend({
     circle:null,
     sprite:null,
 
+    updateLabel:function(str)
+    {
+        this.helloLabel.setString(str);
+    },
     init:function () {
 
         //////////////////////////////
@@ -62,11 +98,13 @@ var MyLayer = cc.Layer.extend({
         // 3. add your codes below...
         // add a label shows "Hello World"
         // create and initialize a label
-        this.helloLabel = cc.LabelTTF.create("Hello World", "Arial", 38);
+        this.helloLabel = cc.LabelTTF.create("", "Arial", 38);
         // position the label on the center of the screen
         this.helloLabel.setPosition(cc.p(size.width / 2, size.height - 40));
         // add the label as a child to this layer
         this.addChild(this.helloLabel, 5);
+
+        ajax("/api/hello", this, "updateLabel");
 
         var lazyLayer = new cc.LazyLayer();
         this.addChild(lazyLayer);
