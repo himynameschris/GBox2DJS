@@ -28,9 +28,9 @@ sockets.on('connection', function (socket) {
     console.log('log: user connected');
 });
 
-require('./gbox2djs/gbox2d.js');
-require('./gbox2djs/gbengine.js');
-require('./gbox2djs/gbnode.js');
+require('./core/gbox2d.js');
+require('./core/gbengine.js');
+require('./core/gbnode.js');
 
 var engine = GBox2D.GBEngine.prototype.getInstance();
 
