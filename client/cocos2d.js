@@ -36,7 +36,9 @@
         engineDir:'../lib/cocos2d-html5/cocos2d/',
         appFiles:[
             '/client/src/resource.js',
-            '/client/src/myApp.js'//add your own files in order here
+            '/client/src/myApp.js',
+            '/core/GBox2D.js',
+            '/client/GBClientNet.js'//add your own files in order here
         ]
     };
     window.addEventListener('DOMContentLoaded', function () {
