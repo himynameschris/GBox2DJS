@@ -37,6 +37,8 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2,
     b2EdgeShape = Box2D.Collision.Shapes.b2EdgeShape;
 b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
+var g_gbengineinstance = null;
+
 (function(){
 
     GBox2D.namespace("GBox2D.GBEngine");
@@ -50,11 +52,20 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
     };
 
     GBox2D.GBEngine.prototype = {
+        // Properties
+        gameClockReal  			: 0,											// Actual time via "new Date().getTime();"
+        gameClock				: 0,											// Seconds since start
+        gameTick				: 0,											// Ticks since start
+        isRunning				: true,
+        speedFactor				: 1,											// Used to create Framerate Independent Motion (FRIM) - 1.0 means running at exactly the correct speed, 0.5 means half-framerate. (otherwise faster machines which can update themselves more accurately will have an advantage)
+        intervalGameTick		: null,											// Setinterval for gametick
+        intervalFramerate		: 60,											// Try to call our tick function this often, intervalFramerate, is used to determin how often to call settimeout - we can set to lower numbers for slower computers
+        intervalTargetDelta		: NaN,	// this.targetDelta, milliseconds between frames. Normally it is 16ms or 60FPS. The framerate the game is designed against - used to create framerate independent motion
+        gameDuration			: Number.MAX_VALUE,								// Gameduration
 
-        hello: function() {
-            console.log("hello!");
-        },
-
+        netChannel				: null,											// ServerNetChannel / ClientNetChannel determined by subclass
+        fieldController			: null,											// FieldController
+        cmdMap: {},
         /**
          initialize a new instance of gbengine
          */
@@ -76,17 +87,14 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
             this.update();
         },
-
-        instance : null,
-
         /**
          @return the singleton instance of gbengine
          */
         getInstance : function() {
-            if(this.instance == null) {
-                this.instance = new GBox2D.GBEngine();
+            if(g_gbengineinstance == null) {
+                g_gbengineinstance = new GBox2D.GBEngine();
             }
-            return this.instance;
+            return g_gbengineinstance;
         },
 
         /**
@@ -121,7 +129,6 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
             var updates = { "bodies":[]};
 
             for(var b = this.world.m_bodyList; b; b = b.m_next) {
-                console.log("x:"+ b.GetPosition().x);
                 updates.bodies[updates.bodies.length] = {"x":b.GetPosition().x, "y":b.GetPosition().y};
             };
 
