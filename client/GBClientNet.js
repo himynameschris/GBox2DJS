@@ -54,7 +54,6 @@ var g_socket = io.connect('http://localhost:3000');
             g_socket.on('update', function(data) {
                     cc.log("caught! : " + data);
                     this.updates = JSON.parse(data);
-                    cc.log(this.updates);
                     for(var p = 0; p < this.updates.bodies.length; p++) {
                         console.log("body " + p + ": x = " + this.updates.bodies[p].x + " y = " + this.updates.bodies[p].y);
                     };

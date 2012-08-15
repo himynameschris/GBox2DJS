@@ -19,23 +19,6 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-var Box2D = require('./../lib/box2d/box2d.js');
-
-// Shorthand "imports"
-var b2Vec2 = Box2D.Common.Math.b2Vec2,
-    b2BodyDef = Box2D.Dynamics.b2BodyDef,
-    b2AABB = Box2D.Collision.b2AABB,
-    b2Body = Box2D.Dynamics.b2Body,
-    b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
-    b2Fixture = Box2D.Dynamics.b2Fixture,
-    b2World = Box2D.Dynamics.b2World,
-    b2MassData = Box2D.Collision.Shapes.b2MassData,
-    b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
-    b2CircleShape = Box2D.Collision.Shapes.b2CircleShape,
-    b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
-    b2MouseJointDef =  Box2D.Dynamics.Joints.b2MouseJointDef,
-    b2EdgeShape = Box2D.Collision.Shapes.b2EdgeShape;
-b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
 var g_gbengineinstance = null;
 
@@ -49,6 +32,8 @@ var g_gbengineinstance = null;
      */
     GBox2D.GBEngine = function() {
         this.init();
+        this.setupNetwork();
+        this.setupCmdMap();
     };
 
     GBox2D.GBEngine.prototype = {
@@ -66,27 +51,29 @@ var g_gbengineinstance = null;
         netChannel				: null,											// ServerNetChannel / ClientNetChannel determined by subclass
         fieldController			: null,											// FieldController
         cmdMap: {},
+
         /**
-         initialize a new instance of gbengine
+         * Function to setup networking (instantiate client or server net)
+         */
+        setupNetwork : function() { },
+
+        /**
+         * Function to setup common command map if needed
+         */
+        setupCmdMap : function() { },
+
+        /**
+         initialize a new instance of the engine
          */
         init : function() {
-            var doSleep = true;
-
-            this.world = new b2World(
-                new b2Vec2(0, 10) //gravity
-                , doSleep //allow sleep
-            );
-
-            //TODO: set world contact listener
-
-            this.updateschedule = setInterval(function () {
-                GBox2D.GBEngine.prototype.getInstance().update();
-            },1000/30);
-
             this.receiver = null;
 
-            this.update();
+            var that = this;
+            this.gameClockReal = new Date().getTime();
+            this.intervalTargetDelta = Math.floor( 1000/this.intervalFramerate );
+            this.intervalGameTick = setInterval( function(){ that.update() }, this.intervalTargetDelta);
         },
+
         /**
          @return the singleton instance of gbengine
          */
@@ -98,42 +85,45 @@ var g_gbengineinstance = null;
         },
 
         /**
-         this method steps the box2d world and calls the method to compile body positions into a JSON string
+         this method will be scheduled to be called at the frame rate interval
          */
         update : function() {
-            this.world.Step(
-                1 / 30 //frame-rate
-                , 8 //velocity iterations
-                , 1 //position iterations
-            );
+            // Store previous time and update current
+            var oldTime = this.gameClockReal;
+            this.gameClockReal = new Date().getTime();
 
-            if(this.receiver != null) {
-                console.log("updating receiver");
-                this.receiver(this.compileJSON());
-            }
+            // Our clock is zero based, so if for example it says 10,000 - that means the game started 10 seconds ago
+            var delta = this.gameClockReal - oldTime;
+            this.gameClock += delta;
+            this.gameTick++;
+
+            // Framerate Independent Motion -
+            // 1.0 means running at exactly the correct speed, 0.5 means half-framerate. (otherwise faster machines which can update themselves more accurately will have an advantage)
+            this.speedFactor = delta / ( this.intervalTargetDelta );
+            if (this.speedFactor <= 0) this.speedFactor = 1;
         },
 
         /**
-         allows a node.js module to register a function and the receiver of the JSON
+         * Stop the game tick
          */
-        registerReceiver : function(r) {
-            this.receiver = r;
+        stopGameClock: function()
+        {
+            clearInterval( GBox2D.GBEngine.prototype.intervalGameTick  );
+            clearTimeout( GBox2D.GBEngine.prototype.intervalGameTick  );
         },
 
-        /**
-         compiles the relevant data into a JSON string to send to clients, including:
-         :body positions
-         */
-        compileJSON : function() {
+        setGameDuration: function() {},
 
-            var updates = { "bodies":[]};
+        // Memory
+        dealloc: function() {
+            if( this.netChannel ) this.netChannel.dealloc();
+            this.netChannel = null;
 
-            for(var b = this.world.m_bodyList; b; b = b.m_next) {
-                updates.bodies[updates.bodies.length] = {"x":b.GetPosition().x, "y":b.GetPosition().y};
-            };
+            clearInterval( this.intervalGameTick );
+        },
 
-            return JSON.stringify(updates);
-
-        }
+        ///// Accessors
+        getGameClock: function() { return this.gameClock; },
+        getGameTick: function() { return this.gameTick; }
     };
 })();

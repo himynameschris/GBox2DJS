@@ -45,7 +45,7 @@ var g_gbserverinstance = null;
             if (g_gbserverinstance == null)
             {
                 g_gbserverinstance = new GBox2D.GBServerNet();
-                this.init();
+                g_gbserverinstance.init();
             }
 
             return g_gbserverinstance;

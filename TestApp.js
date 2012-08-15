@@ -29,3 +29,4 @@ var server = GBox2D.GBServerNet.prototype.getInstance();
 var engine = GBox2D.GBEngine.prototype.getInstance();
 
 engine.registerReceiver(server.sendUpdate);
+ 
