@@ -53,6 +53,8 @@ var g_gbserverengineinstance = null;
     };
 
     GBox2D.server.GBServerEngine.prototype = {
+        _velocityIterationsPerSecond    : 100,
+        _positionIterationsPerSecond	: 300,
         // Properties
         /**
          * Function to setup networking (instantiate client or server net)
@@ -100,10 +102,30 @@ var g_gbserverengineinstance = null;
          in the server, it will be responsible for stepping the physics world and pushing the world states
          */
         update : function() {
+            var delta = 16 / 1000;
+            this.step( delta );
+
             this.netChannel.sendUpdate({bodies: {hi:'hi!'}});
 
-        }
+            GBox2D.server.GBServerEngine.superclass.update.call(this);
 
+            //TODO: iterate through nodes and update their position based on box2d bodies
+
+            //TODO: create world entity description
+
+            //TODO: send description to net
+
+            if( this.gameClock > this.gameDuration ) {
+                this.stopGameClock();
+            }
+
+
+        },
+        step: function( delta ) {
+            this.world.ClearForces();
+            //var delta = (typeof delta == "undefined") ? 1/this._fps : delta;
+            this.world.Step(delta, delta * this._velocityIterationsPerSecond, delta * this._positionIterationsPerSecond);
+        }
     };
 
     GBox2D.extend(GBox2D.server.GBServerEngine, GBox2D.core.GBEngine, null);

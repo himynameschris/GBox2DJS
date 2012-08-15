@@ -45,7 +45,6 @@ var g_gbengineinstance = null;
         intervalFramerate		: 60,											// Try to call our tick function this often, intervalFramerate, is used to determin how often to call settimeout - we can set to lower numbers for slower computers
         intervalTargetDelta		: NaN,	// this.targetDelta, milliseconds between frames. Normally it is 16ms or 60FPS. The framerate the game is designed against - used to create framerate independent motion
         gameDuration			: Number.MAX_VALUE,								// Gameduration
-
         netChannel				: null,											// ServerNetChannel / ClientNetChannel determined by subclass
         fieldController			: null,											// FieldController
         cmdMap: {},
