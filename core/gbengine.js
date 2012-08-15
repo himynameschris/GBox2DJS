@@ -28,13 +28,13 @@ var g_gbengineinstance = null;
      implmenting the gbengine class, a singleton to handle management of the box2d world, compile movements of box2d bodies, register and fire a custom contact listener and remove bodies from a queue
 
      */
-    GBox2D.GBEngine = function() {
+    GBox2D.core.GBEngine = function() {
         this.init();
         this.setupNetwork();
         this.setupCmdMap();
     };
 
-    GBox2D.GBEngine.prototype = {
+    GBox2D.core.GBEngine.prototype = {
         // Properties
         gameClockReal  			: 0,											// Actual time via "new Date().getTime();"
         gameClock				: 0,											// Seconds since start

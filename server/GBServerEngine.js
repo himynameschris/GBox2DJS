@@ -100,11 +100,11 @@ var g_gbserverengineinstance = null;
          in the server, it will be responsible for stepping the physics world and pushing the world states
          */
         update : function() {
-            this.netChannel.sendUpdate({hi:'hi!'});
+            this.netChannel.sendUpdate({bodies: {hi:'hi!'}});
 
         }
 
     };
 
-    GBox2D.extend(GBox2D.server.GBServerEngine, GBox2D.GBEngine, null);
+    GBox2D.extend(GBox2D.server.GBServerEngine, GBox2D.core.GBEngine, null);
 })();

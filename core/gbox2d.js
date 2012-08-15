@@ -93,6 +93,6 @@ GBox2D.extend = function(subc, superc, overrides)
 };
 
 //Define our namespaces
-GBox2D.namespace("GBox2D.GBEngine");
+GBox2D.namespace("GBox2D.core");
 GBox2D.namespace("GBox2D.client");
 GBox2D.namespace("GBox2D.server");
