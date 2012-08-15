@@ -28,19 +28,19 @@ var g_gbclientengineinstance = null;
      implmenting the gbengine class, a singleton to handle management of the box2d world, compile movements of box2d bodies, register and fire a custom contact listener and remove bodies from a queue
 
      */
-    GBox2D.GBClientEngine = function() {
+    GBox2D.client.GBClientEngine = function() {
         this.init();
         this.setupNetwork();
         this.setupCmdMap();
     };
 
-    GBox2D.GBClientEngine.prototype = {
+    GBox2D.client.GBClientEngine.prototype = {
         // Properties
         /**
          * Function to setup networking (instantiate client or server net)
          */
         setupNetwork : function() {
-            this.netChannel = GBox2D.GBClientNet.prototype.getInstance();
+            this.netChannel = GBox2D.client.GBClientNet.prototype.getInstance();
         },
 
         /**
@@ -60,7 +60,7 @@ var g_gbclientengineinstance = null;
          */
         getInstance : function() {
             if(g_gbclientengineinstance == null) {
-                g_gbclientengineinstance = new GBox2D.GBClientEngine();
+                g_gbclientengineinstance = new GBox2D.client.GBClientEngine();
             }
             return g_gbclientengineinstance;
         },
@@ -70,7 +70,7 @@ var g_gbclientengineinstance = null;
          in the client, it will be responsible for updating the display
          */
         update : function() {
-            GBox2D.GBClientEngine.superclass.update.call(this);
+            GBox2D.client.GBClientEngine.superclass.update.call(this);
 
 
 
@@ -79,5 +79,5 @@ var g_gbclientengineinstance = null;
 
     };
 
-    GBox2D.extend(GBox2D.GBClientEngine, GBox2D.GBEngine, null);
+    GBox2D.extend(GBox2D.client.GBClientEngine, GBox2D.GBEngine, null);
 })();

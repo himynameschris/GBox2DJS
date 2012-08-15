@@ -31,15 +31,15 @@ var g_socket = io.connect('http://localhost:3000');
      node.js express server and socket.io
 
      */
-    GBox2D.GBClientNet = function() {
+    GBox2D.client.GBClientNet = function() {
 
     };
 
-    GBox2D.GBClientNet.prototype = {
+    GBox2D.client.GBClientNet.prototype = {
         socket : null,
         getInstance : function() {
             if(g_gbclientinstance == null) {
-                g_gbclientinstance = new GBox2D.GBClientNet();
+                g_gbclientinstance = new GBox2D.client.GBClientNet();
                 g_gbclientinstance.init();
             }
 

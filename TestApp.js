@@ -25,6 +25,6 @@ require('./server/GBServerNet.js');
 require('./server/GBServerEngine.js');
 require('./core/GBNode.js');
 
-var engine = GBox2D.GBServerEngine.prototype.getInstance();
+var engine = GBox2D.server.GBServerEngine.prototype.getInstance();
 
-engine.startEngine();
+engine.start();

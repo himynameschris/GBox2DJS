@@ -24,18 +24,16 @@ var g_gbserverinstance = null;
 
 (function(){
 
-    GBox2D.namespace("GBox2D.GBServerNet");
-
     /**
      implementing the GBServerNet class, a singleton to handle management of the
      node.js express server and socket.io
 
      */
-    GBox2D.GBServerNet = function() {
+    GBox2D.server.GBServerNet = function() {
 
     };
 
-    GBox2D.GBServerNet.prototype = {
+    GBox2D.server.GBServerNet.prototype = {
         server : null,
         express : null,
         app : null,
@@ -44,7 +42,7 @@ var g_gbserverinstance = null;
         getInstance : function() {
             if (g_gbserverinstance == null)
             {
-                g_gbserverinstance = new GBox2D.GBServerNet();
+                g_gbserverinstance = new GBox2D.server.GBServerNet();
                 g_gbserverinstance.init();
             }
 
@@ -80,7 +78,7 @@ var g_gbserverinstance = null;
             {
 
             }else{
-                GBox2D.GBServerNet.prototype.getInstance().sockets.sockets.emit('update', data);
+                GBox2D.server.GBServerNet.prototype.getInstance().sockets.sockets.emit('update', data);
                 //this.sockets.emit('update');
             };
 

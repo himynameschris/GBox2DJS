@@ -73,7 +73,7 @@ var MyLayer = cc.Layer.extend({
         // add the label as a child to this layer
         this.addChild(this.helloLabel, 5);
 
-        this.engine = GBox2D.GBClientEngine.prototype.getInstance();
+        this.engine = GBox2D.client.GBClientEngine.prototype.getInstance();
 
         this.engine.netChannel.ajax("/api/hello", this, "updateLabel");
 
