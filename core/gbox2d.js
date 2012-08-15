@@ -33,7 +33,7 @@ GBox2D.namespace = function(ns_string)
         i = 0;
 
     // strip redundant leading global
-    if (parts[0] === "RealtimeMultiplayerGame") {
+    if (parts[0] === "GBox2D") {
         parts = parts.slice(1);
     }
 
@@ -90,4 +90,4 @@ GBox2D.extend = function(subc, superc, overrides)
         }
 
     }
-}
+};

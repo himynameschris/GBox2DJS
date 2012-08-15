@@ -38,7 +38,9 @@
             '/client/src/resource.js',
             '/client/src/myApp.js',
             '/core/GBox2D.js',
-            '/client/GBClientNet.js'//add your own files in order here
+            '/client/GBClientNet.js',
+            '/core/GBEngine.js',
+            '/client/GBClientEngine.js'//add your own files in order here
         ]
     };
     window.addEventListener('DOMContentLoaded', function () {

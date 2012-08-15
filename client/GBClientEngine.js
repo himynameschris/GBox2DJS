@@ -24,8 +24,6 @@ var g_gbclientengineinstance = null;
 
 (function(){
 
-    GBox2D.namespace("GBox2D.GBClientEngine");
-
     /**
      implmenting the gbengine class, a singleton to handle management of the box2d world, compile movements of box2d bodies, register and fire a custom contact listener and remove bodies from a queue
 
@@ -82,4 +80,4 @@ var g_gbclientengineinstance = null;
     };
 
     GBox2D.extend(GBox2D.GBClientEngine, GBox2D.GBEngine, null);
-})()
+})();

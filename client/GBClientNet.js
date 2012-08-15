@@ -26,8 +26,6 @@ var g_socket = io.connect('http://localhost:3000');
 
 (function(){
 
-    GBox2D.namespace("GBox2D.GBClientNet");
-
     /**
      implementing the GBServerNet class, a singleton to handle management of the
      node.js express server and socket.io

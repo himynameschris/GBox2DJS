@@ -25,6 +25,8 @@ var g_gbengineinstance = null;
 (function(){
 
     GBox2D.namespace("GBox2D.GBEngine");
+    GBox2D.namespace("GBox2D.client");
+    GBox2D.namespace("GBox2D.server");
 
     /**
      implmenting the gbengine class, a singleton to handle management of the box2d world, compile movements of box2d bodies, register and fire a custom contact listener and remove bodies from a queue
@@ -68,6 +70,14 @@ var g_gbengineinstance = null;
         init : function() {
             this.receiver = null;
 
+
+        },
+
+        /**
+         * Start the engine and schedule updates
+         * @return {*}
+         */
+        startEngine : function() {
             var that = this;
             this.gameClockReal = new Date().getTime();
             this.intervalTargetDelta = Math.floor( 1000/this.intervalFramerate );

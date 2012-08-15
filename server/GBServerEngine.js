@@ -41,8 +41,6 @@ var g_gbserverengineinstance = null;
 
 (function(){
 
-    GBox2D.namespace("GBox2D.GBServerEngine");
-
     /**
      implmenting the gbengine class, a singleton to handle management of the box2d world, compile movements of box2d bodies, register and fire a custom contact listener and remove bodies from a queue
 
@@ -51,6 +49,7 @@ var g_gbserverengineinstance = null;
         this.init();
         this.setupNetwork();
         this.setupCmdMap();
+        return this;
     };
 
     GBox2D.GBServerEngine.prototype = {
@@ -91,7 +90,7 @@ var g_gbserverengineinstance = null;
          */
         getInstance : function() {
             if(g_gbserverengineinstance == null) {
-                g_gbserverengineinstance = new GBox2D.GBClientEngine();
+                g_gbserverengineinstance = new GBox2D.GBServerEngine();
             }
             return g_gbserverengineinstance;
         },
@@ -101,12 +100,11 @@ var g_gbserverengineinstance = null;
          in the server, it will be responsible for stepping the physics world and pushing the world states
          */
         update : function() {
-
+            this.netChannel.sendUpdate({hi:'hi!'});
 
         }
-
 
     };
 
     GBox2D.extend(GBox2D.GBServerEngine, GBox2D.GBEngine, null);
-})()
+})();
