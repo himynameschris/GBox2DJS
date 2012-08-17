@@ -45,13 +45,17 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
      implementing the gbnode class, its purpose is to manage information necc to communicate sprite details to the client
 
      */
-    GBox2D.GBNode = function() {
+    GBox2D.GBNode = function(nodeid, clientid) {
         this.init();
+        this.nodeid = nodeid;
+        this.clientid = clientid;
     };
 
     GBox2D.GBNode.prototype = {
-        nodeid: null,
-        clientid: null,
+        nodeid: -1,
+        clientid: -1,
+        nodeType: -1,
+        position: Point.prototype.ZERO,
 
         /**
          init the gbnode, setting members to defaults
