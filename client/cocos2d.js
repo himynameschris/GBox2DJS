@@ -42,7 +42,10 @@
             '/core/GBox2D.js',
             '/client/GBClientNet.js',
             '/core/GBEngine.js',
-            '/client/GBClientEngine.js'//add your own files in order here
+            '/client/GBClientEngine.js',
+            '/core/GBNode.js',
+            '/client/GBClientNode.js',
+            '/core/GBNodeController.js'//add your own files in order here
         ]
     };
     window.addEventListener('DOMContentLoaded', function () {

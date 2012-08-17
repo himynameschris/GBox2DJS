@@ -19,16 +19,26 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-require('./lib/SortedLookupTable.js');
-require('./lib/Point.js');
-require('./core/GBox2D.js');
-require('./core/GBEngine.js');
-require('./server/GBServerNet.js');
-require('./server/GBServerEngine.js');
-require('./core/GBNode.js');
-require('./server/GBServerNode.js');
-require('./core/GBNodeController.js');
 
-var engine = GBox2D.server.GBServerEngine.prototype.getInstance();
+(function(){
 
-engine.start();
+    /**
+     implementing the gbnode class, its purpose is to manage information necc to communicate sprite details to the client
+
+     */
+    GBox2D.GBClientNode = function(nodeid, clientid) {
+        this.init();
+        this.nodeid = nodeid;
+        this.clientid = clientid;
+        this.position = Point.prototype.ZERO;
+        return this;
+    };
+
+    GBox2D.GBClientNode.prototype = {
+
+
+    };
+
+    GBox2D.extend(GBox2D.GBClientNode, GBox2D.core.GBNode);
+
+})();
