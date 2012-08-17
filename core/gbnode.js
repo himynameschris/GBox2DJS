@@ -19,43 +19,28 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-var Box2D = require('./../lib/box2d/box2d.js');
-
-// Shorthand "imports"
-var b2Vec2 = Box2D.Common.Math.b2Vec2,
-    b2BodyDef = Box2D.Dynamics.b2BodyDef,
-    b2AABB = Box2D.Collision.b2AABB,
-    b2Body = Box2D.Dynamics.b2Body,
-    b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
-    b2Fixture = Box2D.Dynamics.b2Fixture,
-    b2World = Box2D.Dynamics.b2World,
-    b2MassData = Box2D.Collision.Shapes.b2MassData,
-    b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
-    b2CircleShape = Box2D.Collision.Shapes.b2CircleShape,
-    b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
-    b2MouseJointDef =  Box2D.Dynamics.Joints.b2MouseJointDef,
-    b2EdgeShape = Box2D.Collision.Shapes.b2EdgeShape;
-b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
 (function(){
-
-    GBox2D.namespace("GBox2D.GBNode");
 
     /**
      implementing the gbnode class, its purpose is to manage information necc to communicate sprite details to the client
 
      */
-    GBox2D.GBNode = function(nodeid, clientid) {
+    GBox2D.core.GBNode = function(nodeid, clientid) {
         this.init();
         this.nodeid = nodeid;
         this.clientid = clientid;
+        this.position = Point.prototype.ZERO;
+        return this;
     };
 
-    GBox2D.GBNode.prototype = {
-        nodeid: -1,
-        clientid: -1,
-        nodeType: -1,
-        position: Point.prototype.ZERO,
+    GBox2D.core.GBNode.prototype = {
+        nodeid:     -1,
+        clientid:   -1,
+        nodeType:   -1,
+        position:   Point.prototype.ZERO,
+        rotation:   0,
+        lastReceivedEntityDescription:  null,
 
         /**
          init the gbnode, setting members to defaults
@@ -65,12 +50,25 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
         },
 
-        /**
-         static method to create a gbnode from a name, type and frame
+        constructEntityDescription: function(gameTick, wantsFullUpdate)
+        {
+            // Note: "~~" is just a way to round the value without the Math.round function call
+            var json;
 
-         */
-        create : function(name, type, frame) {
+            json.nodeid = this.nodeid;
+            json.clientid = this.clientid;
+            json.nodeType = this.nodeType;
+            json.x = this.position.x;
+            json.y = this.position.y;
+
+            return json.stringify();
+        },
+
+        ///// MEMORY
+        dealloc: function() {
+            this.position = null;
 
         }
+
     };
 })();
