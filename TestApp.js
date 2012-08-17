@@ -22,13 +22,15 @@
 require('./lib/SortedLookupTable.js');
 require('./lib/Point.js');
 require('./core/GBox2D.js');
+require('./core/GBNodeController.js');
 require('./core/GBEngine.js');
 require('./server/GBServerNet.js');
 require('./server/GBServerEngine.js');
 require('./core/GBNode.js');
 require('./server/GBServerNode.js');
-require('./core/GBNodeController.js');
+
 
 var engine = GBox2D.server.GBServerEngine.prototype.getInstance();
 
 engine.start();
+
