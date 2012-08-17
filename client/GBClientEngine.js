@@ -30,8 +30,7 @@ var g_gbclientengineinstance = null;
      */
     GBox2D.client.GBClientEngine = function() {
         this.init();
-        this.setupNetwork();
-        this.setupCmdMap();
+
     };
 
     GBox2D.client.GBClientEngine.prototype = {
@@ -52,7 +51,7 @@ var g_gbclientengineinstance = null;
          initialize a new instance of the engine
          */
         init : function() {
-
+            GBox2D.client.GBClientEngine.superclass.init.call(this);
         },
 
         /**

@@ -23,6 +23,22 @@
 var g_gbengineinstance = null;
 
 (function(){
+    GBox2D.Constants = {
+        ENTITY_DEFAULT_RADIUS	: 8,
+        ENTITY_BOX_SIZE			: 16,
+        PHYSICS_SCALE			: 32,
+
+        MAX_OBJECTS				: 100,
+        GAME_DURATION			: 1000*300,
+
+        ENTITY_TYPES: {
+            CIRCLE:			1 << 1,
+            BOX:			1 << 2
+        }
+    }
+})();
+
+(function(){
 
     /**
      implmenting the gbengine class, a singleton to handle management of the box2d world, compile movements of box2d bodies, register and fire a custom contact listener and remove bodies from a queue
@@ -30,8 +46,7 @@ var g_gbengineinstance = null;
      */
     GBox2D.core.GBEngine = function() {
         this.init();
-        this.setupNetwork();
-        this.setupCmdMap();
+
     };
 
     GBox2D.core.GBEngine.prototype = {
@@ -46,7 +61,7 @@ var g_gbengineinstance = null;
         intervalTargetDelta		: NaN,	// this.targetDelta, milliseconds between frames. Normally it is 16ms or 60FPS. The framerate the game is designed against - used to create framerate independent motion
         gameDuration			: Number.MAX_VALUE,								// Gameduration
         netChannel				: null,											// ServerNetChannel / ClientNetChannel determined by subclass
-        fieldController			: null,											// FieldController
+        nodeController			: null,											// FieldController
         cmdMap: {},
 
         /**
@@ -65,6 +80,10 @@ var g_gbengineinstance = null;
         init : function() {
             this.receiver = null;
 
+            this.setupNetwork();
+            this.setupCmdMap();
+
+            this.nodeController = new GBox2D.core.GBNodeController();
 
         },
 

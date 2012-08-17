@@ -47,9 +47,7 @@ var g_gbserverengineinstance = null;
      */
     GBox2D.server.GBServerEngine = function() {
         this.init();
-        this.setupNetwork();
-        this.setupCmdMap();
-        return this;
+
     };
 
     GBox2D.server.GBServerEngine.prototype = {
@@ -72,6 +70,8 @@ var g_gbserverengineinstance = null;
          initialize a new instance of the engine
          */
         init : function() {
+            GBox2D.server.GBServerEngine.superclass.init.call(this);
+
             var doSleep = true;
 
             this.world = new b2World(
@@ -81,10 +81,6 @@ var g_gbserverengineinstance = null;
 
             this.receiver = null;
 
-            var that = this;
-            this.gameClockReal = new Date().getTime();
-            this.intervalTargetDelta = Math.floor( 1000/this.intervalFramerate );
-            this.intervalGameTick = setInterval( function(){ that.update() }, this.intervalTargetDelta);
         },
 
         /**
@@ -105,15 +101,19 @@ var g_gbserverengineinstance = null;
             var delta = 16 / 1000;
             this.step( delta );
 
-            this.netChannel.sendUpdate({bodies: {hi:'hi!'}});
-
             GBox2D.server.GBServerEngine.superclass.update.call(this);
 
             //TODO: iterate through nodes and update their position based on box2d bodies
+            // Allow all entities to update their position
+            this.nodeController.getNodes().forEach( function(key, node){
+                node.updatePosition();
+            }, this );
 
             //TODO: create world entity description
 
             //TODO: send description to net
+            
+            this.netChannel.sendUpdate();
 
             if( this.gameClock > this.gameDuration ) {
                 this.stopGameClock();
