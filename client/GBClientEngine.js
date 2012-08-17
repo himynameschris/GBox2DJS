@@ -79,5 +79,5 @@ var g_gbclientengineinstance = null;
 
     };
 
-    GBox2D.extend(GBox2D.client.GBClientEngine, GBox2D.GBEngine, null);
+    GBox2D.extend(GBox2D.client.GBClientEngine, GBox2D.core.GBEngine, null);
 })();
