@@ -20,6 +20,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 require('./lib/SortedLookupTable.js');
+require('./lib/Point.js');
 require('./core/GBox2D.js');
 require('./core/GBEngine.js');
 require('./server/GBServerNet.js');
