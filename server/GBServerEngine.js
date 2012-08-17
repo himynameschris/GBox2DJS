@@ -103,22 +103,18 @@ var g_gbserverengineinstance = null;
 
             GBox2D.server.GBServerEngine.superclass.update.call(this);
 
-            //TODO: iterate through nodes and update their position based on box2d bodies
             // Allow all entities to update their position
             this.nodeController.getNodes().forEach( function(key, node){
                 node.updatePosition();
             }, this );
 
-            //TODO: create world entity description
+            var worldDescription = new GBox2D.core.GBWorldNodeDescription(this, this.nodeController.getNodes());
 
-            //TODO: send description to net
-            
-            this.netChannel.sendUpdate();
+            this.netChannel.sendUpdate(JSON.stringify(worldDescription));
 
             if( this.gameClock > this.gameDuration ) {
                 this.stopGameClock();
             }
-
 
         },
         step: function( delta ) {

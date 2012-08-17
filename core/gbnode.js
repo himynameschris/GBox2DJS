@@ -50,18 +50,18 @@
 
         },
 
-        constructEntityDescription: function(gameTick, wantsFullUpdate)
+        constructDescription: function(gameTick, wantsFullUpdate)
         {
             // Note: "~~" is just a way to round the value without the Math.round function call
-            var json;
+            var desc;
 
-            json.nodeid = this.nodeid;
-            json.clientid = this.clientid;
-            json.nodeType = this.nodeType;
-            json.x = this.position.x;
-            json.y = this.position.y;
+            desc.nodeid = this.nodeid;
+            desc.clientid = this.clientid;
+            desc.nodeType = this.nodeType;
+            desc.x = this.position.x;
+            desc.y = this.position.y;
 
-            return json.stringify();
+            return desc;
         },
 
         ///// MEMORY

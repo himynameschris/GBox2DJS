@@ -19,18 +19,35 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-require('./lib/SortedLookupTable.js');
-require('./lib/Point.js');
-require('./core/GBox2D.js');
-require('./core/GBNodeController.js');
-require('./core/GBEngine.js');
-require('./server/GBServerNet.js');
-require('./server/GBServerEngine.js');
-require('./core/GBNode.js');
-require('./server/GBServerNode.js');
-require('./core/GBWorldNodeDescription.js');
+(function() {
 
-var engine = GBox2D.server.GBServerEngine.prototype.getInstance();
+    GBox2D.core.GBWorldNodeDescription = function(world, nodes) {
+        this.gameClock = world.getGameClock();
+        this.gameTick = world.getGameTick();
+        this.allNodes = nodes;
 
-engine.start();
+        this.nodes = [];
 
+        return this;
+    };
+
+    GBox2D.core.GBWorldNodeDescription.prototype = {
+        nodes   : null,
+        gameClock   : 0,
+        gameTick    : 0,
+
+        getNodes	: function() {
+            var len = this.allNodes.length;
+            var fullDescriptionString = '';
+
+            this.allNodes.forEach( function(key, node) {
+                this.nodes.push(node);
+            }, this );
+
+            return this.nodes;
+        }
+
+
+    };
+
+})();
