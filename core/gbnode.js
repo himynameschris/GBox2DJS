@@ -50,6 +50,8 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
     };
 
     GBox2D.GBNode.prototype = {
+        nodeid: null,
+        clientid: null,
 
         /**
          init the gbnode, setting members to defaults
