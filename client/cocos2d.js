@@ -37,6 +37,7 @@
         appFiles:[
             '/client/src/resource.js',
             '/client/src/myApp.js',
+            '/lib/SortedLookupTable.js',
             '/core/GBox2D.js',
             '/client/GBClientNet.js',
             '/core/GBEngine.js',
