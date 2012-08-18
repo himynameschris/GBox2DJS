@@ -30,7 +30,7 @@
         this.init();
         this.nodeid = nodeid;
         this.clientid = clientid;
-        this.position = Point.prototype.ZERO;
+        //this.position = Point.prototype.ZERO;
         return this;
     };
 
@@ -38,7 +38,9 @@
         nodeid:     -1,
         clientid:   -1,
         nodeType:   -1,
-        position:   Point.prototype.ZERO,
+        //position:   Point.prototype.ZERO,
+        x:  0,
+        y:  0,
         rotation:   0,
         lastReceivedEntityDescription:  null,
 
@@ -50,23 +52,18 @@
 
         },
 
-        constructDescription: function()
+        constructDescription: function(node)
         {
             // Note: "~~" is just a way to round the value without the Math.round function call
 
-            function desc(nodeid, clientid, nodeType, x, y) {
-                this.nodeid = nodeid;
-                this.clientid = clientid;
-                this.nodeType = nodeType;
-                this.x = x;
-                this.y = y;
-            }
+            var d = {nodeid:node.nodeid,
+                clientid:node.clientid,
+                nodeType:node.nodeType,
+                x:node.x,
+                y:node.y};
 
-            var d = new desc(this.nodeid,
-                this.clientid,
-                this.nodeType,
-                this.position.x,
-                this.position.y);
+            console.log('setting ' + node.x + " as x: " + d.x + ' for node ' + d.nodeid + ' on ' + this.nodeid);
+            console.log('setting ' + node.y + " as y: " + d.y);
 
             return d;
         },

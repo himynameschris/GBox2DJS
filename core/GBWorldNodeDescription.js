@@ -39,8 +39,10 @@
         getDescription	: function() {
             var len = this.allNodes.length;
 
+            var that = this;
+
             this.allNodes.forEach( function(key, node) {
-                this.nodes.push(node.constructDescription());
+                that.nodes.push(node.constructDescription());
             }, this );
 
             return this.nodes;

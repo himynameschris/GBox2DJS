@@ -26,19 +26,19 @@
      implementing the gbnode class, its purpose is to manage information necc to communicate sprite details to the client
 
      */
-    GBox2D.GBClientNode = function(nodeid, clientid) {
+    GBox2D.client.GBClientNode = function(nodeid, clientid) {
         this.init();
         this.nodeid = nodeid;
         this.clientid = clientid;
-        this.position = Point.prototype.ZERO;
+        //this.position = Point.prototype.ZERO;
         return this;
     };
 
-    GBox2D.GBClientNode.prototype = {
+    GBox2D.client.GBClientNode.prototype = {
 
 
     };
 
-    GBox2D.extend(GBox2D.GBClientNode, GBox2D.core.GBNode);
+    GBox2D.extend(GBox2D.client.GBClientNode, GBox2D.core.GBNode);
 
 })();

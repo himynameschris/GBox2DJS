@@ -43,19 +43,19 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
      implementing the gbnode class, its purpose is to manage information necc to communicate sprite details to the client
 
      */
-    GBox2D.GBServerNode = function(nodeid, clientid) {
+    GBox2D.server.GBServerNode = function(nodeid, clientid) {
         this.nodeid = nodeid;
         this.clientid = clientid;
-        this.position = Point.prototype.ZERO;
+        //this.position = Point.prototype.ZERO;
         return this;
     };
 
-    GBox2D.GBServerNode.prototype = {
+    GBox2D.server.GBServerNode.prototype = {
         box2dBody   :   null,
 
         updatePosition : function() {
-            this.position.x = this.box2dBody.m_xf.position.x * GBox2D.Constants.PHYSICS_SCALE;
-            this.position.y = this.box2dBody.m_xf.position.y * GBox2D.Constants.PHYSICS_SCALE;
+            this.x = this.box2dBody.m_xf.position.x * GBox2D.Constants.PHYSICS_SCALE;
+            this.y = this.box2dBody.m_xf.position.y * GBox2D.Constants.PHYSICS_SCALE;
             this.rotation = this.box2dBody.GetAngle();
 
         },
@@ -67,6 +67,6 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
     };
 
-    GBox2D.extend(GBox2D.GBServerNode, GBox2D.core.GBNode);
+    GBox2D.extend(GBox2D.server.GBServerNode, GBox2D.core.GBNode);
 
 })();
