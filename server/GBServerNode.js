@@ -44,7 +44,6 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
      */
     GBox2D.GBServerNode = function(nodeid, clientid) {
-        this.init();
         this.nodeid = nodeid;
         this.clientid = clientid;
         this.position = Point.prototype.ZERO;
@@ -59,6 +58,10 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
             this.position.y = this.box2dBody.m_xf.position.y * GBox2D.Constants.PHYSICS_SCALE;
             this.rotation = this.box2dBody.GetAngle();
 
+        },
+
+        setBody : function(body) {
+            this.box2dBody = body;
         }
 
 

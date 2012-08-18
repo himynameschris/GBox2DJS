@@ -27,7 +27,8 @@ var g_gbengineinstance = null;
         ENTITY_DEFAULT_RADIUS	: 8,
         ENTITY_BOX_SIZE			: 16,
         PHYSICS_SCALE			: 32,
-
+        GAME_WIDTH				: 700,
+        GAME_HEIGHT				: 450,
         MAX_OBJECTS				: 100,
         GAME_DURATION			: 1000*300,
 
