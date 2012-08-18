@@ -50,18 +50,25 @@
 
         },
 
-        constructDescription: function(gameTick, wantsFullUpdate)
+        constructDescription: function()
         {
             // Note: "~~" is just a way to round the value without the Math.round function call
-            var desc;
 
-            desc.nodeid = this.nodeid;
-            desc.clientid = this.clientid;
-            desc.nodeType = this.nodeType;
-            desc.x = this.position.x;
-            desc.y = this.position.y;
+            function desc(nodeid, clientid, nodeType, x, y) {
+                this.nodeid = nodeid;
+                this.clientid = clientid;
+                this.nodeType = nodeType;
+                this.x = x;
+                this.y = y;
+            }
 
-            return desc;
+            var d = new desc(this.nodeid,
+                this.clientid,
+                this.nodeType,
+                this.position.x,
+                this.position.y);
+
+            return d;
         },
 
         ///// MEMORY
