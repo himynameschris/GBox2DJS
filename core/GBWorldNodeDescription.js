@@ -36,12 +36,11 @@
         gameClock   : 0,
         gameTick    : 0,
 
-        getNodes	: function() {
+        getDescription	: function() {
             var len = this.allNodes.length;
-            var fullDescriptionString = '';
 
             this.allNodes.forEach( function(key, node) {
-                this.nodes.push(node);
+                this.nodes.push(node.constructDescription());
             }, this );
 
             return this.nodes;
