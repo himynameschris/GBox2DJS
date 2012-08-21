@@ -49,14 +49,15 @@ var g_socket = io.connect('http://192.168.1.125:3000');
 
             g_socket.on('connect', function() { console.log('connected!')});
 
-            g_socket.on('update', function(data) {
-                    cc.log("caught! : " + data);
-                    this.updates = JSON.parse(data);
-                    var dat = JSON.parse(this.updates.data);
-                    for(var node in dat) {
-                        console.log("body " + dat[node].nodeid + ": x = " + dat[node].x + " y = " + dat[node].y);
-                    };
-            });
+            g_socket.on('update', this.serverUpdate);
+        },
+        serverUpdate : function(data) {
+            cc.log("caught! : " + data);
+            this.updates = JSON.parse(data);
+            var dat = JSON.parse(this.updates.data);
+            for(var node in dat) {
+                console.log("body " + dat[node].nodeid + ": x = " + dat[node].x + " y = " + dat[node].y);
+            };
         },
         update : function() {
         },
