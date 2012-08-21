@@ -89,7 +89,7 @@ var g_gbserverengineinstance = null;
             var m_world = new b2World(new b2Vec2(0, -10), true);
             m_world.SetWarmStarting(true);
 
-            /*
+
             // Create border of boxes
             var wall = new b2PolygonShape();
             var wallBd = new b2BodyDef();
@@ -114,7 +114,7 @@ var g_gbserverengineinstance = null;
             wall.SetAsBox(GBox2D.Constants.GAME_WIDTH/2, 1);
             this._wallBottom = m_world.CreateBody(wallBd);
             this._wallBottom.CreateFixture2(wall);
-            */
+
 
             this._world = m_world;
         },
@@ -144,13 +144,9 @@ var g_gbserverengineinstance = null;
                 node.updatePosition();
             }, this );
 
-            var worldDescription = [];//= new GBox2D.core.GBWorldNodeDescription(this, this.nodeController.getNodes());
+            var worldDescription = GBox2D.core.GBWorldNodeDescription.prototype.getDescription(this.nodeController);
 
-            this.nodeController.getNodes().forEach( function(key, node) {
-                worldDescription.push(node.constructDescription(node));
-            }, this );
-
-            this.netChannel.sendUpdate(JSON.stringify(worldDescription));
+            this.netChannel.update(this.gameClock, JSON.stringify(worldDescription));
 
             if( this.gameClock > this.gameDuration ) {
                 this.stopGameClock();
@@ -215,7 +211,7 @@ var g_gbserverengineinstance = null;
             fixtureDef.shape = shape;
             body.CreateFixture(fixtureDef);
 
-            // Create the entity for it in RealTimeMultiplayerNodeJS
+            // Create the node for it
             var aBox2DEntity = new GBox2D.server.GBServerNode( this.getNextEntityID(), 0 );
             aBox2DEntity.setBody( body );
             aBox2DEntity.nodeType = 2;

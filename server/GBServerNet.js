@@ -52,9 +52,9 @@ var g_gbserverinstance = null;
             this.express = require('express'),
                 this.server = this.express(),
                 this.app = this.server.listen(3000),
-                this.io = require('socket.io');
+                this.iolib = require('socket.io');
 
-            this.sockets = this.io.listen(this.app);
+            this.io = this.iolib.listen(this.app);
 
             this.server.use('/', this.express.static(__dirname + '/../') );
 
@@ -62,24 +62,36 @@ var g_gbserverinstance = null;
                 res.send('Hello World');
             });
 
-            this.sockets.on('connection', function (socket) {
+            this.io.on('connection', function (socket) {
                 socket.broadcast.emit('broadcast: user connected!');
                 console.log('log: user connected');
             });
 
-            this.sockets.on('update', function (socket) {
+            this.io.on('update', function (socket) {
                console.log('update');
             });
         },
-        sendUpdate : function(data) {
+        update : function(gameclock, data) {
 
-            console.log("updating! data: " + data);
-            if(this.sockets === "undefined")
+            //construct our message
+            var gameData = {
+              data: data,
+              gameClock: data.gameclock,
+              gameTick: data.gameTick
+            };
+
+            //construct our payload
+            var payload = JSON.stringify(gameData);
+            //console.log("updating! payload: " + payload);
+
+            if(this.io === "undefined")
             {
 
             }else{
-                GBox2D.server.GBServerNet.prototype.getInstance().sockets.sockets.emit('update', data);
-                //this.sockets.emit('update');
+                //TODO: compression by removing all non changes
+
+                //TODO: throttle emits with update rate
+                this.io.sockets.emit('update', payload);
             };
 
         }

@@ -22,7 +22,7 @@
 
 var g_gbclientinstance = null;
 
-var g_socket = io.connect('http://localhost:3000');
+var g_socket = io.connect('http://192.168.1.125:3000');
 
 (function(){
 
@@ -52,8 +52,9 @@ var g_socket = io.connect('http://localhost:3000');
             g_socket.on('update', function(data) {
                     cc.log("caught! : " + data);
                     this.updates = JSON.parse(data);
-                    for(var node in this.updates) {
-                        console.log("body " + this.updates[node].nodeid + ": x = " + this.updates[node].x + " y = " + this.updates[node].y);
+                    var dat = JSON.parse(this.updates.data);
+                    for(var node in dat) {
+                        console.log("body " + dat[node].nodeid + ": x = " + dat[node].x + " y = " + dat[node].y);
                     };
             });
         },

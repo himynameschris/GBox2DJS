@@ -54,16 +54,12 @@
 
         constructDescription: function(node)
         {
-            // Note: "~~" is just a way to round the value without the Math.round function call
 
             var d = {nodeid:node.nodeid,
                 clientid:node.clientid,
                 nodeType:node.nodeType,
-                x:node.x,
-                y:node.y};
-
-            console.log('setting ' + node.x + " as x: " + d.x + ' for node ' + d.nodeid + ' on ' + this.nodeid);
-            console.log('setting ' + node.y + " as y: " + d.y);
+                x: node.x,
+                y: node.y};
 
             return d;
         },

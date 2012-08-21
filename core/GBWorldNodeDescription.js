@@ -36,16 +36,14 @@
         gameClock   : 0,
         gameTick    : 0,
 
-        getDescription	: function() {
-            var len = this.allNodes.length;
+        getDescription	: function(nodeController) {
+            var worldDescription = [];//= new GBox2D.core.GBWorldNodeDescription(this, this.nodeController.getNodes());
 
-            var that = this;
-
-            this.allNodes.forEach( function(key, node) {
-                that.nodes.push(node.constructDescription());
+            nodeController.getNodes().forEach( function(key, node) {
+                worldDescription.push(node.constructDescription(node));
             }, this );
 
-            return this.nodes;
+            return worldDescription;
         }
 
 
