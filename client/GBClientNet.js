@@ -54,13 +54,11 @@ var g_socket = io.connect('http://192.168.1.125:3000');
 
         },
         serverUpdate : function(data) {
-            cc.log("caught! : " + data);
-
-
+            //cc.log("caught! : " + data);
             var worldDescription = JSON.parse(data);
 
-            console.log("game clock: " + worldDescription.gameClock +
-                        " game tick: " + worldDescription.gameTick);
+            //console.log("game clock: " + worldDescription.gameClock +
+            //            " game tick: " + worldDescription.gameTick);
 
             GBox2D.client.GBClientNet.prototype.getInstance().serverUpdateBuffer.push(worldDescription);
 
@@ -73,6 +71,7 @@ var g_socket = io.connect('http://192.168.1.125:3000');
             */
         },
         update : function() {
+            
         },
         ajax : function (url, ref, cb)
         {
