@@ -73,16 +73,8 @@ var g_gbserverinstance = null;
         },
         update : function(gameclock, data) {
 
-            //construct our message
-            var gameData = {
-              data: data,
-              gameClock: data.gameclock,
-              gameTick: data.gameTick
-            };
-
             //construct our payload
-            var payload = JSON.stringify(gameData);
-            //console.log("updating! payload: " + payload);
+            var payload = JSON.stringify(data);
 
             if(this.io === "undefined")
             {

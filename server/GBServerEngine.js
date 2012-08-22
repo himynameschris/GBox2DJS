@@ -144,9 +144,10 @@ var g_gbserverengineinstance = null;
                 node.updatePosition();
             }, this );
 
-            var worldDescription = GBox2D.core.GBWorldNodeDescription.prototype.getDescription(this.nodeController);
+            var worldDescription = new GBox2D.core.GBWorldNodeDescription(this, this.nodeController.getNodes());
+            worldDescription.createDescription();
 
-            this.netChannel.update(this.gameClock, JSON.stringify(worldDescription));
+            this.netChannel.update(this.gameClock, worldDescription);
 
             if( this.gameClock > this.gameDuration ) {
                 this.stopGameClock();

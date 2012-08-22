@@ -32,11 +32,12 @@ var g_socket = io.connect('http://192.168.1.125:3000');
 
      */
     GBox2D.client.GBClientNet = function() {
-
+        this.serverUpdateBuffer = [];
     };
 
     GBox2D.client.GBClientNet.prototype = {
         socket : null,
+        serverUpdateBuffer : [],
         getInstance : function() {
             if(g_gbclientinstance == null) {
                 g_gbclientinstance = new GBox2D.client.GBClientNet();
@@ -50,14 +51,26 @@ var g_socket = io.connect('http://192.168.1.125:3000');
             g_socket.on('connect', function() { console.log('connected!')});
 
             g_socket.on('update', this.serverUpdate);
+
         },
         serverUpdate : function(data) {
             cc.log("caught! : " + data);
+
+
+            var worldDescription = JSON.parse(data);
+
+            console.log("game clock: " + worldDescription.gameClock +
+                        " game tick: " + worldDescription.gameTick);
+
+            GBox2D.client.GBClientNet.prototype.getInstance().serverUpdateBuffer.push(worldDescription);
+
+            /*
             this.updates = JSON.parse(data);
             var dat = JSON.parse(this.updates.data);
             for(var node in dat) {
                 console.log("body " + dat[node].nodeid + ": x = " + dat[node].x + " y = " + dat[node].y);
             };
+            */
         },
         update : function() {
         },
@@ -82,5 +95,5 @@ var g_socket = io.connect('http://192.168.1.125:3000');
                 ref[cb](xmlhttp.responseText);
             };
         }
-    }
+    };
 })();
