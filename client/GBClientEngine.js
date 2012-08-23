@@ -30,7 +30,6 @@ var g_gbclientengineinstance = null;
      */
     GBox2D.client.GBClientEngine = function() {
         this.init();
-
     };
 
     GBox2D.client.GBClientEngine.prototype = {
@@ -39,7 +38,14 @@ var g_gbclientengineinstance = null;
          * Function to setup networking (instantiate client or server net)
          */
         setupNetwork : function() {
-            this.netChannel = GBox2D.client.GBClientNet.prototype.getInstance();
+            this.netChannel = GBox2D.client.GBClientNet.prototype.getInstance(this);
+        },
+
+        /*
+         * set game clock to server clock on connect
+         */
+        netDidConnect : function() {
+
         },
 
         /**
@@ -71,7 +77,102 @@ var g_gbclientengineinstance = null;
         update : function() {
             GBox2D.client.GBClientEngine.superclass.update.call(this);
 
+            console.log('clock: ' + this.gameClock + ' tick: ' + this.gameTick);
 
+
+            this.nodeController.getNodes().forEach( function(key, node){
+                node.updateSprite();
+            }, this );
+
+            //TODO: queue input
+
+            //update GBNode positions
+            this.renderAtTime(this.gameClock - 75 );
+            this.netChannel.update();
+
+        },
+
+        renderAtTime : function(renderTime) {
+
+            /*
+             TODO:
+             -get incoming update buffer, if smaller than 2 then return
+             -iterate through updates, looking for update before and after rendertime
+             -interpolate distance betw states
+            */
+
+            var buffer = this.netChannel.serverUpdateBuffer,
+                len = buffer.length;
+
+            //check for at least 2 updates
+            if (len<2) return;
+            var maxInterp = 150,
+                maxInterpSQ = maxInterp * maxInterp;
+
+            //use to store update before and after
+            var nextUp = null,
+                prevUp = null;
+
+            var i = 0;
+            while(++i < len)
+            {
+                var currUp = buffer[i];
+
+                //we fall betw this and the prev
+                if(currUp.gameClock >= renderTime) {
+                    prevUp = buffer[i-1];
+                    nextUp = prevUp;
+                    break;
+                }
+
+
+            }
+
+            if(nextUp == null || prevUp == null) {
+                console.log('sad day');
+                return false;
+            }
+
+            var durBetwPoints = (nextUp.gameClock - prevUp.gameClock);
+            var offsetTime = renderTime - prevUp.gameClock;
+            var activeNodes = {};
+
+            var t = offsetTime / (nextUp.gameClock - prevUp.gameClock);
+            if(t > 1.0)  t = 1.0;
+            else if(t < 0) t = 0.0;
+
+            //update nodes
+            nextUp.nodes.forEach(function(nodeDesc, key) {
+
+                console.log('node desc: ' + JSON.stringify(nodeDesc));
+
+                var nodeid = nodeDesc.nodeid;
+                var node = GBox2D.client.GBClientEngine.prototype.getInstance().nodeController.getNodeWithid(nodeid);
+
+                console.log('nodeid: ' + nodeid + ' node x: ' + nodeDesc.x + ' node y: ' + nodeDesc.y);
+
+                if (!node) {
+
+                    GBox2D.client.GBClientEngine.prototype.getInstance().createNodeFromDescription(nodeDesc);
+
+                }
+                else
+                {
+
+                    node.updateSprite(nodeDesc.x, nodeDesc.y, nodeDesc.rotation);
+
+                }
+
+
+            });
+
+
+
+        },
+
+        createNodeFromDescription : function (nodeDesc) {
+
+            //TODO: construct node
 
         }
 
