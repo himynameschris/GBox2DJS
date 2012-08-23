@@ -22,8 +22,6 @@
 
 var g_gbclientinstance = null;
 
-var g_socket = io.connect('http://192.168.1.125:3000');
-
 (function(){
 
     /**
@@ -31,16 +29,20 @@ var g_socket = io.connect('http://192.168.1.125:3000');
      node.js express server and socket.io
 
      */
-    GBox2D.client.GBClientNet = function() {
+    GBox2D.client.GBClientNet = function(aDelegate) {
         this.serverUpdateBuffer = [];
+        this.delegate = aDelegate;
+        this.firstUpdate = true;
     };
 
     GBox2D.client.GBClientNet.prototype = {
+        delegate : null,
         socket : null,
         serverUpdateBuffer : [],
-        getInstance : function() {
+        firstUpdate : null,
+        getInstance : function(aDelegate) {
             if(g_gbclientinstance == null) {
-                g_gbclientinstance = new GBox2D.client.GBClientNet();
+                g_gbclientinstance = new GBox2D.client.GBClientNet(aDelegate);
                 g_gbclientinstance.init();
             }
 
@@ -48,30 +50,53 @@ var g_socket = io.connect('http://192.168.1.125:3000');
         },
         init : function() {
 
-            g_socket.on('connect', function() { console.log('connected!')});
+            this.socket = io.connect('http://192.168.1.125:3000');
 
-            g_socket.on('update', this.serverUpdate);
+            this.socket.on('connect', function() { console.log('connected!')});
+
+            this.socket.on('update', this.serverUpdate);
 
         },
         serverUpdate : function(data) {
-            //cc.log("caught! : " + data);
-            var worldDescription = JSON.parse(data);
 
-            //console.log("game clock: " + worldDescription.gameClock +
-            //            " game tick: " + worldDescription.gameTick);
+            if(GBox2D.client.GBClientNet.prototype.getInstance().firstUpdate == true)
+            {
+                var worldDescription = JSON.parse(data);
 
-            GBox2D.client.GBClientNet.prototype.getInstance().serverUpdateBuffer.push(worldDescription);
+                GBox2D.client.GBClientNet.prototype.getInstance().delegate.gameClock = worldDescription.gameClock;
 
-            /*
-            this.updates = JSON.parse(data);
-            var dat = JSON.parse(this.updates.data);
-            for(var node in dat) {
-                console.log("body " + dat[node].nodeid + ": x = " + dat[node].x + " y = " + dat[node].y);
-            };
-            */
+                console.log('setting world clock: ' + GBox2D.client.GBClientNet.prototype.getInstance().delegate.gameClock + ' from: ' + worldDescription.gameClock);
+
+                GBox2D.client.GBClientNet.prototype.getInstance().firstUpdate = false;
+
+            }
+
+            if(GBox2D.client.GBClientNet.prototype.getInstance().firstUpdate == false)
+            {
+
+                //cc.log("caught! : " + data);
+                var worldDescription = JSON.parse(data);
+
+                //console.log("game clock: " + worldDescription.gameClock +
+                //            " game tick: " + worldDescription.gameTick);
+
+                GBox2D.client.GBClientNet.prototype.getInstance().serverUpdateBuffer.push(worldDescription);
+
+                /*
+                 this.updates = JSON.parse(data);
+                 var dat = JSON.parse(this.updates.data);
+                 for(var node in dat) {
+                 console.log("body " + dat[node].nodeid + ": x = " + dat[node].x + " y = " + dat[node].y);
+                 };
+                 */
+
+                console.log('push it!');
+
+            }
+
         },
         update : function() {
-            
+
         },
         ajax : function (url, ref, cb)
         {
@@ -93,6 +118,9 @@ var g_socket = io.connect('http://192.168.1.125:3000');
                 cc.log(xmlhttp.responseText);
                 ref[cb](xmlhttp.responseText);
             };
+        },
+        setDelegate : function(aDelegate) {
+            this.delegate = aDelegate;
         }
     };
 })();
