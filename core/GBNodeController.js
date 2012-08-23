@@ -119,7 +119,7 @@
 
         getNodes: function() { return this.nodes },
         getPlayers: function() { return this.players; },
-        getEntityWithid: function( anEntityid ) { return this.nodes.objectForKey(anEntityid); },
+        getNodeWithid: function( anEntityid ) { return this.nodes.objectForKey(anEntityid); },
         getPlayerWithid: function( aClientid ) { return this.players.objectForKey(aClientid); }
 
     };
