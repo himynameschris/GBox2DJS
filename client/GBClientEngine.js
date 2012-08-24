@@ -99,7 +99,7 @@ var g_gbclientengineinstance = null;
         renderAtTime : function(renderTime) {
 
             /*
-             TODO:
+             Method:
              -get incoming update buffer, if smaller than 2 then return
              -iterate through updates, looking for update before and after rendertime
              -interpolate distance betw states
@@ -129,7 +129,6 @@ var g_gbclientengineinstance = null;
                     break;
                 }
 
-
             }
 
             if(nextUp == null || prevUp == null) {
@@ -149,7 +148,7 @@ var g_gbclientengineinstance = null;
 
             var prevUpNodes = this.generateNodeTable(prevUp.nodes);
 
-            var newx = 0, newy = 0;
+            var newx = 0, newy = 0, newr = 0;
 
             //update nodes
             nextUp.nodes.forEach(function(nodeDesc, key) {
@@ -178,14 +177,16 @@ var g_gbclientengineinstance = null;
                     var y1 = prevNodeDesc.y;
                     var y2 = nodeDesc.y;
 
+                    var r1 = prevNodeDesc.rotation;
+                    var r2 = nodeDesc.rotation;
+
                     newx = ( (x2 - x1 ) * t) + x1;
                     newy = ( (y2 - y1 ) * t) + y1;
+                    newr = ( (r2 - r2 ) * t) + r1;
 
                 }
 
-
-
-                that.nodeController.updateNode( nodeid, newx, newy, nodeDesc );
+                that.nodeController.updateNode( nodeid, newx, newy, newr, nodeDesc );
                 activeNodes[node] = true;
 
             });
@@ -196,7 +197,7 @@ var g_gbclientengineinstance = null;
 
             var table = new SortedLookupTable();
 
-            //update nodes
+            //place nodes into sorted table, lookup by nodeid
             nodesDesc.forEach(function(nodeDesc, key) {
 
                 table.setObjectForKey(nodeDesc, nodeDesc.nodeid);
@@ -208,8 +209,6 @@ var g_gbclientengineinstance = null;
         },
 
         createNodeFromDescription : function (nodeDesc) {
-
-            //TODO: construct node
 
             console.log('create it!');
 

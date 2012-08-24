@@ -36,13 +36,13 @@
 
         },
 
-        updateNode: function(nodeid, newX, newY, newDescription) {
+        updateNode: function(nodeid, newX, newY, newr, newDescription) {
             var node = this.nodes.objectForKey( nodeid );
 
             if( node != null ) {
                 node.x = newX;
                 node.y = newY;
-                //node.rotation = newRotation;
+                node.rotation = newr;
                 node.lastReceivedEntityDescription = newDescription;
             }
         },

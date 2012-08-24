@@ -59,7 +59,8 @@
                 clientid:node.clientid,
                 nodeType:node.nodeType,
                 x: node.x,
-                y: node.y};
+                y: node.y,
+                rotation: node.rotation};
 
             return d;
         },

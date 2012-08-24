@@ -44,7 +44,7 @@
         updateSprite : function() {
             //console.log('setting pos x: ' + this.x + ' y:' + this.y + ' for node: ' + this.nodeid);
             this.sprite.setPosition(cc.p(this.x, this.y));
-            //this.sprite.setRotation(rotation);
+            this.sprite.setRotation(-1 * cc.RADIANS_TO_DEGREES(this.rotation));
             //console.log('sprite x: ' + this.sprite.getPositionX() + ' y: ' + this.sprite.getPositionY());
         }
 
