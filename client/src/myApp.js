@@ -23,7 +23,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-
+var TAG_SPRITE_MANAGER = 1;
 
 var MyLayer = cc.Layer.extend({
     isMouseDown:false,
@@ -74,20 +74,34 @@ var MyLayer = cc.Layer.extend({
         this.addChild(this.helloLabel, 5);
 
         this.engine = GBox2D.client.GBClientEngine.prototype.getInstance();
+        this.engine.setViewDelegate(this);
 
         this.engine.netChannel.ajax("/api/hello", this, "updateLabel");
+
+        var mgr = cc.SpriteBatchNode.create(s_pathBlock, 150);
+        this.addChild(mgr, 0, TAG_SPRITE_MANAGER);
 
         var lazyLayer = new cc.LazyLayer();
         this.addChild(lazyLayer);
 
-        // add "Helloworld" splash screen"
-        this.sprite = cc.Sprite.create("/client/res/HelloWorld.png");
-        this.sprite.setAnchorPoint(cc.p(0.5, 0.5));
-        this.sprite.setPosition(cc.p(size.width / 2, size.height / 2));
-
-        lazyLayer.addChild(this.sprite, 0);
+        this.scheduleUpdate();
 
         return true;
+
+    },
+    update:function(dt) {
+        this.engine.update(dt);
+    },
+    createSprite:function(type) {
+        var batch = this.getChildByTag(TAG_SPRITE_MANAGER);
+
+        var idx = (cc.RANDOM_0_1() > .5 ? 0 : 1);
+        var idy = (cc.RANDOM_0_1() > .5 ? 0 : 1);
+        var sprite = cc.Sprite.createWithTexture(batch.getTexture(), cc.rect(32 * idx, 32 * idy, 32, 32));
+        batch.addChild(sprite);
+
+        return sprite;
+
     }
 
 });
