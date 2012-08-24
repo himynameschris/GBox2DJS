@@ -120,7 +120,7 @@ var g_gbclientengineinstance = null;
                 //we fall betw this and the prev
                 if(currUp.gameClock >= renderTime) {
                     prevUp = buffer[i-1];
-                    nextUp = prevUp;
+                    nextUp = currUp;
                     break;
                 }
 
