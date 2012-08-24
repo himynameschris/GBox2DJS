@@ -173,7 +173,7 @@ var g_gbserverengineinstance = null;
             var entity = allEntities.objectForKey( allEntities._keys[randomKeyIndex] );
 
             var x = Math.random() * 640 + 1;
-            var y = Math.random() * 320;
+            var y = Math.random() * 320 + 200;
             entity.box2dBody.SetPosition( new b2Vec2( x / 32, y / 32 ) );
         },
         /**

@@ -55,12 +55,12 @@ engine.start();
 
 //engine.createBox(2, 5, 1, 1);
 
-for(var i = 0; i < 32 ; i ++) {
+for(var i = 0; i < 50 ; i ++) {
     var x = (640/2) + Math.sin(i/5);
     var y = i * -1*3;
 
     // Make a square or a box
     //if(Math.random() < 0.5) engine.createBall(x, y, 1);
-    engine.createBox(x / 32, y / 32, 0, 1);
+    engine.createBox(x / 32, y / 32, 0, .5);
 }
 

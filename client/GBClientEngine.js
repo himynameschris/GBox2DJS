@@ -181,11 +181,6 @@ var g_gbclientengineinstance = null;
                     newx = ( (x2 - x1 ) * t) + x1;
                     newy = ( (y2 - y1 ) * t) + y1;
 
-                    if(nodeid == 10)
-                    {
-                        console.log('x1: ' + x1 + ' x2: ' + x2 + ' y1:' + y1 + ' y2: ' + y2 + ' newx: ' + newx + ' newy: ' + newy + '');
-                    }
-
                 }
 
 
