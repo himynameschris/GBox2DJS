@@ -34,11 +34,16 @@ var g_gbclientengineinstance = null;
 
     GBox2D.client.GBClientEngine.prototype = {
         // Properties
+        viewDelegate : null,
         /**
          * Function to setup networking (instantiate client or server net)
          */
         setupNetwork : function() {
             this.netChannel = GBox2D.client.GBClientNet.prototype.getInstance(this);
+        },
+
+        setViewDelegate : function(aDelegate) {
+            this.viewDelegate = aDelegate;
         },
 
         /*
@@ -142,6 +147,10 @@ var g_gbclientengineinstance = null;
 
             var that = GBox2D.client.GBClientEngine.prototype.getInstance();
 
+            var prevUpNodes = this.generateNodeTable(prevUp.nodes);
+
+            var newx = 0, newy = 0;
+
             //update nodes
             nextUp.nodes.forEach(function(nodeDesc, key) {
 
@@ -159,12 +168,47 @@ var g_gbclientengineinstance = null;
                 }
                 else
                 {
+                    var prevNodeDesc = prevUpNodes.objectForKey(nodeid);
 
-                    node.updateSprite(nodeDesc.x, nodeDesc.y, nodeDesc.rotation);
+                    if(!prevNodeDesc) return;
+
+                    var x1 = prevNodeDesc.x;
+                    var x2 = nodeDesc.x;
+
+                    var y1 = prevNodeDesc.y;
+                    var y2 = nodeDesc.y;
+
+                    newx = ( (x2 - x1 ) * t) + x1;
+                    newy = ( (y2 - y1 ) * t) + y1;
+
+                    if(nodeid == 10)
+                    {
+                        console.log('x1: ' + x1 + ' x2: ' + x2 + ' y1:' + y1 + ' y2: ' + y2 + ' newx: ' + newx + ' newy: ' + newy + '');
+                    }
 
                 }
 
+
+
+                that.nodeController.updateNode( nodeid, newx, newy, nodeDesc );
+                activeNodes[node] = true;
+
             });
+
+        },
+
+        generateNodeTable : function (nodesDesc) {
+
+            var table = new SortedLookupTable();
+
+            //update nodes
+            nodesDesc.forEach(function(nodeDesc, key) {
+
+                table.setObjectForKey(nodeDesc, nodeDesc.nodeid);
+
+            });
+
+            return table;
 
         },
 
@@ -174,7 +218,13 @@ var g_gbclientengineinstance = null;
 
             console.log('create it!');
 
+            var sprite = this.viewDelegate.createSprite(nodeDesc.nodeType);
 
+            sprite.setPosition(nodeDesc.x * 32, nodeDesc.y * 32);
+
+            var node = new GBox2D.client.GBClientNode(nodeDesc, sprite);
+
+            this.nodeController.addNode(node);
 
         }
 
