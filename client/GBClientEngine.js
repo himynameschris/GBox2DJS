@@ -77,8 +77,7 @@ var g_gbclientengineinstance = null;
         update : function() {
             GBox2D.client.GBClientEngine.superclass.update.call(this);
 
-            console.log('clock: ' + this.gameClock + ' tick: ' + this.gameTick);
-
+            //console.log('clock: ' + this.gameClock + ' tick: ' + this.gameTick);
 
             this.nodeController.getNodes().forEach( function(key, node){
                 node.updateSprite();
@@ -141,19 +140,21 @@ var g_gbclientengineinstance = null;
             if(t > 1.0)  t = 1.0;
             else if(t < 0) t = 0.0;
 
+            var that = GBox2D.client.GBClientEngine.prototype.getInstance();
+
             //update nodes
             nextUp.nodes.forEach(function(nodeDesc, key) {
 
-                console.log('node desc: ' + JSON.stringify(nodeDesc));
+                //console.log('node desc: ' + JSON.stringify(nodeDesc));
 
                 var nodeid = nodeDesc.nodeid;
-                var node = GBox2D.client.GBClientEngine.prototype.getInstance().nodeController.getNodeWithid(nodeid);
+                var node = that.nodeController.getNodeWithid(nodeid);
 
-                console.log('nodeid: ' + nodeid + ' node x: ' + nodeDesc.x + ' node y: ' + nodeDesc.y);
+                //console.log('nodeid: ' + nodeid + ' node x: ' + nodeDesc.x + ' node y: ' + nodeDesc.y);
 
                 if (!node) {
 
-                    GBox2D.client.GBClientEngine.prototype.getInstance().createNodeFromDescription(nodeDesc);
+                    that.createNodeFromDescription(nodeDesc);
 
                 }
                 else
@@ -163,16 +164,17 @@ var g_gbclientengineinstance = null;
 
                 }
 
-
             });
-
-
 
         },
 
         createNodeFromDescription : function (nodeDesc) {
 
             //TODO: construct node
+
+            console.log('create it!');
+
+
 
         }
 

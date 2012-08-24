@@ -59,19 +59,21 @@ var g_gbclientinstance = null;
         },
         serverUpdate : function(data) {
 
-            if(GBox2D.client.GBClientNet.prototype.getInstance().firstUpdate == true)
+            var that = GBox2D.client.GBClientNet.prototype.getInstance();
+
+            if(that.firstUpdate == true)
             {
                 var worldDescription = JSON.parse(data);
 
-                GBox2D.client.GBClientNet.prototype.getInstance().delegate.gameClock = worldDescription.gameClock;
+                that.delegate.gameClock = worldDescription.gameClock;
 
-                console.log('setting world clock: ' + GBox2D.client.GBClientNet.prototype.getInstance().delegate.gameClock + ' from: ' + worldDescription.gameClock);
+                console.log('setting world clock: ' + that.delegate.gameClock + ' from: ' + worldDescription.gameClock);
 
-                GBox2D.client.GBClientNet.prototype.getInstance().firstUpdate = false;
+                that.firstUpdate = false;
 
             }
 
-            if(GBox2D.client.GBClientNet.prototype.getInstance().firstUpdate == false)
+            if(that.firstUpdate == false)
             {
 
                 //cc.log("caught! : " + data);
@@ -80,17 +82,12 @@ var g_gbclientinstance = null;
                 //console.log("game clock: " + worldDescription.gameClock +
                 //            " game tick: " + worldDescription.gameTick);
 
-                GBox2D.client.GBClientNet.prototype.getInstance().serverUpdateBuffer.push(worldDescription);
+                that.serverUpdateBuffer.push(worldDescription);
 
-                /*
-                 this.updates = JSON.parse(data);
-                 var dat = JSON.parse(this.updates.data);
-                 for(var node in dat) {
-                 console.log("body " + dat[node].nodeid + ": x = " + dat[node].x + " y = " + dat[node].y);
-                 };
-                 */
-
-                console.log('push it!');
+                if(that.serverUpdateBuffer.length > 20)
+                {
+                    that.serverUpdateBuffer.shift();
+                }
 
             }
 
