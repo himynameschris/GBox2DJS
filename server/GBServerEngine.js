@@ -78,7 +78,7 @@ var g_gbserverengineinstance = null;
             var doSleep = true;
 
             this.createBox2dWorld();
-
+            //this._world.DestroyBody(this._wallBottom);
 
         },
 
@@ -137,6 +137,10 @@ var g_gbserverengineinstance = null;
             var delta = 16 / 1000;
             this.step( delta );
 
+            if(this.gameTick % 30 === 0) {
+                this.resetRandomBody();
+            }
+
             GBox2D.server.GBServerEngine.superclass.update.call(this);
 
             // Allow all entities to update their position
@@ -158,6 +162,19 @@ var g_gbserverengineinstance = null;
             //this._world.ClearForces();
             //var delta = (typeof delta == "undefined") ? 1/this._fps : delta;
             this._world.Step(delta, delta * this._velocityIterationsPerSecond, delta * this._positionIterationsPerSecond);
+        },
+        /**
+         * Resets an entity and drops it from the sky
+         */
+        resetRandomBody: function() {
+            // Retrieve a random key, and use it to retreive an entity
+            var allEntities = this.nodeController.getNodes();
+            var randomKeyIndex = Math.floor(Math.random() * allEntities._keys.length);
+            var entity = allEntities.objectForKey( allEntities._keys[randomKeyIndex] );
+
+            var x = Math.random() * 640 + 1;
+            var y = Math.random() * 320;
+            entity.box2dBody.SetPosition( new b2Vec2( x / 32, y / 32 ) );
         },
         /**
          * Creates a Box2D circular body
