@@ -29,6 +29,7 @@ require('./server/GBServerEngine.js');
 require('./core/GBNode.js');
 require('./server/GBServerNode.js');
 require('./core/GBWorldNodeDescription.js');
+require('./server/GBServerShapeCache.js');
 
 var Box2D = require('./lib/box2d/box2d.js');
 
@@ -48,19 +49,29 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2,
     b2EdgeShape = Box2D.Collision.Shapes.b2EdgeShape;
 b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
-
 var engine = GBox2D.server.GBServerEngine.prototype.getInstance();
 
-engine.start();
+var shapeCache = GBox2D.server.GBServerShapeCache.prototype.getInstance();
+
+shapeCache.loadFromFile("shapes", shapeCache, doneLoading);
+
+function doneLoading() {
+    engine.start();
+
+    console.log('engine started');
+
+    for(var i = 0; i < 50 ; i ++) {
+        var x = (640/2) + Math.sin(i/5);
+        var y = i * -1*3;
+
+        // Make a square or a box
+        //if(Math.random() < 0.5) engine.createBall(x, y, 1);
+        engine.createBox(x / 32, y / 32, 0, .5);
+    }
+}
+
 
 //engine.createBox(2, 5, 1, 1);
 
-for(var i = 0; i < 50 ; i ++) {
-    var x = (640/2) + Math.sin(i/5);
-    var y = i * -1*3;
 
-    // Make a square or a box
-    //if(Math.random() < 0.5) engine.createBall(x, y, 1);
-    engine.createBox(x / 32, y / 32, 0, .5);
-}
 

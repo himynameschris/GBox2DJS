@@ -84,6 +84,7 @@ var g_gbserverinstance = null;
 
                 //TODO: throttle emits with update rate
                 this.io.sockets.emit('update', payload);
+
             };
 
         }
