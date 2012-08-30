@@ -60,7 +60,7 @@ var MyLayer = cc.Layer.extend({
 
         var menu = cc.Menu.create(closeItem, null);
         menu.setPosition(cc.PointZero());
-        this.addChild(menu, 1);
+        this.addChild(menu, 50);
         closeItem.setPosition(cc.p(size.width - 20, 20));
 
         /////////////////////////////
