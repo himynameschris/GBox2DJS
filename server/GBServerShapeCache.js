@@ -33,13 +33,15 @@ var fs = require('fs'),
 
      */
     GBox2D.server.GBServerShapeCache = function() {
-
+        this.bodies = new SortedLookupTable();
     };
 
     GBox2D.server.GBServerShapeCache.prototype = {
         cache : null,
         start : false,
         cb : null,
+        ptm : 32,
+        bodies : null,
         getInstance : function() {
             if (g_gbservershapecacheinstance == null)
             {
@@ -51,7 +53,7 @@ var fs = require('fs'),
         },
         init : function() {
 
-            this.parser = new xml2js.Parser();
+            this.parser = new xml2js.Parser({mergeAttrs : true});
 
             this.parser.addListener('end', this.doneParsing);
 
@@ -64,7 +66,7 @@ var fs = require('fs'),
                 console.log('start set');
             }
 
-            fs.readFile(__dirname + '/' + filename + '.plist', function(err, data) {
+            fs.readFile(__dirname + '/res/private/' + filename + '.xml', function(err, data) {
                 console.log(data);
                 instance.parser.parseString(data);
             });
@@ -75,9 +77,21 @@ var fs = require('fs'),
             console.dir(result);
             console.log('Done.');
 
+            for(var body in result.bodies.body)
+            {
+
+                //console.log(result.bodies.body[body].name);
+                g_gbservershapecacheinstance.bodies.setObjectForKey(result.bodies.body[body], result.bodies.body[body].name);
+
+            }
+
             if (g_gbservershapecacheinstance.start) {
                 g_gbservershapecacheinstance.cb();
             }
+        },
+
+        setPTM : function(ratio) {
+            this.ptm = ratio;
         }
     }
 })();
