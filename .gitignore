@@ -1,4 +1,5 @@
-﻿box2d.js
+box2d.js
 box2d.js*
 .idea/
 node_modules/
+server/res/private/
