@@ -19,19 +19,20 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-require('./lib/SortedLookupTable.js');
-require('./lib/Point.js');
-require('./core/GBox2D.js');
-require('./core/GBNodeController.js');
-require('./core/GBEngine.js');
-require('./server/GBServerNet.js');
-require('./server/GBServerEngine.js');
-require('./core/GBNode.js');
-require('./server/GBServerNode.js');
-require('./core/GBWorldNodeDescription.js');
-require('./server/GBServerShapeCache.js');
+require('../lib/SortedLookupTable.js');
+require('../lib/Point.js');
+require('../core/GBox2D.js');
+require('../core/GBNodeController.js');
+require('../core/GBEngine.js');
+require('../server/GBServerNet.js');
+require('../server/GBServerEngine.js');
+require('../server-demo/DemoServerEngine.js');
+require('../core/GBNode.js');
+require('../server/GBServerNode.js');
+require('../core/GBWorldNodeDescription.js');
+require('../server/GBServerShapeCache.js');
 
-var Box2D = require('./lib/box2d/box2d.js');
+var Box2D = require('./../lib/box2d/box2d.js');
 
 // Shorthand "imports"
 var b2Vec2 = Box2D.Common.Math.b2Vec2,
@@ -49,10 +50,10 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2,
     b2EdgeShape = Box2D.Collision.Shapes.b2EdgeShape;
 b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
-var engine = GBox2D.server.GBServerEngine.prototype.getInstance();
+var engine = GBox2D.server.DemoServerEngine.prototype.getInstance();
 
 var shapeCache = GBox2D.server.GBServerShapeCache.prototype.getInstance();
-
+shapeCache.setResourceDir(__dirname + "/res/");
 shapeCache.loadFromFile("shapes", shapeCache, doneLoading);
 
 function doneLoading() {
@@ -64,14 +65,9 @@ function doneLoading() {
         var x = (640/2) + Math.sin(i/5);
         var y = i * -1*3;
 
-        // Make a square or a box
-        //if(Math.random() < 0.5) engine.createBall(x, y, 1);
+        // Make a square
         engine.createBox(x / 32, y / 32, 0, .5);
     }
 }
-
-
-//engine.createBox(2, 5, 1, 1);
-
 
 

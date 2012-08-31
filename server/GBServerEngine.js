@@ -42,7 +42,7 @@ var g_gbserverengineinstance = null;
 (function(){
 
     /**
-     implmenting the gbengine class, a singleton to handle management of the box2d world, compile movements of box2d bodies, register and fire a custom contact listener and remove bodies from a queue
+     implementing the gbengine class, a singleton to handle management of the box2d world, compile movements of box2d bodies, register and fire a custom contact listener and remove bodies from a queue
 
      */
     GBox2D.server.GBServerEngine = function() {
@@ -75,46 +75,16 @@ var g_gbserverengineinstance = null;
         init : function() {
             GBox2D.server.GBServerEngine.superclass.init.call(this);
 
-            var doSleep = true;
-
-            this.createBox2dWorld();
-            //this._world.DestroyBody(this._wallBottom);
-
         },
 
         /**
          * Creates the Box2D world with 4 walls around the edges
          */
         createBox2dWorld: function() {
+            //you should probably override this
+
             var m_world = new b2World(new b2Vec2(0, -10), true);
             m_world.SetWarmStarting(true);
-
-
-            // Create border of boxes
-            var wall = new b2PolygonShape();
-            var wallBd = new b2BodyDef();
-
-            // Left
-            wallBd.position.Set(-1.5, GBox2D.Constants.GAME_HEIGHT/2);
-            wall.SetAsBox(1, GBox2D.Constants.GAME_HEIGHT*10);
-            this._wallLeft = m_world.CreateBody(wallBd);
-            this._wallLeft.CreateFixture2(wall);
-            // Right
-            wallBd.position.Set(GBox2D.Constants.GAME_WIDTH + 0.55, GBox2D.Constants.GAME_HEIGHT/2);
-            wall.SetAsBox(1, GBox2D.Constants.GAME_HEIGHT*10);
-            this._wallRight = m_world.CreateBody(wallBd);
-            this._wallRight.CreateFixture2(wall);
-            // BOTTOM
-            wallBd.position.Set(GBox2D.Constants.GAME_WIDTH/2, GBox2D.Constants.GAME_HEIGHT+0.55);
-            wall.SetAsBox(GBox2D.Constants.GAME_WIDTH/2, 1);
-            this._wallTop = m_world.CreateBody(wallBd);
-            this._wallTop.CreateFixture2(wall);
-            // TOP
-            wallBd.position.Set(GBox2D.Constants.GAME_WIDTH/2, 1);
-            wall.SetAsBox(GBox2D.Constants.GAME_WIDTH/2, 1);
-            this._wallBottom = m_world.CreateBody(wallBd);
-            this._wallBottom.CreateFixture2(wall);
-
 
             this._world = m_world;
         },
@@ -134,12 +104,10 @@ var g_gbserverengineinstance = null;
          in the server, it will be responsible for stepping the physics world and pushing the world states
          */
         update : function() {
+           //accomplishes the tasks of calling the world step at a constant rate,
+           // updating the node positions, sending the world description to the net
             var delta = 16 / 1000;
             this.step( delta );
-
-            if(this.gameTick % 30 === 0) {
-                this.resetRandomBody();
-            }
 
             GBox2D.server.GBServerEngine.superclass.update.call(this);
 
@@ -159,86 +127,12 @@ var g_gbserverengineinstance = null;
 
         },
         step: function( delta ) {
-            //this._world.ClearForces();
+            //step the world
+
             //var delta = (typeof delta == "undefined") ? 1/this._fps : delta;
             this._world.Step(delta, delta * this._velocityIterationsPerSecond, delta * this._positionIterationsPerSecond);
         },
-        /**
-         * Resets an entity and drops it from the sky
-         */
-        resetRandomBody: function() {
-            // Retrieve a random key, and use it to retreive an entity
-            var allEntities = this.nodeController.getNodes();
-            var randomKeyIndex = Math.floor(Math.random() * allEntities._keys.length);
-            var entity = allEntities.objectForKey( allEntities._keys[randomKeyIndex] );
 
-            var x = Math.random() * 640 + 1;
-            var y = Math.random() * 320 + 200;
-            entity.box2dBody.SetPosition( new b2Vec2( x / 32, y / 32 ) );
-        },
-        /**
-         * Creates a Box2D circular body
-         * @param {Number} x	Body position on X axis
-         * @param {Number} y    Body position on Y axis
-         * @param {Number} radius Body radius
-         * @return {b2Body}	A Box2D body
-         */
-        createBall: function(x, y, radius) {
-            var fixtureDef = new b2FixtureDef();
-            fixtureDef.shape = new b2CircleShape(radius);
-            fixtureDef.friction = 0.4;
-            fixtureDef.restitution = 0.6;
-            fixtureDef.density = 1.0;
-
-            var ballBd = new b2BodyDef();
-            ballBd.type = b2Body.b2_dynamicBody;
-            ballBd.position.Set(x,y);
-            var body = this._world.CreateBody(ballBd);
-            body.CreateFixture(fixtureDef);
-
-            // Create the entity for it in
-            var aBox2DEntity = new GBox2D.server.GBServerNode( this.getNextEntityID(), 0 );
-            aBox2DEntity.setBody(body);
-            aBox2DEntity.nodeType = 1;
-
-            this.nodeController.addNode( aBox2DEntity );
-
-            return body;
-        },
-
-        /**
-         * Creates a Box2D square body
-         * @param {Number} x	Body position on X axis
-         * @param {Number} y    Body position on Y axis
-         * @param {Number} rotation	Body rotation
-         * @param {Number} size Body size
-         * @return {b2Body}	A Box2D body
-         */
-        createBox: function(x, y, rotation, size) {
-            var bodyDef = new b2BodyDef();
-            bodyDef.type = b2Body.b2_dynamicBody;
-            bodyDef.position.Set(x, y);
-            bodyDef.angle = rotation;
-
-            var body = this._world.CreateBody(bodyDef);
-            var shape = new b2PolygonShape.AsBox(size, size);
-            var fixtureDef = new b2FixtureDef();
-            fixtureDef.restitution = 0.1;
-            fixtureDef.density = 1.0;
-            fixtureDef.friction = 1.0;
-            fixtureDef.shape = shape;
-            body.CreateFixture(fixtureDef);
-
-            // Create the node for it
-            var aBox2DEntity = new GBox2D.server.GBServerNode( this.getNextEntityID(), 0 );
-            aBox2DEntity.setBody( body );
-            aBox2DEntity.nodeType = 2;
-
-
-            this.nodeController.addNode( aBox2DEntity );
-
-            return body;
-        },
         ///// Accessors
         getNextEntityID: function() {
             return ++this.nextEntityID;

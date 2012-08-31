@@ -42,6 +42,7 @@ var fs = require('fs'),
         cb : null,
         ptm : 32,
         bodies : null,
+        resourceFolder : null,
         getInstance : function() {
             if (g_gbservershapecacheinstance == null)
             {
@@ -66,7 +67,7 @@ var fs = require('fs'),
                 console.log('start set');
             }
 
-            fs.readFile(__dirname + '/res/private/' + filename + '.xml', function(err, data) {
+            fs.readFile(g_gbservershapecacheinstance.resourceFolder + filename + '.xml', function(err, data) {
                 console.log(data);
                 instance.parser.parseString(data);
             });
@@ -92,6 +93,11 @@ var fs = require('fs'),
 
         setPTM : function(ratio) {
             this.ptm = ratio;
+        },
+
+        setResourceDir : function(dir) {
+            this.resourceFolder = dir;
+            console.log('resource dir set as: ' + this.resourceFolder);
         }
     }
 })();
