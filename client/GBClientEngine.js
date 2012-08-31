@@ -36,6 +36,7 @@ var g_gbclientengineinstance = null;
     GBox2D.client.GBClientEngine.prototype = {
         // Properties
         viewDelegate : null,
+        fails : 0,
         /**
          * Function to setup networking (instantiate client or server net)
          */
@@ -134,6 +135,11 @@ var g_gbclientengineinstance = null;
 
             if(nextUp == null || prevUp == null) {
                 console.log('sad day');
+                this.fails++;
+                if(this.fails > 30) {
+                    this.netChannel.firstUpdate = true;
+                    fails = 0;
+                }
                 return false;
             }
 
