@@ -32,7 +32,7 @@ require('../server/GBServerNode.js');
 require('../core/GBWorldNodeDescription.js');
 require('../server/GBServerShapeCache.js');
 
-var Box2D = require('./../lib/box2d/box2d.js');
+var Box2D = require('./../lib/cocos2d-html5/box2d/box2d.js');
 
 // Shorthand "imports"
 var b2Vec2 = Box2D.Common.Math.b2Vec2,

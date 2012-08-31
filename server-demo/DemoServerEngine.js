@@ -19,7 +19,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-var Box2D = require('./../lib/box2d/box2d.js');
+var Box2D = require('./../lib/cocos2d-html5/box2d/box2d.js');
 
 // Shorthand "imports"
 var b2Vec2 = Box2D.Common.Math.b2Vec2,
