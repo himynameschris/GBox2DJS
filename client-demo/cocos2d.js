@@ -39,6 +39,7 @@
             '/lib/SortedLookupTable.js',
             '/lib/Point.js',
             '/core/GBox2D.js',
+            '/core/GBConstants.js',
             '/client/GBClientNet.js',
             '/core/GBEngine.js',
             '/client/GBClientEngine.js',
