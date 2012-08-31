@@ -40,6 +40,7 @@
     }
 
     GBox2D.constants.GBClientNet = {
+        MAX_UPDATES : 100
 
     }
 

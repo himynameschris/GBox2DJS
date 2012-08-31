@@ -84,7 +84,7 @@ var g_gbclientinstance = null;
 
                 that.serverUpdateBuffer.push(worldDescription);
 
-                if(that.serverUpdateBuffer.length > 20)
+                if(that.serverUpdateBuffer.length > GBox2D.constants.GBClientNet.MAX_UPDATES)
                 {
                     that.serverUpdateBuffer.shift();
                 }
