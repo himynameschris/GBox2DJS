@@ -1,6 +1,0 @@
-[submodule "lib/cocos2d-html5"]
-	path = lib/cocos2d-html5
-	url = E:/workspace/cocos2d-html5
-[submodule "cocos2d-html5"]
-	path = cocos2d-html5
-	url = https://github.com/hannon235/cocos2d-html5.git
