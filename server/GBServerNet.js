@@ -51,7 +51,7 @@ var g_gbserverinstance = null;
         init : function() {
             this.express = require('express'),
                 this.server = this.express(),
-                this.app = this.server.listen(3000),
+                this.app = this.server.listen(GBox2D.constants.GBServerNet.SERVER_PORT),
                 this.iolib = require('socket.io');
 
             this.io = this.iolib.listen(this.app);

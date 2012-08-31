@@ -40,11 +40,11 @@
     }
 
     GBox2D.constants.GBClientNet = {
-        SERVER_ADDRESS : "localhost"
+        SERVER_ADDRESS : "http://localhost"
     }
 
     GBox2D.constants.GBServerNet = {
-        SERVER_ADDRESS : 3000
+        SERVER_PORT : 3000
     }
 
 })();

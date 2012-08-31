@@ -50,7 +50,7 @@ var g_gbclientinstance = null;
         },
         init : function() {
 
-            this.socket = io.connect('http://localhost:3000');
+            this.socket = io.connect(GBox2D.constants.GBServerNet.SERVER_ADDRESS + ':' + GBox2D.constants.GBServerNet.SERVER_PORT);
 
             this.socket.on('connect', function() { console.log('connected!')});
 
