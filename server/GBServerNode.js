@@ -54,8 +54,8 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
         box2dBody   :   null,
 
         updatePosition : function() {
-            this.x = this.box2dBody.m_xf.position.x * GBox2D.Constants.PHYSICS_SCALE;
-            this.y = this.box2dBody.m_xf.position.y * GBox2D.Constants.PHYSICS_SCALE;
+            this.x = this.box2dBody.m_xf.position.x * GBox2D.constants.GBEngine.PHYSICS_SCALE;
+            this.y = this.box2dBody.m_xf.position.y * GBox2D.constants.GBEngine.PHYSICS_SCALE;
             this.rotation = this.box2dBody.GetAngle();
 
         },

@@ -87,24 +87,27 @@ var g_demoserverengineinstance = null;
             var wall = new b2PolygonShape();
             var wallBd = new b2BodyDef();
 
+            var width = GBox2D.constants.GBEngine.GAME_WIDTH;
+            var height = GBox2D.constants.GBEngine.GAME_HEIGHT;
+
             // Left
-            wallBd.position.Set(-1.5, GBox2D.Constants.GAME_HEIGHT/2);
-            wall.SetAsBox(1, GBox2D.Constants.GAME_HEIGHT*10);
+            wallBd.position.Set(-1.5, height/2);
+            wall.SetAsBox(1, height*10);
             this._wallLeft = m_world.CreateBody(wallBd);
             this._wallLeft.CreateFixture2(wall);
             // Right
-            wallBd.position.Set(GBox2D.Constants.GAME_WIDTH + 0.55, GBox2D.Constants.GAME_HEIGHT/2);
-            wall.SetAsBox(1, GBox2D.Constants.GAME_HEIGHT*10);
+            wallBd.position.Set(width + 0.55, height/2);
+            wall.SetAsBox(1, height*10);
             this._wallRight = m_world.CreateBody(wallBd);
             this._wallRight.CreateFixture2(wall);
             // BOTTOM
-            wallBd.position.Set(GBox2D.Constants.GAME_WIDTH/2, GBox2D.Constants.GAME_HEIGHT+0.55);
-            wall.SetAsBox(GBox2D.Constants.GAME_WIDTH/2, 1);
+            wallBd.position.Set(width/2, height+0.55);
+            wall.SetAsBox(width/2, 1);
             this._wallTop = m_world.CreateBody(wallBd);
             this._wallTop.CreateFixture2(wall);
             // TOP
-            wallBd.position.Set(GBox2D.Constants.GAME_WIDTH/2, 1);
-            wall.SetAsBox(GBox2D.Constants.GAME_WIDTH/2, 1);
+            wallBd.position.Set(width/2, 1);
+            wall.SetAsBox(width/2, 1);
             this._wallBottom = m_world.CreateBody(wallBd);
             this._wallBottom.CreateFixture2(wall);
 
