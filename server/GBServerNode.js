@@ -62,6 +62,7 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
         setBody : function(body) {
             this.box2dBody = body;
+            body.SetUserData(this);
         }
 
 

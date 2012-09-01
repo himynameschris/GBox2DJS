@@ -40,29 +40,46 @@ var g_gbcontactlistenerinstance = null;
 
     GBox2D.core.GBContactListener.prototype = {
         _contactListener : null,
+        /**
+         @return the singleton instance of GBContactListener
+         */
+        getInstance : function() {
+            if(g_gbcontactlistenerinstance == null) {
+                g_gbcontactlistenerinstance = new GBox2D.core.GBContactListener();
+            }
+            return g_gbcontactlistenerinstance;
+        },
         /*
          * this will notify the objects contained in 'contact' of the contact type, if they
          * have registered with the contactregistry
          */
         notifyObjects : function (contact, contactType) {
-            //TODO: implement contact methods
+
+            var nodeA = contact.GetFixtureA().GetBody().GetUserData();
+            var nodeB = contact.GetFixtureB().GetBody().GetUserData();
+
+            //TODO: call collision on both objects as well as base collisions
+            if(nodeA != null && nodeB != null) {
+               console.log ('' + nodeA.nodeType + contactType + 'ContactWith' + nodeB.nodeType);
+               console.log ('' + nodeB.nodeType + contactType + 'ContactWith' + nodeA.nodeType);
+            }
 
         },
 
         BeginContact : function (contact) {
-            console.log('BeginContact');
+            GBox2D.core.GBContactListener.prototype.getInstance().notifyObjects(contact, "begin");
         },
 
         EndContact : function (contact) {
-            console.log('EndContact');
+            GBox2D.core.GBContactListener.prototype.getInstance().notifyObjects(contact, "end");
         },
 
         PreSolve : function (contact, manifold) {
-            console.log('PreSolve');
+            GBox2D.core.GBContactListener.prototype.getInstance().notifyObjects(contact, "pre");
         },
 
         PostSolve : function (contact, manifold) {
-            console.log('PostSolve');
+            GBox2D.core.GBContactListener.prototype.getInstance().notifyObjects(contact, "post");
         }
     }
 
