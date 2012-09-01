@@ -52,6 +52,7 @@ var g_gbserverengineinstance = null;
 
     GBox2D.server.GBServerEngine.prototype = {
         _world  : null,
+        _contactListener : null,
         _velocityIterationsPerSecond    : 100,
         _positionIterationsPerSecond	: 300,
         nextEntityID			: 0,
@@ -75,6 +76,11 @@ var g_gbserverengineinstance = null;
         init : function() {
             GBox2D.server.GBServerEngine.superclass.init.call(this);
 
+            this.createBox2dWorld();
+
+            this._contactListener = new GBox2D.core.GBContactListener();
+
+            this._world.SetContactListener(this._contactListener._contactListener);
         },
 
         /**

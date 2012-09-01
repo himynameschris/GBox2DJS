@@ -69,9 +69,9 @@ var g_demoserverengineinstance = null;
          initialize a new instance of the engine
          */
         init : function() {
-            GBox2D.server.GBServerEngine.superclass.init.call(this);
+            GBox2D.server.DemoServerEngine.superclass.init.call(this);
 
-            this.createBox2dWorld();
+
         },
 
         /**
