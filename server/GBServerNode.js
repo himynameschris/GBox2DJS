@@ -52,6 +52,7 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
     GBox2D.server.GBServerNode.prototype = {
         box2dBody   :   null,
+        shouldDelete : false,
 
         updatePosition : function() {
             this.x = this.box2dBody.m_xf.position.x * GBox2D.constants.GBEngine.PHYSICS_SCALE;
@@ -63,6 +64,22 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
         setBody : function(body) {
             this.box2dBody = body;
             body.SetUserData(this);
+        },
+
+        beginContactWith2 : function(gbcontact) {
+            var x = Math.random();
+            if(x <= .01) {
+                this.shouldDelete = true;
+            }
+
+        },
+
+        beginContactWithObject : function(gbcontact) {
+            var x = Math.random();
+            if(x <= .01) {
+                this.shouldDelete = true;
+            }
+
         }
 
 

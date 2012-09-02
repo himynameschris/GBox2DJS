@@ -23,6 +23,23 @@ var Box2D = require('./../lib/cocos2d-html5/box2d/box2d.js');
 
 var g_gbcontactlistenerinstance = null;
 
+(function() {
+    GBox2D.core.GBContact = function(nodeA, nodeB, contact, contactType) {
+        this.nodeA = nodeA;
+        this.nodeB = nodeB;
+        this.contact = contact;
+        this.contactType = contactType;
+    }
+
+    GBox2D.core.GBContact.prototype = {
+        nodeA : null,
+        nodeB : null,
+        contact : null,
+        contactType : null
+    }
+
+})();
+
 (function(){
 
     /**
@@ -58,10 +75,22 @@ var g_gbcontactlistenerinstance = null;
             var nodeA = contact.GetFixtureA().GetBody().GetUserData();
             var nodeB = contact.GetFixtureB().GetBody().GetUserData();
 
-            //TODO: call collision on both objects as well as base collisions
+            var gbcontact = new GBox2D.core.GBContact(nodeA, nodeB, contact, contactType);
+
             if(nodeA != null && nodeB != null) {
-               console.log ('' + nodeA.nodeType + contactType + 'ContactWith' + nodeB.nodeType);
-               console.log ('' + nodeB.nodeType + contactType + 'ContactWith' + nodeA.nodeType);
+
+               var nodeAstr1 = '' + contactType + 'ContactWith' + nodeB.nodeType;
+               var nodeAstr2 = '' + contactType + 'ContactWithObject';
+
+               var nodeBstr1 = '' + contactType + 'ContactWith' + nodeB.nodeType;
+               var nodeBstr2 = '' + contactType + 'ContactWithObject';
+
+               if(nodeA[nodeAstr1] !== undefined ) nodeA[nodeAstr1](gbcontact);
+               if(nodeA[nodeAstr2] !== undefined ) nodeA[nodeAstr2](gbcontact);
+
+               if(nodeB[nodeBstr1] !== undefined ) nodeB[nodeBstr1](gbcontact);
+               if(nodeB[nodeBstr2] !== undefined ) nodeB[nodeBstr2](gbcontact);
+
             }
 
         },
