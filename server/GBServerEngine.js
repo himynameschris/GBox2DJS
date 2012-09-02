@@ -55,7 +55,7 @@ var g_gbserverengineinstance = null;
         _contactListener : null,
         _velocityIterationsPerSecond    : 100,
         _positionIterationsPerSecond	: 300,
-        nextEntityID			: 0,
+        nextEntityID			: -1,
 
         // Properties
         /**
@@ -117,10 +117,24 @@ var g_gbserverengineinstance = null;
 
             GBox2D.server.GBServerEngine.superclass.update.call(this);
 
+            var graveyard = [];
+
             // Allow all entities to update their position
             this.nodeController.getNodes().forEach( function(key, node){
-                node.updatePosition();
+                if(node.shouldDelete == true) {
+                    graveyard.push(node);
+                } else {
+                    node.updatePosition();
+                }
+
             }, this );
+
+            for (var node in graveyard) {
+                var body = graveyard[node].box2dBody;
+                this.nodeController.removeNode(graveyard[node].nodeid);
+                delete this._world[body];
+
+            }
 
             var worldDescription = new GBox2D.core.GBWorldNodeDescription(this, this.nodeController.getNodes());
             worldDescription.createDescription();

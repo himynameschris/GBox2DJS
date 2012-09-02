@@ -149,13 +149,14 @@ var g_demoserverengineinstance = null;
          */
         resetRandomBody: function() {
             // Retrieve a random key, and use it to retreive an entity
+            var x = Math.random() * 640 + 1;
+            var y = Math.random() * 320 + 200;
+
             var allEntities = this.nodeController.getNodes();
             var randomKeyIndex = Math.floor(Math.random() * allEntities._keys.length);
             var entity = allEntities.objectForKey( allEntities._keys[randomKeyIndex] );
 
-            var x = Math.random() * 640 + 1;
-            var y = Math.random() * 320 + 200;
-            entity.box2dBody.SetPosition( new b2Vec2( x / 32, y / 32 ) );
+            if(entity !== undefined) entity.box2dBody.SetPosition( new b2Vec2( x / 32, y / 32 ) );
         },
         /**
          * Creates a Box2D circular body
