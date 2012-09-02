@@ -94,6 +94,7 @@
                     this.removePlayer( node.nodeid );
                 } else {
                     this.removeNode( node.nodeid );
+                    console.log("removing nodeid:" + node.nodeid);
                 }
 
                 totalRemoved++;

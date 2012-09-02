@@ -80,6 +80,12 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
                 this.shouldDelete = true;
             }
 
+        },
+
+        dealloc : function() {
+
+            delete this.box2dBody;
+
         }
 
 

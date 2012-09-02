@@ -131,9 +131,8 @@ var g_gbserverengineinstance = null;
 
             for (var node in graveyard) {
                 var body = graveyard[node].box2dBody;
+                this._world.DestroyBody(body);
                 this.nodeController.removeNode(graveyard[node].nodeid);
-                delete this._world[body];
-
             }
 
             var worldDescription = new GBox2D.core.GBWorldNodeDescription(this, this.nodeController.getNodes());

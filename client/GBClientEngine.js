@@ -195,11 +195,11 @@ var g_gbclientengineinstance = null;
                 }
 
                 that.nodeController.updateNode( nodeid, newx, newy, newr, nodeDesc );
-                activeNodes[node] = true;
+                activeNodes[nodeid] = true;
 
             });
 
-            //that.nodeController.pruneNodes(activeNodes);
+            that.nodeController.pruneNodes(activeNodes);
 
         },
 

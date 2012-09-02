@@ -46,6 +46,10 @@
             this.sprite.setPosition(cc.p(this.x, this.y));
             this.sprite.setRotation(-1 * cc.RADIANS_TO_DEGREES(this.rotation));
             //console.log('sprite x: ' + this.sprite.getPositionX() + ' y: ' + this.sprite.getPositionY());
+        },
+
+        dealloc: function() {
+            this.sprite.removeFromParentAndCleanup(true);
         }
 
     };
