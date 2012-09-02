@@ -43,6 +43,7 @@
             '/client/GBClientNet.js',
             '/core/GBEngine.js',
             '/client/GBClientEngine.js',
+            '/client-demo/src/DemoClientEngine.js',
             '/core/GBNode.js',
             '/client/GBClientNode.js',
             '/core/GBNodeController.js'//add your own files in order here

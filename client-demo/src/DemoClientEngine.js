@@ -40,7 +40,11 @@ var g_democlientengineinstance = null;
          * Function to setup networking (instantiate client or server net)
          */
         setupNetwork : function() {
-            GBox2D.client.DemoClientEngine.superclass.setupNetwork().call(this);
+            GBox2D.client.DemoClientEngine.superclass.setupNetwork.call(this);
+        },
+
+        setViewDelegate : function(aDelegate) {
+            GBox2D.client.DemoClientEngine.superclass.setViewDelegate.call(this, aDelegate);
         },
 
         /*

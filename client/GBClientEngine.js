@@ -151,9 +151,10 @@ var g_gbclientengineinstance = null;
             if(t > 1.0)  t = 1.0;
             else if(t < 0) t = 0.0;
 
-            var that = GBox2D.client.GBClientEngine.prototype.getInstance();
+            //var that = GBox2D.client.GBClientEngine.prototype.getInstance();
 
             var prevUpNodes = this.generateNodeTable(prevUp.nodes);
+            var that = this;
 
             var newx = 0, newy = 0, newr = 0;
 
@@ -198,6 +199,8 @@ var g_gbclientengineinstance = null;
 
             });
 
+            //that.nodeController.pruneNodes(activeNodes);
+
         },
 
         generateNodeTable : function (nodesDesc) {
@@ -226,7 +229,6 @@ var g_gbclientengineinstance = null;
             var node = new GBox2D.client.GBClientNode(nodeDesc, sprite);
 
             this.nodeController.addNode(node);
-
         }
 
 
