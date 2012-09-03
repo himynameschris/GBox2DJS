@@ -71,7 +71,7 @@ var g_demoserverengineinstance = null;
         init : function() {
             GBox2D.server.DemoServerEngine.superclass.init.call(this);
 
-
+            this._nodeFactory = new GBox2D.server.DemoServerNodeFactory(this);
         },
 
         /**
@@ -157,69 +157,6 @@ var g_demoserverengineinstance = null;
             var entity = allEntities.objectForKey( allEntities._keys[randomKeyIndex] );
 
             if(entity !== undefined) entity.box2dBody.SetPosition( new b2Vec2( x / 32, y / 32 ) );
-        },
-        /**
-         * Creates a Box2D circular body
-         * @param {Number} x	Body position on X axis
-         * @param {Number} y    Body position on Y axis
-         * @param {Number} radius Body radius
-         * @return {b2Body}	A Box2D body
-         */
-        createBall: function(x, y, radius) {
-            var fixtureDef = new b2FixtureDef();
-            fixtureDef.shape = new b2CircleShape(radius);
-            fixtureDef.friction = 0.4;
-            fixtureDef.restitution = 0.6;
-            fixtureDef.density = 1.0;
-
-            var ballBd = new b2BodyDef();
-            ballBd.type = b2Body.b2_dynamicBody;
-            ballBd.position.Set(x,y);
-            var body = this._world.CreateBody(ballBd);
-            body.CreateFixture(fixtureDef);
-
-            // Create the entity for it in
-            var aBox2DEntity = new GBox2D.server.GBServerNode( this.getNextEntityID(), 0 );
-            aBox2DEntity.setBody(body);
-            aBox2DEntity.nodeType = 1;
-
-            this.nodeController.addNode( aBox2DEntity );
-
-            return body;
-        },
-
-        /**
-         * Creates a Box2D square body
-         * @param {Number} x	Body position on X axis
-         * @param {Number} y    Body position on Y axis
-         * @param {Number} rotation	Body rotation
-         * @param {Number} size Body size
-         * @return {b2Body}	A Box2D body
-         */
-        createBox: function(x, y, rotation, size) {
-            var bodyDef = new b2BodyDef();
-            bodyDef.type = b2Body.b2_dynamicBody;
-            bodyDef.position.Set(x, y);
-            bodyDef.angle = rotation;
-
-            var body = this._world.CreateBody(bodyDef);
-            var shape = new b2PolygonShape.AsBox(size, size);
-            var fixtureDef = new b2FixtureDef();
-            fixtureDef.restitution = 0.1;
-            fixtureDef.density = 1.0;
-            fixtureDef.friction = 1.0;
-            fixtureDef.shape = shape;
-            body.CreateFixture(fixtureDef);
-
-            // Create the node for it
-            var aBox2DEntity = new GBox2D.server.GBServerNode( this.getNextEntityID(), 0 );
-            aBox2DEntity.setBody( body );
-            aBox2DEntity.nodeType = 2;
-
-
-            this.nodeController.addNode( aBox2DEntity );
-
-            return body;
         }
 
     };

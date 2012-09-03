@@ -56,6 +56,7 @@ var g_gbserverengineinstance = null;
         _velocityIterationsPerSecond    : 100,
         _positionIterationsPerSecond	: 300,
         nextEntityID			: -1,
+        _nodeFactory : null,
 
         // Properties
         /**
@@ -81,6 +82,8 @@ var g_gbserverengineinstance = null;
             this._contactListener = new GBox2D.core.GBContactListener();
 
             this._world.SetContactListener(this._contactListener._contactListener);
+
+            this._nodeFactory = new GBox2D.core.GBNodeFactory();
         },
 
         /**

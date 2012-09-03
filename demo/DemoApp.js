@@ -31,6 +31,8 @@ require('../core/server/GBServerEngine.js');
 require('./server/DemoServerEngine.js');
 require('../core/GBNode.js');
 require('../core/server/GBServerNode.js');
+require('../core/GBNodeFactory.js');
+require('./server/DemoServerNodeFactory.js');
 require('../core/GBWorldNodeDescription.js');
 require('../core/server/GBServerShapeCache.js');
 
@@ -68,7 +70,7 @@ function doneLoading() {
         var y = i * -1*3;
 
         // Make a square
-        engine.createBox(x / 32, y / 32, 0, .5);
+        engine._nodeFactory.createBox(x / 32, y / 32, 0, .5);
     }
 }
 
