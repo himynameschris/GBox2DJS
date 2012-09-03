@@ -28,7 +28,7 @@ require('../core/GBEngine.js');
 require('../core/server/GBServerNet.js');
 require('../core/GBContactListener.js');
 require('../core/server/GBServerEngine.js');
-require('./server-demo/DemoServerEngine.js');
+require('./server/DemoServerEngine.js');
 require('../core/GBNode.js');
 require('../core/server/GBServerNode.js');
 require('../core/GBWorldNodeDescription.js');
@@ -55,7 +55,7 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
 var engine = GBox2D.server.DemoServerEngine.prototype.getInstance();
 
 var shapeCache = GBox2D.server.GBServerShapeCache.prototype.getInstance();
-shapeCache.setResourceDir(__dirname + "/server-demo/res/");
+shapeCache.setResourceDir(__dirname + "/server/res/");
 shapeCache.loadFromFile("shapes", shapeCache, doneLoading);
 
 function doneLoading() {

@@ -34,8 +34,8 @@
         tag:'gameCanvas', //the dom element to run cocos2d on
         engineDir:'/lib/cocos2d-html5/cocos2d/',
         appFiles:[
-            '/demo/client-demo/src/resource.js',
-            '/demo/client-demo/src/myApp.js',
+            '/demo/client/src/resource.js',
+            '/demo/client/src/myApp.js',
             '/lib/SortedLookupTable.js',
             '/lib/Point.js',
             '/core/GBox2D.js',
@@ -43,7 +43,7 @@
             '/core/client/GBClientNet.js',
             '/core/GBEngine.js',
             '/core/client/GBClientEngine.js',
-            '/demo/client-demo/src/DemoClientEngine.js',
+            '/demo/client/src/DemoClientEngine.js',
             '/core/GBNode.js',
             '/core/client/GBClientNode.js',
             '/core/GBNodeController.js'//add your own files in order here
