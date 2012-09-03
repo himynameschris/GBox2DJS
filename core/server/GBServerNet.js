@@ -55,9 +55,9 @@ var g_gbserverinstance = null;
                 this.iolib = require('socket.io');
 
             this.io = this.iolib.listen(this.app);
-            this.io.set("log level", 3);
+            this.io.set("log level", 0);
 
-            this.server.use('/', this.express.static(__dirname + '/../') );
+            this.server.use('/', this.express.static(__dirname + '/../../') );
 
             this.server.get('/api/hello', function(req,res){
                 res.send('Hello World');

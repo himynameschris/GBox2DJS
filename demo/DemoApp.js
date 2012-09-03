@@ -25,14 +25,14 @@ require('../core/GBox2D.js');
 require('../core/GBConstants.js');
 require('../core/GBNodeController.js');
 require('../core/GBEngine.js');
-require('../server/GBServerNet.js');
+require('../core/server/GBServerNet.js');
 require('../core/GBContactListener.js');
-require('../server/GBServerEngine.js');
-require('../server-demo/DemoServerEngine.js');
+require('../core/server/GBServerEngine.js');
+require('./server-demo/DemoServerEngine.js');
 require('../core/GBNode.js');
-require('../server/GBServerNode.js');
+require('../core/server/GBServerNode.js');
 require('../core/GBWorldNodeDescription.js');
-require('../server/GBServerShapeCache.js');
+require('../core/server/GBServerShapeCache.js');
 
 var Box2D = require('./../lib/cocos2d-html5/box2d/box2d.js');
 
@@ -55,7 +55,7 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
 var engine = GBox2D.server.DemoServerEngine.prototype.getInstance();
 
 var shapeCache = GBox2D.server.GBServerShapeCache.prototype.getInstance();
-shapeCache.setResourceDir(__dirname + "/res/");
+shapeCache.setResourceDir(__dirname + "/server-demo/res/");
 shapeCache.loadFromFile("shapes", shapeCache, doneLoading);
 
 function doneLoading() {
