@@ -2,12 +2,12 @@
 <project name="Javascript compress project" basedir="." default="compile">
 
     <taskdef name="jscomp" classname="com.google.javascript.jscomp.ant.CompileTask"
-             classpath="${basedir}/../tools/compiler/compiler.jar"/>
+             classpath="${basedir}/../../lib/cocos2d-html5/tools/compiler/compiler.jar"/>
 
     <target name="compile">
         <jscomp compilationLevel="simple" warning="quiet"
-                debug="false" output="myApp-v0.1.js">
-            <sources dir="${basedir}/../cocos2d">
+                debug="false" output="GBox2DJS-Demo-v0.1.js">
+            <sources dir="${basedir}/../../lib/cocos2d-html5/cocos2d/">
                 <file name="platform/CCClass.js"/>
                 <file name="platform/CCCommon.js"/>
                 <file name="platform/platform.js"/>
@@ -37,8 +37,8 @@
                 <file name="touch_dispatcher/CCTouchDelegateProtocol.js"/>
                 <file name="touch_dispatcher/CCTouchHandler.js"/>
                 <file name="touch_dispatcher/CCTouchDispatcher.js"/>
-                <file name="keypad_dispatcher/CCKeypadDelegate.js"/>
-                <file name="keypad_dispatcher/CCKeypadDispatcher.js"/>
+                <file name="keyboard_dispatcher/CCKeyboardDelegate.js"/>
+                <file name="keyboard_dispatcher/CCKeyboardDispatcher.js"/>
                 <file name="CCDirector.js"/>
                 <file name="CCScheduler.js"/>
                 <file name="CCLoader.js"/>
@@ -49,13 +49,24 @@
                 <file name="menu_nodes/CCMenuItem.js"/>
                 <file name="menu_nodes/CCMenu.js"/>
             </sources>
-            <sources dir="${basedir}/../CocosDenshion">
+            <sources dir="${basedir}/../../lib/cocos2d-html5/CocosDenshion">
                 <file name="SimpleAudioEngine.js"/>
             </sources>
-            <sources dir="${basedir}">
-                <file name="src/resource.js"/>
-                <file name="src/myApp.js"/>
-                <file name="main.js"/>
+            <sources dir="${basedir}/../..">
+                <file name="/demo/client/src/resource.js"/>
+                <file name="/demo/client/src/myApp.js"/>
+                <file name="/demo/client/main.js"/>
+				<file name='/lib/Point.js'/>
+				<file name='/lib/SortedLookupTable.js'/>
+				<file name='/core/GBox2D.js'/>
+				<file name='/core/GBConstants.js'/>
+				<file name='/core/client/GBClientNet.js'/>
+				<file name='/core/GBEngine.js'/>
+				<file name='/core/client/GBClientEngine.js'/>
+				<file name='/demo/client/src/DemoClientEngine.js'/>
+				<file name='/core/GBNode.js'/>
+				<file name='/core/client/GBClientNode.js'/>
+				<file name='/core/GBNodeController.js'/>
             </sources>
         </jscomp>
     </target>

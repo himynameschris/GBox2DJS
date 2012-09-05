@@ -32,8 +32,8 @@
         showFPS:true,
         frameRate:60,
         tag:'gameCanvas', //the dom element to run cocos2d on
-        engineDir:'/lib/cocos2d-html5/cocos2d/',
-		//SingleEngineFile:'myApp-v0.1.js',
+        //engineDir:'/lib/cocos2d-html5/cocos2d/',
+		SingleEngineFile:'GBox2DJS-Demo-v0.1.js',
         appFiles:[
             '/demo/client/src/resource.js',
             '/demo/client/src/myApp.js',
@@ -53,7 +53,7 @@
     window.addEventListener('DOMContentLoaded', function () {
         //first load engine file if specified
         var s = d.createElement('script');
-        /*********Delete this section if you have packed all files into one*******/
+        /*********Delete this section if you have packed all files into one*******
         if (c.SingleEngineFile && !c.engineDir) {
             s.src = c.SingleEngineFile;
         }
@@ -63,9 +63,9 @@
         else {
             alert('You must specify either the single engine file OR the engine directory in "cocos2d.js"');
         }
-        /*********Delete this section if you have packed all files into one*******/
+        *********Delete this section if you have packed all files into one*******/
 
-            //s.src = 'myApp-v0.1.js'; //IMPORTANT: Un-comment this line if you have packed all files into one
+            s.src = 'GBox2DJS-Demo-v0.1.js'; //IMPORTANT: Un-comment this line if you have packed all files into one
 
         d.body.appendChild(s);
         s.c = c;
