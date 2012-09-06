@@ -57,7 +57,7 @@ var g_demoserverengineinstance = null;
          * Function to setup networking (instantiate client or server net)
          */
         setupNetwork : function() {
-            this.netChannel = GBox2D.server.GBServerNet.prototype.getInstance();
+            this.netChannel = new GBox2D.server.GBServerNet();
         },
 
         /**
@@ -113,16 +113,6 @@ var g_demoserverengineinstance = null;
 
 
             this._world = m_world;
-        },
-
-        /**
-         @return the singleton instance of gbengine
-         */
-        getInstance : function() {
-            if(g_demoserverengineinstance == null) {
-                g_demoserverengineinstance = new GBox2D.server.DemoServerEngine();
-            }
-            return g_demoserverengineinstance;
         },
 
         /**

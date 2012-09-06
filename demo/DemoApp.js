@@ -54,7 +54,7 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2,
     b2EdgeShape = Box2D.Collision.Shapes.b2EdgeShape;
 b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
-var engine = GBox2D.server.DemoServerEngine.prototype.getInstance();
+var engine = new GBox2D.server.DemoServerEngine();
 
 var shapeCache = GBox2D.server.GBServerShapeCache.prototype.getInstance();
 shapeCache.setResourceDir(__dirname + "/server/res/");

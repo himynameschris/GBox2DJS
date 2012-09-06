@@ -30,7 +30,7 @@ var g_gbserverinstance = null;
 
      */
     GBox2D.server.GBServerNet = function() {
-
+        this.init();
     };
 
     GBox2D.server.GBServerNet.prototype = {
@@ -39,15 +39,7 @@ var g_gbserverinstance = null;
         app : null,
         io : null,
         sockets : null,
-        getInstance : function() {
-            if (g_gbserverinstance == null)
-            {
-                g_gbserverinstance = new GBox2D.server.GBServerNet();
-                g_gbserverinstance.init();
-            }
 
-            return g_gbserverinstance;
-        },
         init : function() {
             this.express = require('express'),
                 this.server = this.express(),

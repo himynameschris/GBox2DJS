@@ -25,7 +25,7 @@ var g_gbengineinstance = null;
 (function(){
 
     /**
-     implmenting the gbengine class, a singleton to handle management of the box2d world, compile movements of box2d bodies, register and fire a custom contact listener and remove bodies from a queue
+     implementing the gbengine class, a singleton to handle management of the box2d world, compile movements of box2d bodies, register and fire a custom contact listener and remove bodies from a queue
 
      */
     GBox2D.core.GBEngine = function() {
