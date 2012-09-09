@@ -19,6 +19,23 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+var Box2D = require('./../../lib/cocos2d-html5/box2d/box2d.js');
+
+// Shorthand "imports"
+var b2Vec2 = Box2D.Common.Math.b2Vec2,
+    b2BodyDef = Box2D.Dynamics.b2BodyDef,
+    b2AABB = Box2D.Collision.b2AABB,
+    b2Body = Box2D.Dynamics.b2Body,
+    b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
+    b2Fixture = Box2D.Dynamics.b2Fixture,
+    b2World = Box2D.Dynamics.b2World,
+    b2MassData = Box2D.Collision.Shapes.b2MassData,
+    b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
+    b2CircleShape = Box2D.Collision.Shapes.b2CircleShape,
+    b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
+    b2MouseJointDef =  Box2D.Dynamics.Joints.b2MouseJointDef,
+    b2EdgeShape = Box2D.Collision.Shapes.b2EdgeShape;
+b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
 var g_gbservershapecacheinstance = null;
 
@@ -60,6 +77,19 @@ var fs = require('fs'),
 
         },
 
+        addFixturesToBody : function(body, shape) {
+
+            var def = g_gbservershapecacheinstance.bodies.objectForKey(shape);
+
+
+            for(var fixDef in def.fixDefs) {
+
+                var fix = def.fixDefs[fixDef];
+                body.CreateFixture(fix);
+
+            }
+
+        },
         loadFromFile : function(filename, instance, cb) {
             if (cb !== 'undefined') {
                 instance.start = true;
@@ -75,14 +105,64 @@ var fs = require('fs'),
         },
 
         doneParsing : function(result) {
-            console.dir(result);
-            console.log('Done.');
+            this.ptmRatio = result.metadata.ptm_ratio;
 
             for(var body in result.bodies.body)
             {
 
                 //console.log(result.bodies.body[body].name);
-                g_gbservershapecacheinstance.bodies.setObjectForKey(result.bodies.body[body], result.bodies.body[body].name);
+                var bodyDef = result.bodies.body[body];
+                var entity = {};
+                var fixDefs = [];
+                entity.name = bodyDef.name;
+                entity.anchorpoint = bodyDef.anchorpoint;
+
+                for(var fixture in bodyDef.fixtures) {
+                    var fixDef = bodyDef.fixtures[fixture];
+
+                    if(fixDef.fixture_type == "POLYGON") {
+
+                        for(var polygon in fixDef.polygons.polygon) {
+                            var polyDef = fixDef.polygons.polygon[polygon];
+                            var fix = new b2FixtureDef;
+                            var vertices = [];
+
+                            fix.density = parseFloat(fixDef.density);
+                            fix.friction = parseFloat(fixDef.friction);
+                            fix.restitution = parseFloat(fixDef.restitution);
+                            fix.filter.categoryBits = parseFloat(fixDef.filter_categoryBits);
+                            fix.filter.groupIndex = parseFloat(fixDef.filter_groupIndex);
+                            fix.filter.maskBits = parseFloat(fixDef.filter_maskBits);
+
+                            var polyshape = new b2PolygonShape;
+
+                            var vindex = 0;
+                            var polygonArray = polyDef.split(',');
+
+                            for(var vindex = 0; vindex < polygonArray.length; vindex += 2) {
+                                vertices[vindex/2] = new b2Vec2;
+                                vertices[vindex/2].x = parseFloat(polygonArray[vindex]);
+                                vertices[vindex/2].y = parseFloat(polygonArray[vindex+1]);
+                            }
+
+                            polyshape.SetAsArray(vertices, vindex/2);
+                            fix.shape = polyshape;
+
+                            fixDefs.push(fix);
+
+                        }
+
+                    } else if(fixture.fixture_type == "CIRCLE") {
+
+
+                    }
+
+
+                }
+
+                entity.fixDefs = fixDefs;
+
+                g_gbservershapecacheinstance.bodies.setObjectForKey(entity, entity.name);
 
             }
 
