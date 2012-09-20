@@ -71,6 +71,8 @@ var g_demoserverengineinstance = null;
         init : function() {
             GBox2D.server.DemoServerEngine.superclass.init.call(this);
 
+            this.createBox2dWorld();
+
             this._nodeFactory = new GBox2D.server.DemoServerNodeFactory(this);
         },
 

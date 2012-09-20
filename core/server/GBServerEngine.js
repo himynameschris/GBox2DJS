@@ -77,13 +77,6 @@ var g_gbserverengineinstance = null;
         init : function() {
             GBox2D.server.GBServerEngine.superclass.init.call(this);
 
-            this.createBox2dWorld();
-
-            this._contactListener = new GBox2D.core.GBContactListener();
-
-            this._world.SetContactListener(this._contactListener._contactListener);
-
-            this._nodeFactory = new GBox2D.core.GBNodeFactory();
         },
 
         /**
@@ -92,10 +85,10 @@ var g_gbserverengineinstance = null;
         createBox2dWorld: function() {
             //you should probably override this
 
-            var m_world = new b2World(new b2Vec2(0, -10), true);
-            m_world.SetWarmStarting(true);
+            //var m_world = new b2World(new b2Vec2(0, -10), true);
+            //m_world.SetWarmStarting(true);
 
-            this._world = m_world;
+            //this._world = m_world;
         },
 
         /**
