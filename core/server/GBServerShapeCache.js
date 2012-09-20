@@ -81,12 +81,15 @@ var fs = require('fs'),
 
             var def = g_gbservershapecacheinstance.bodies.objectForKey(shape);
 
+            if(def !==undefined){
 
-            for(var fixDef in def.fixDefs) {
+                for(var fixDef in def.fixDefs) {
 
-                var fix = def.fixDefs[fixDef];
-                body.CreateFixture(fix);
+                    var fix = def.fixDefs[fixDef];
 
+                    body.CreateFixture(fix);
+
+                }
             }
 
         },
@@ -136,16 +139,20 @@ var fs = require('fs'),
 
                             var polyshape = new b2PolygonShape;
 
-                            var vindex = 0;
                             var polygonArray = polyDef.split(',');
 
                             for(var vindex = 0; vindex < polygonArray.length; vindex += 2) {
                                 vertices[vindex/2] = new b2Vec2;
-                                vertices[vindex/2].x = parseFloat(polygonArray[vindex]);
-                                vertices[vindex/2].y = parseFloat(polygonArray[vindex+1]);
+                                vertices[vindex/2].Set(parseFloat(polygonArray[vindex])/this.ptmRatio,parseFloat(polygonArray[vindex+1])/this.ptmRatio);
                             }
 
-                            polyshape.SetAsArray(vertices, vindex/2);
+                            var rvertices = [];
+
+                            for(var vrindex = 1; vrindex <= vertices.length; vrindex++) {
+                                rvertices[vrindex-1] = vertices[vertices.length - vrindex];
+                            }
+
+                            polyshape.SetAsArray(vertices, vertices.length);
                             fix.shape = polyshape;
 
                             fixDefs.push(fix);
