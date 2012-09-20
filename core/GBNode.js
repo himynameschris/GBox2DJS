@@ -43,6 +43,7 @@
         y:  0,
         rotation:   0,
         lastReceivedEntityDescription:  null,
+        nodeName : '',
 
         /**
          init the gbnode, setting members to defaults
@@ -58,6 +59,7 @@
             var d = {nodeid:node.nodeid,
                 clientid:node.clientid,
                 nodeType:node.nodeType,
+                nodeName:node.nodeName,
                 x: node.x,
                 y: node.y,
                 rotation: node.rotation};
