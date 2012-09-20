@@ -123,46 +123,124 @@ var fs = require('fs'),
                 for(var fixture in bodyDef.fixtures) {
                     var fixDef = bodyDef.fixtures[fixture];
 
-                    if(fixDef.fixture_type == "POLYGON") {
+                        if(fixDef.length !== undefined) {
 
-                        for(var polygon in fixDef.polygons.polygon) {
-                            var polyDef = fixDef.polygons.polygon[polygon];
+                            for(var fixID in fixDef) {
+                                console.log(fixID);
+                                var arrFixture = fixDef[fixID];
+
+                                if(arrFixture.fixture_type == "POLYGON") {
+
+                                    for(var polygon in arrFixture.polygons.polygon) {
+                                        var polyDef = arrFixture.polygons.polygon[polygon];
+                                        var fix = new b2FixtureDef;
+                                        var vertices = [];
+
+                                        fix.density = parseFloat(arrFixture.density);
+                                        fix.friction = parseFloat(arrFixture.friction);
+                                        fix.restitution = parseFloat(arrFixture.restitution);
+                                        fix.filter.categoryBits = parseFloat(arrFixture.filter_categoryBits);
+                                        fix.filter.groupIndex = parseFloat(arrFixture.filter_groupIndex);
+                                        fix.filter.maskBits = parseFloat(arrFixture.filter_maskBits);
+
+                                        var polyshape = new b2PolygonShape;
+
+                                        var polygonArray = polyDef.split(',');
+
+                                        for(var vindex = 0; vindex < polygonArray.length; vindex += 2) {
+                                            vertices[vindex/2] = new b2Vec2;
+                                            vertices[vindex/2].Set(parseFloat(polygonArray[vindex])/this.ptmRatio,parseFloat(polygonArray[vindex+1])/this.ptmRatio);
+                                        }
+
+                                        polyshape.SetAsArray(vertices, vertices.length);
+                                        fix.shape = polyshape;
+
+                                        fixDefs.push(fix);
+
+
+
+                                    }
+
+                                } else if(arrFixture.fixture_type == "CIRCLE") {
+
+                                    var circleDef = arrFixture.circle;
+                                    var fix = new b2FixtureDef;
+
+                                    fix.density = parseFloat(arrFixture.density);
+                                    fix.friction = parseFloat(arrFixture.friction);
+                                    fix.restitution = parseFloat(arrFixture.restitution);
+                                    fix.filter.categoryBits = parseFloat(arrFixture.filter_categoryBits);
+                                    fix.filter.groupIndex = parseFloat(arrFixture.filter_groupIndex);
+                                    fix.filter.maskBits = parseFloat(arrFixture.filter_maskBits);
+
+                                    var circleshape = new b2CircleShape;
+
+                                    circleshape.SetRadius(circleDef.r / this.ptmRatio);
+                                    circleshape.m_p = new b2Vec2(circleDef.x / this.ptmRatio, circleDef.y / this.ptmRatio);
+
+                                    fix.shape = circleshape;
+
+                                    fixDefs.push(fix);
+
+
+                                }
+
+                            }
+
+                        }else if(fixDef.fixture_type == "POLYGON") {
+
+                            for(var polygon in fixDef.polygons.polygon) {
+                                var polyDef = fixDef.polygons.polygon[polygon];
+                                var fix = new b2FixtureDef;
+                                var vertices = [];
+
+                                fix.density = parseFloat(fixDef.density);
+                                fix.friction = parseFloat(fixDef.friction);
+                                fix.restitution = parseFloat(fixDef.restitution);
+                                fix.filter.categoryBits = parseFloat(fixDef.filter_categoryBits);
+                                fix.filter.groupIndex = parseFloat(fixDef.filter_groupIndex);
+                                fix.filter.maskBits = parseFloat(fixDef.filter_maskBits);
+
+                                var polyshape = new b2PolygonShape;
+
+                                var polygonArray = polyDef.split(',');
+
+                                for(var vindex = 0; vindex < polygonArray.length; vindex += 2) {
+                                    vertices[vindex/2] = new b2Vec2;
+                                    vertices[vindex/2].Set(parseFloat(polygonArray[vindex])/this.ptmRatio,parseFloat(polygonArray[vindex+1])/this.ptmRatio);
+                                }
+
+                                polyshape.SetAsArray(vertices, vertices.length);
+                                fix.shape = polyshape;
+
+                                fixDefs.push(fix);
+
+
+
+                            }
+
+                        } else if(arrFixture.fixture_type == "CIRCLE") {
+
+                            var circleDef = fixDef.circle;
                             var fix = new b2FixtureDef;
-                            var vertices = [];
 
-                            fix.density = parseFloat(fixDef.density);
-                            fix.friction = parseFloat(fixDef.friction);
-                            fix.restitution = parseFloat(fixDef.restitution);
-                            fix.filter.categoryBits = parseFloat(fixDef.filter_categoryBits);
-                            fix.filter.groupIndex = parseFloat(fixDef.filter_groupIndex);
-                            fix.filter.maskBits = parseFloat(fixDef.filter_maskBits);
+                            fix.density = parseFloat(arrFixture.density);
+                            fix.friction = parseFloat(arrFixture.friction);
+                            fix.restitution = parseFloat(arrFixture.restitution);
+                            fix.filter.categoryBits = parseFloat(arrFixture.filter_categoryBits);
+                            fix.filter.groupIndex = parseFloat(arrFixture.filter_groupIndex);
+                            fix.filter.maskBits = parseFloat(arrFixture.filter_maskBits);
 
-                            var polyshape = new b2PolygonShape;
+                            var circleshape = new b2CircleShape;
 
-                            var polygonArray = polyDef.split(',');
+                            circleshape.SetRadius(circleDef.r / this.ptmRatio);
+                            circleshape.m_p = new b2Vec2(circleDef.x / this.ptmRatio, circleDef.y / this.ptmRatio);
 
-                            for(var vindex = 0; vindex < polygonArray.length; vindex += 2) {
-                                vertices[vindex/2] = new b2Vec2;
-                                vertices[vindex/2].Set(parseFloat(polygonArray[vindex])/this.ptmRatio,parseFloat(polygonArray[vindex+1])/this.ptmRatio);
-                            }
-
-                            var rvertices = [];
-
-                            for(var vrindex = 1; vrindex <= vertices.length; vrindex++) {
-                                rvertices[vrindex-1] = vertices[vertices.length - vrindex];
-                            }
-
-                            polyshape.SetAsArray(vertices, vertices.length);
-                            fix.shape = polyshape;
+                            fix.shape = circleshape;
 
                             fixDefs.push(fix);
 
                         }
-
-                    } else if(fixture.fixture_type == "CIRCLE") {
-
-
-                    }
 
 
                 }
