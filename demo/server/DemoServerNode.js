@@ -19,25 +19,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-require('../lib/SortedLookupTable.js');
-require('../lib/Point.js');
-require('../core/GBox2D.js');
-require('../core/GBConstants.js');
-require('../core/GBNodeController.js');
-require('../core/GBEngine.js');
-require('../core/server/GBServerNet.js');
-require('../core/GBContactListener.js');
-require('../core/server/GBServerEngine.js');
-require('./server/DemoServerEngine.js');
-require('../core/GBNode.js');
-require('../core/server/GBServerNode.js');
-require('./server/DemoServerNode.js');
-require('../core/GBNodeFactory.js');
-require('./server/DemoServerNodeFactory.js');
-require('../core/GBWorldNodeDescription.js');
-require('../core/server/GBServerShapeCache.js');
-
-var Box2D = require('./../lib/cocos2d-html5/box2d/box2d.js');
+var Box2D = require('./../../lib/cocos2d-html5/box2d/box2d.js');
 
 // Shorthand "imports"
 var b2Vec2 = Box2D.Common.Math.b2Vec2,
@@ -55,24 +37,60 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2,
     b2EdgeShape = Box2D.Collision.Shapes.b2EdgeShape;
 b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
-var engine = new GBox2D.server.DemoServerEngine();
+(function(){
 
-var shapeCache = GBox2D.server.GBServerShapeCache.prototype.getInstance();
-shapeCache.setResourceDir(__dirname + "/server/res/");
-shapeCache.loadFromFile("shapes", shapeCache, doneLoading);
+    /**
+     implementing the gbnode class, its purpose is to manage information necc to communicate sprite details to the client
 
-function doneLoading() {
-    engine.start();
+     */
+    GBox2D.server.DemoServerNode = function(nodeid, clientid) {
+        this.nodeid = nodeid;
+        this.clientid = clientid;
+        //this.position = Point.prototype.ZERO;
+        return this;
+    };
 
-    console.log('engine started');
+    GBox2D.server.DemoServerNode.prototype = {
+        box2dBody   :   null,
+        shouldDelete : false,
 
-    for(var i = 0; i < 50 ; i ++) {
-        var x = (640/2) + Math.sin(i/5);
-        var y = i * -1*3;
+        updatePosition : function() {
+            this.x = this.box2dBody.m_xf.position.x * GBox2D.constants.GBEngine.PHYSICS_SCALE;
+            this.y = this.box2dBody.m_xf.position.y * GBox2D.constants.GBEngine.PHYSICS_SCALE;
+            this.rotation = this.box2dBody.GetAngle();
 
-        // Make a square
-        engine._nodeFactory.createBox(x / 32, y / 32, 0, .5);
-    }
-}
+        },
+
+        setBody : function(body) {
+            this.box2dBody = body;
+            body.SetUserData(this);
+        },
+
+        beginContactWith2 : function(gbcontact) {
+            var x = Math.random();
+            if(x <= .01) {
+                this.shouldDelete = true;
+            }
+
+        },
+
+        beginContactWithObject : function(gbcontact) {
+            var x = Math.random();
+            if(x <= .01) {
+                this.shouldDelete = true;
+            }
+
+        },
+
+        dealloc : function() {
+
+            delete this.box2dBody;
+
+        }
 
 
+    };
+
+    GBox2D.extend(GBox2D.server.DemoServerNode, GBox2D.core.GBNode);
+
+})();

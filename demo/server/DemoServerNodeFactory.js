@@ -69,7 +69,7 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
             body.CreateFixture(fixtureDef);
 
             // Create the entity for it in
-            var aBox2DEntity = new GBox2D.server.GBServerNode( this._serverEngine.getNextEntityID(), 0 );
+            var aBox2DEntity = new GBox2D.server.DemoServerNode( this._serverEngine.getNextEntityID(), 0 );
             aBox2DEntity.setBody(body);
             aBox2DEntity.nodeType = 1;
 
@@ -102,7 +102,7 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
             body.CreateFixture(fixtureDef);
 
             // Create the node for it
-            var aBox2DEntity = new GBox2D.server.GBServerNode( this._serverEngine.getNextEntityID(), 0 );
+            var aBox2DEntity = new GBox2D.server.DemoServerNode( this._serverEngine.getNextEntityID(), 0 );
             aBox2DEntity.setBody( body );
             aBox2DEntity.nodeType = 2;
 
