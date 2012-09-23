@@ -20,9 +20,9 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-var g_gbserverinstance = null;
-
 (function(){
+
+    var nextClientID = 0;
 
     /**
      implementing the GBServerNet class, a singleton to handle management of the
@@ -55,9 +55,14 @@ var g_gbserverinstance = null;
                 res.send('Hello World');
             });
 
-            this.io.on('connection', function (socket) {
-                socket.broadcast.emit('broadcast: user connected!');
-                console.log('log: user connected');
+            var that = this;
+            this.io.on('connection', function (client) {
+                that.onSocketConnection(client);
+
+            });
+
+            this.io.on('disconnect', function(client) {
+                that.onSocketClosed(client)
             });
 
             this.io.on('update', function (socket) {
@@ -80,7 +85,16 @@ var g_gbserverinstance = null;
 
             };
 
-        }
+        },
+        onSocketConnection : function (clientConnection) {
+
+
+        },
+        onSocketClosed : function (clientConnection) {
+
+
+        },
+        getNextClientID: function() { return ++nextClientID }
     }
 
 })();
