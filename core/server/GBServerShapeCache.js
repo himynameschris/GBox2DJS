@@ -7,7 +7,7 @@
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
-
+lolo
  The above copyright notice and this permission notice shall be included in
  all copies or substantial portions of the Software.
 
@@ -131,8 +131,9 @@ var fs = require('fs'),
 
                                 if(arrFixture.fixture_type == "POLYGON") {
 
-                                    for(var polygon in arrFixture.polygons.polygon) {
-                                        var polyDef = arrFixture.polygons.polygon[polygon];
+                                    if(arrFixture.polygons.polygon.length === undefined) {
+                                        polyDef = arrFixture.polygons.polygon;
+
                                         var fix = new b2FixtureDef;
                                         var vertices = [];
 
@@ -157,7 +158,37 @@ var fs = require('fs'),
 
                                         fixDefs.push(fix);
 
+                                    } else {
 
+                                        for(var polygon in arrFixture.polygons.polygon) {
+                                            var polyDef = arrFixture.polygons.polygon[polygon];
+
+
+                                            var fix = new b2FixtureDef;
+                                            var vertices = [];
+
+                                            fix.density = parseFloat(arrFixture.density);
+                                            fix.friction = parseFloat(arrFixture.friction);
+                                            fix.restitution = parseFloat(arrFixture.restitution);
+                                            fix.filter.categoryBits = parseFloat(arrFixture.filter_categoryBits);
+                                            fix.filter.groupIndex = parseFloat(arrFixture.filter_groupIndex);
+                                            fix.filter.maskBits = parseFloat(arrFixture.filter_maskBits);
+
+                                            var polyshape = new b2PolygonShape;
+
+                                            var polygonArray = polyDef.split(',');
+
+                                            for(var vindex = 0; vindex < polygonArray.length; vindex += 2) {
+                                                vertices[vindex/2] = new b2Vec2;
+                                                vertices[vindex/2].Set(parseFloat(polygonArray[vindex])/this.ptmRatio,parseFloat(polygonArray[vindex+1])/this.ptmRatio);
+                                            }
+
+                                            polyshape.SetAsArray(vertices, vertices.length);
+                                            fix.shape = polyshape;
+
+                                            fixDefs.push(fix);
+
+                                        }
 
                                     }
 
@@ -189,8 +220,9 @@ var fs = require('fs'),
 
                         }else if(fixDef.fixture_type == "POLYGON") {
 
-                            for(var polygon in fixDef.polygons.polygon) {
-                                var polyDef = fixDef.polygons.polygon[polygon];
+                            if(fixDef.polygons.polygon.length === undefined) {
+                                polyDef = fixDef.polygons.polygon;
+
                                 var fix = new b2FixtureDef;
                                 var vertices = [];
 
@@ -215,7 +247,37 @@ var fs = require('fs'),
 
                                 fixDefs.push(fix);
 
+                            } else {
 
+                                for(var polygon in fixDef.polygons.polygon) {
+                                    var polyDef = fixDef.polygons.polygon[polygon];
+
+
+                                    var fix = new b2FixtureDef;
+                                    var vertices = [];
+
+                                    fix.density = parseFloat(fixDef.density);
+                                    fix.friction = parseFloat(fixDef.friction);
+                                    fix.restitution = parseFloat(fixDef.restitution);
+                                    fix.filter.categoryBits = parseFloat(fixDef.filter_categoryBits);
+                                    fix.filter.groupIndex = parseFloat(fixDef.filter_groupIndex);
+                                    fix.filter.maskBits = parseFloat(fixDef.filter_maskBits);
+
+                                    var polyshape = new b2PolygonShape;
+
+                                    var polygonArray = polyDef.split(',');
+
+                                    for(var vindex = 0; vindex < polygonArray.length; vindex += 2) {
+                                        vertices[vindex/2] = new b2Vec2;
+                                        vertices[vindex/2].Set(parseFloat(polygonArray[vindex])/this.ptmRatio,parseFloat(polygonArray[vindex+1])/this.ptmRatio);
+                                    }
+
+                                    polyshape.SetAsArray(vertices, vertices.length);
+                                    fix.shape = polyshape;
+
+                                    fixDefs.push(fix);
+
+                                }
 
                             }
 
