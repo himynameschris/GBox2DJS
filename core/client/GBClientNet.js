@@ -40,6 +40,8 @@ var g_gbclientinstance = null;
         socket : null,
         serverUpdateBuffer : [],
         firstUpdate : null,
+        outgoingMessages : [],
+        nextMsgID : 0,
         getInstance : function(aDelegate) {
             if(g_gbclientinstance == null) {
                 g_gbclientinstance = new GBox2D.client.GBClientNet(aDelegate);
@@ -51,8 +53,6 @@ var g_gbclientinstance = null;
         init : function() {
 
             this.socket = io.connect(GBox2D.constants.GBServerNet.SERVER_ADDRESS + ':' + GBox2D.constants.GBServerNet.SERVER_PORT);
-
-            this.socket.on('connect', function() { console.log('connected!')});
 
             this.socket.on('update', this.serverUpdate);
 
@@ -94,6 +94,17 @@ var g_gbclientinstance = null;
         },
         update : function() {
 
+            for(var key in this.outgoingMessages) {
+                var msg = this.outgoingMessages[key];
+                var payload = JSON.stringify(msg);
+
+                console.log("sending msg: " + msg + " as payload: " + payload);
+
+                this.socket.emit('clientMessage', payload);
+
+                this.outgoingMessages.shift();
+            }
+
         },
         ajax : function (url, ref, cb)
         {
@@ -118,6 +129,14 @@ var g_gbclientinstance = null;
         },
         setDelegate : function(aDelegate) {
             this.delegate = aDelegate;
+        },
+        getNextMsgID : function() {
+            return ++this.nextMsgID;
+        },
+        queueMessage : function(message) {
+
+            this.outgoingMessages[this.getNextMsgID()] = message;
+
         }
     };
 })();

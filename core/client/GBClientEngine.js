@@ -37,6 +37,7 @@ var g_gbclientengineinstance = null;
         // Properties
         viewDelegate : null,
         fails : 0,
+        inputCommands: null,
         /**
          * Function to setup networking (instantiate client or server net)
          */
@@ -65,6 +66,8 @@ var g_gbclientengineinstance = null;
          */
         init : function() {
             GBox2D.client.GBClientEngine.superclass.init.call(this);
+
+            this.inputCommands = new SortedLookupTable();
         },
 
         /**
@@ -90,7 +93,7 @@ var g_gbclientengineinstance = null;
                 node.updateSprite();
             }, this );
 
-            //TODO: queue input
+            this.compileInput();
 
             //update GBNode positions
             this.renderAtTime(this.gameClock - 75 );
@@ -222,13 +225,23 @@ var g_gbclientengineinstance = null;
 
             console.log('create it!');
 
-            var sprite = this.viewDelegate.createSprite(nodeDesc.nodeType);
+            var view,sprite = null;
+            if(nodeDesc.nodeView != null) {
+                sprite = this.viewDelegate.createSprite(nodeDesc.nodeView);
+            } else {
+                sprite = this.viewDelegate.createSprite(nodeDesc.nodeType);
+            }
 
             sprite.setPosition(nodeDesc.x * 32, nodeDesc.y * 32);
 
             var node = new GBox2D.client.GBClientNode(nodeDesc, sprite);
 
             this.nodeController.addNode(node);
+        },
+
+        compileInput : function () {
+            //Override this
+
         }
 
 
