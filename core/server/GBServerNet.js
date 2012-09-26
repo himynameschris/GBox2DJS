@@ -59,15 +59,16 @@
             this.io.on('connection', function (client) {
                 that.onSocketConnection(client);
 
+                client.on('clientMessage', function (data, client) {
+                    that.onReceiveMessage(client, data);
+                });
+
+                client.on('disconnect', function(client) {
+                    that.onSocketClosed(client)
+                });
+
             });
 
-            this.io.on('disconnect', function(client) {
-                that.onSocketClosed(client)
-            });
-
-            this.io.on('update', function (socket) {
-               console.log('update');
-            });
         },
         update : function(gameclock, data) {
 
@@ -91,6 +92,10 @@
 
         },
         onSocketClosed : function (clientConnection) {
+
+
+        },
+        onReceiveMessage : function(client, data) {
 
 
         },
