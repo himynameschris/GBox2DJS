@@ -55,18 +55,17 @@
         },
 
         addPlayer: function(player) {
-            this.addNode( player );
-            this.players.setObjectForKey( player, player.clientid );
+            this.players.setObjectForKey( player, player.getClientID() );
         },
 
-        removePlayer: function(nodeid) {
-            var player = this.players.objectForKey(nodeid);
+        removePlayer: function(clientid) {
+            var player = this.players.objectForKey(clientid);
             if(!player) {
-                console.log("(FieldController), No 'Character' with clientid " + nodeid + " ignoring...");
+                console.log("(FieldController), No 'Character' with clientid " + clientid + " ignoring...");
                 return;
             }
 
-            this.removeNode( player.nodeid );
+            this.removeNode( player._node.nodeid );
             this.players.remove(player.clientid);
         },
 

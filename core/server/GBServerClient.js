@@ -37,14 +37,21 @@
 
         this.socketid = this.connection.sessionId;
 
-        this._node = null;
-
         return this;
     };
 
     GBox2D.server.GBServerClient.prototype = {
+        clientid : null,
+        connection : null,
+        _node : null,
         getSocketID: function() {
             return this.socketid;
+        },
+        getClientID : function() {
+            return this.clientid;
+        },
+        dealloc : function () {
+
         }
     }
 
