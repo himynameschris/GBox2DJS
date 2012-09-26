@@ -44,6 +44,7 @@
         rotation:   0,
         lastReceivedEntityDescription:  null,
         nodeName : '',
+        nodeView    : null,
 
         /**
          init the gbnode, setting members to defaults
@@ -60,11 +61,16 @@
                 clientid:node.clientid,
                 nodeType:node.nodeType,
                 nodeName:node.nodeName,
+                nodeView:node.nodeView,
                 x: node.x,
                 y: node.y,
                 rotation: node.rotation};
 
             return d;
+        },
+
+        setView : function (view) {
+            this.nodeView = view;
         },
 
         ///// MEMORY
