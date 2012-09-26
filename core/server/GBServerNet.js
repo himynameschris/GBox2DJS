@@ -59,11 +59,11 @@
             this.io.on('connection', function (client) {
                 that.onSocketConnection(client);
 
-                client.on('clientMessage', function (data, client) {
+                client.on('clientMessage', function (data) {
                     that.onReceiveMessage(client, data);
                 });
 
-                client.on('disconnect', function(client) {
+                client.on('disconnect', function() {
                     that.onSocketClosed(client)
                 });
 
@@ -95,7 +95,7 @@
 
 
         },
-        onReceiveMessage : function(client, data) {
+        onReceiveMessage : function(clientConnection, data) {
 
 
         },
