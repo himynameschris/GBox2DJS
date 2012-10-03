@@ -98,11 +98,10 @@ var g_gbclientinstance = null;
                 var msg = this.outgoingMessages[key];
                 var payload = JSON.stringify(msg);
 
-                console.log("sending msg: " + msg + " as payload: " + payload);
-
                 this.socket.emit('clientMessage', payload);
 
-                this.outgoingMessages.shift();
+                this.outgoingMessages.splice(key,1);
+
             }
 
         },
