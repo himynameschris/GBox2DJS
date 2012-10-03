@@ -37,7 +37,7 @@ var g_gbclientengineinstance = null;
         // Properties
         viewDelegate : null,
         fails : 0,
-        inputCommands: null,
+        keysPressed : [],
         /**
          * Function to setup networking (instantiate client or server net)
          */
