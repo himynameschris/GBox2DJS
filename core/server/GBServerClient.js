@@ -50,6 +50,9 @@
         getClientID : function() {
             return this.clientid;
         },
+        getNode : function () {
+            return this._node;
+        },
         dealloc : function () {
 
         }
