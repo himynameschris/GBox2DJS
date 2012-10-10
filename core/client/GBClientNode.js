@@ -41,6 +41,12 @@
     GBox2D.client.GBClientNode.prototype = {
         sprite : null,
 
+        init : function() {
+
+            GBox2D.client.GBClientNode.superclass.init.call(this);
+
+        },
+
         updateSprite : function() {
             //console.log('setting pos x: ' + this.x + ' y:' + this.y + ' for node: ' + this.nodeid);
             this.sprite.setPosition(cc.p(this.x, this.y));
