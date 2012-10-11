@@ -40,11 +40,17 @@
             var node = this.nodes.objectForKey( nodeid );
 
             if( node != null ) {
-                node.x = newX;
-                node.y = newY;
-                node.rotation = newr;
-                node.lastReceivedEntityDescription = newDescription;
+
+                //call update from description instead for better sub-classing
+
+                newDescription.x = newX;
+                newDescription.y = newY;
+                newDescription.rotation = newr;
+
+                node.updateFromDescription(newDescription);
+
             }
+
         },
 
         removeNode: function(nodeid) {

@@ -69,6 +69,14 @@
             return d;
         },
 
+        updateFromDescription : function (nodeDesc) {
+
+            this.x = nodeDesc.x;
+            this.y = nodeDesc.y;
+            this.rotation = nodeDesc.rotation;
+
+        },
+
         setView : function (view) {
             this.nodeView = view;
         },
