@@ -47,6 +47,7 @@ var g_gbengineinstance = null;
         netChannel				: null,											// ServerNetChannel / ClientNetChannel determined by subclass
         nodeController			: null,											// FieldController
         cmdMap: {},
+        clientID : 0,
 
         /**
          * Function to setup networking (instantiate client or server net)

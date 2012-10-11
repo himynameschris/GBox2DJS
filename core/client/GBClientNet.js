@@ -54,7 +54,16 @@ var g_gbclientinstance = null;
 
             this.socket = io.connect(GBox2D.constants.GBServerNet.SERVER_ADDRESS + ':' + GBox2D.constants.GBServerNet.SERVER_PORT);
 
+            this.socket.on('connected', this.onConnected);
+
             this.socket.on('update', this.serverUpdate);
+
+        },
+        onConnected : function (data) {
+
+            console.log(data.clientID);
+
+            g_gbclientinstance.delegate.clientID = data.clientID;
 
         },
         serverUpdate : function(data) {

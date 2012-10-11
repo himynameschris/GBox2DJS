@@ -89,6 +89,15 @@
         },
         onSocketConnection : function (clientConnection) {
 
+            console.log('log: user connected');
+
+            var newClient = new GBox2D.server.GBServerClient( clientConnection, this.getNextClientID());
+
+            this.clients.setObjectForKey(newClient, newClient.getClientID() );
+
+            this.engineDelegate.addPlayerNode(newClient);
+
+            clientConnection.emit("connected", {clientID : newClient.clientid});
 
         },
         onSocketClosed : function (clientConnection) {
