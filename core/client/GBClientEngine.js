@@ -232,7 +232,7 @@ var g_gbclientengineinstance = null;
                 sprite = this.viewDelegate.createSprite(nodeDesc.nodeType);
             }
 
-            sprite.setPosition(nodeDesc.x * 32, nodeDesc.y * 32);
+            sprite.setPosition(cc.p(nodeDesc.x * 32, nodeDesc.y * 32));
 
             var node = new GBox2D.client.GBClientNode(nodeDesc, sprite);
 
