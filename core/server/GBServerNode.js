@@ -68,6 +68,21 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
             body.SetUserData(this);
         },
 
+        setCollisionMaskBits : function (bits) {
+
+            var f = this.box2dBody.GetFixtureList();
+            while(f != null) {
+                var filter = f.GetFilterData();
+                filter.maskBits = bits;
+                f.SetFilterData(filter);
+
+                f = f.GetNext();
+            }
+
+
+
+        },
+
         dealloc : function() {
 
             delete this.box2dBody;
