@@ -36,17 +36,12 @@
 
         },
 
-        updateNode: function(nodeid, newX, newY, newr, newDescription) {
+        updateNode: function(nodeid, newDescription) {
             var node = this.nodes.objectForKey( nodeid );
 
             if( node != null ) {
 
                 //call update from description instead for better sub-classing
-
-                newDescription.x = newX;
-                newDescription.y = newY;
-                newDescription.rotation = newr;
-
                 node.updateFromDescription(newDescription);
 
             }

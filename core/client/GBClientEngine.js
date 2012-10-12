@@ -193,11 +193,16 @@ var g_gbclientengineinstance = null;
 
                     newx = ( (x2 - x1 ) * t) + x1;
                     newy = ( (y2 - y1 ) * t) + y1;
-                    newr = ( (r2 - r2 ) * t) + r1;
+                    newr = ( (r2 - r1 ) * t) + r1;
 
                 }
 
-                that.nodeController.updateNode( nodeid, newx, newy, newr, nodeDesc );
+                var desc = nodeDesc;
+                desc.rotation = newr;
+                desc.y = newy;
+                desc.x = newx;
+
+                that.nodeController.updateNode( nodeid, desc );
                 activeNodes[nodeid] = true;
 
             });
