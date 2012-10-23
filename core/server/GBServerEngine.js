@@ -63,7 +63,7 @@ var g_gbserverengineinstance = null;
          * Function to setup networking (instantiate client or server net)
          */
         setupNetwork : function() {
-            this.netChannel = new GBox2D.server.GBServerNet();;
+            this.netChannel = new GBox2D.server.GBServerNet(this);
         },
 
         /**
@@ -136,6 +136,9 @@ var g_gbserverengineinstance = null;
 
             //var delta = (typeof delta == "undefined") ? 1/this._fps : delta;
             this._world.Step(delta, delta * this._velocityIterationsPerSecond, delta * this._positionIterationsPerSecond);
+        },
+        addPlayerNode : function (client) {
+
         },
 
         ///// Accessors

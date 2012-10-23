@@ -29,8 +29,10 @@
      node.js express server and socket.io
 
      */
-    GBox2D.server.GBServerNet = function() {
+    GBox2D.server.GBServerNet = function(engine) {
         this.init();
+        this.clients = new SortedLookupTable();
+        this.engineDelegate = engine;
     };
 
     GBox2D.server.GBServerNet.prototype = {
@@ -39,6 +41,7 @@
         app : null,
         io : null,
         sockets : null,
+        clients : null,
 
         init : function() {
             this.express = require('express'),
