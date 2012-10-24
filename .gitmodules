@@ -1,3 +1,6 @@
 [submodule "lib/cocos2d-html5"]
 	path = lib/cocos2d-html5
 	url = https://github.com/hannon235/cocos2d-html5.git
+[submodule "lib/bootstrap"]
+	path = lib/bootstrap
+	url = https://github.com/hannon235/bootstrap-compiled.git
