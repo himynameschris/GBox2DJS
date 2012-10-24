@@ -3,7 +3,8 @@ html
   head
     title #{title}
     link(rel='stylesheet', href='/lib/bootstrap/css/bootstrap.min.css')
-    link(rel='stylesheet', href='/lib/bootstrap/css/bootstrap-responsive.min.css')
+    link(rel='stylesheet', href='/lib/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/demo/server/stylesheets/style.css')
 
   body
 
@@ -16,7 +17,12 @@ html
       .row
         .span12
           h1(align="center") #{vars.message}
-          canvas(id="gameCanvas", width="800", height="400")
+            .div(align="center")
+                canvas(id="gameCanvas", width="800", height="400")
+
+      .footer
+        p
+          b (C) Chris Hannon / channon.us
 
     script(src="/socket.io/socket.io.js")
     script(src="/demo/client/cocos2d.js")
