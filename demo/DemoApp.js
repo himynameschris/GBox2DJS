@@ -26,6 +26,7 @@ require('../core/GBConstants.js');
 require('../core/GBNodeController.js');
 require('../core/GBEngine.js');
 require('../core/server/GBServerNet.js');
+require('../demo/server/DemoServerNet.js');
 require('../core/server/GBServerClient.js');
 require('../core/GBContactListener.js');
 require('../core/server/GBServerEngine.js');
