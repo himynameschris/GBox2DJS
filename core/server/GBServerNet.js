@@ -47,7 +47,22 @@
             this.express = require('express'),
                 this.server = this.express(),
                 this.app = this.server.listen(GBox2D.constants.GBServerNet.SERVER_PORT),
-                this.iolib = require('socket.io');
+                this.iolib = require('socket.io'),
+                this.routes = require('../../demo/server/routes');
+
+            var that = this;
+            this.server.configure(function() {
+                console.log("dirname: " + __dirname);
+                that.server.set('views', "D:/workspace/GBox2DJS/demo/server/views");
+                that.server.set('view engine', 'jade');
+                that.server.set('view options', {layout: false});
+                that.server.use(that.express.bodyParser());
+                //that.server.use(that.express.methodOverride());
+                that.server.use(that.server.router);
+                that.server.use(that.express.static(__dirname + '/public'));
+            });
+
+            this.server.get('/', this.routes.index);
 
             this.io = this.iolib.listen(this.app);
             this.io.set("log level", 0);

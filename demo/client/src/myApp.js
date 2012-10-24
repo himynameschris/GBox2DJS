@@ -50,8 +50,8 @@ var MyLayer = cc.Layer.extend({
 
         // add a "close" icon to exit the progress. it's an autorelease object
         var closeItem = cc.MenuItemImage.create(
-            "res/CloseNormal.png",
-            "res/CloseSelected.png",
+            "/demo/client/res/CloseNormal.png",
+            "/demo/client/res/CloseSelected.png",
             this,
             function () {
                 history.go(-1);

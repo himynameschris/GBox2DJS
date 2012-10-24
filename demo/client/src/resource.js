@@ -1,7 +1,7 @@
-var s_HelloWorld = "res/HelloWorld.png";
-var s_CloseNormal = "res/CloseNormal.png";
-var s_CloseSelected = "res/CloseSelected.png";
-var s_pathBlock = "res/blocks.png";
+var s_HelloWorld = "/demo/client/res/HelloWorld.png";
+var s_CloseNormal = "/demo/client/res/CloseNormal.png";
+var s_CloseSelected = "/demo/client/res/CloseSelected.png";
+var s_pathBlock = "/demo/client/res/blocks.png";
 
 var g_ressources = [
     //image
