@@ -10,12 +10,12 @@ html
     .navbar.navbar-fixed-top
       .navbar-inner
         .container
-          .brand #{navbar}
+          .brand #{vars.navbar}
 
     .container
       .row
         .span12
-          h1(align="center") #{message}
+          h1(align="center") #{vars.message}
           canvas(id="gameCanvas", width="800", height="400")
 
     script(src="/socket.io/socket.io.js")
