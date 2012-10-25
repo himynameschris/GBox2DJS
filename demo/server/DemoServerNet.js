@@ -30,8 +30,8 @@
 
      */
     GBox2D.server.DemoServerNet = function(engine) {
-        this.viewPath = "D:/workspace/GBox2DJS/demo/server/views";
-        this.routePath = "../../demo/server/routes";
+        this.viewPath = GBox2D.Demo.constants.ServerNet.VIEW_PATH;
+        this.routePath = GBox2D.Demo.constants.ServerNet.ROUTE_PATH;
         this.init();
         this.clients = new SortedLookupTable();
         this.engineDelegate = engine;

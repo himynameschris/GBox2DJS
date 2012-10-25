@@ -23,6 +23,7 @@ require('../lib/SortedLookupTable.js');
 require('../lib/Point.js');
 require('../core/GBox2D.js');
 require('../core/GBConstants.js');
+require('../demo/DemoConstants.js');
 require('../core/GBNodeController.js');
 require('../core/GBEngine.js');
 require('../core/server/GBServerNet.js');
@@ -76,5 +77,3 @@ function doneLoading() {
         engine._nodeFactory.createBox(x / 32, y / 32, 0, .5);
     }
 }
-
-
