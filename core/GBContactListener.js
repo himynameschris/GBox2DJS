@@ -21,8 +21,6 @@
  ****************************************************************************/
 var Box2D = require('./../lib/cocos2d-html5/box2d/box2d.js');
 
-var g_gbcontactlistenerinstance = null;
-
 (function(){
 
     /**
@@ -36,19 +34,11 @@ var g_gbcontactlistenerinstance = null;
         this._contactListener.EndContact = this.EndContact;
         this._contactListener.PreSolve = this.PreSolve;
         this._contactListener.PostSolve = this.PostSolve;
+        this._contactListener.notifyObjects = this.notifyObjects;
     };
 
     GBox2D.core.GBContactListener.prototype = {
         _contactListener : null,
-        /**
-         @return the singleton instance of GBContactListener
-         */
-        getInstance : function() {
-            if(g_gbcontactlistenerinstance == null) {
-                g_gbcontactlistenerinstance = new GBox2D.core.GBContactListener();
-            }
-            return g_gbcontactlistenerinstance;
-        },
         /*
          * this will notify the objects contained in 'contact' of the contact type, if they
          * have registered with the contactregistry
@@ -82,19 +72,19 @@ var g_gbcontactlistenerinstance = null;
         },
 
         BeginContact : function (contact) {
-            GBox2D.core.GBContactListener.prototype.getInstance().notifyObjects(contact, "begin");
+            this.notifyObjects(contact, "begin");
         },
 
         EndContact : function (contact) {
-            GBox2D.core.GBContactListener.prototype.getInstance().notifyObjects(contact, "end");
+            this.notifyObjects(contact, "end");
         },
 
         PreSolve : function (contact, manifold) {
-            GBox2D.core.GBContactListener.prototype.getInstance().notifyObjects(contact, "pre");
+            this.notifyObjects(contact, "pre");
         },
 
         PostSolve : function (contact, manifold) {
-            GBox2D.core.GBContactListener.prototype.getInstance().notifyObjects(contact, "post");
+            this.notifyObjects(contact, "post");
         }
     }
 
