@@ -63,7 +63,6 @@ var g_gbengineinstance = null;
          initialize a new instance of the engine
          */
         init : function() {
-            this.receiver = null;
 
             this.setupNetwork();
             this.setupCmdMap();
