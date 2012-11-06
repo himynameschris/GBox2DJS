@@ -29,10 +29,9 @@
      node.js express server and socket.io
 
      */
-    GBox2D.server.DemoServerNet = function(engine) {
-        this.viewPath = GBox2D.Demo.constants.ServerNet.VIEW_PATH;
-        this.routePath = GBox2D.Demo.constants.ServerNet.ROUTE_PATH;
-        this.init();
+    GBox2D.server.DemoServerNet = function(engine, connection) {
+
+        this.init(connection);
         this.clients = new SortedLookupTable();
         this.engineDelegate = engine;
     };
@@ -47,9 +46,9 @@
         viewPath : "",
         routePath : "",
 
-        init : function() {
+        init : function(connection) {
 
-            GBox2D.server.DemoServerNet.superclass.init.call(this);
+            GBox2D.server.DemoServerNet.superclass.init.call(this, connection);
 
         },
         update : function(gameclock, data) {

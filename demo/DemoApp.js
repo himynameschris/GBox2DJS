@@ -26,6 +26,8 @@ require('../core/GBConstants.js');
 require('../demo/DemoConstants.js');
 require('../core/GBNodeController.js');
 require('../core/GBEngine.js');
+require('../core/server/GBServer.js');
+require('../demo/server/DemoServer.js');
 require('../core/server/GBServerNet.js');
 require('../demo/server/DemoServerNet.js');
 require('../core/server/GBServerClient.js');
@@ -58,22 +60,15 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2,
     b2EdgeShape = Box2D.Collision.Shapes.b2EdgeShape;
 b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
-var engine = new GBox2D.server.DemoServerEngine();
+var server = null;
 
 var shapeCache = GBox2D.server.GBServerShapeCache.prototype.getInstance();
 shapeCache.setResourceDir(__dirname + "/server/res/");
 shapeCache.loadFromFile("shapes", shapeCache, doneLoading);
 
 function doneLoading() {
-    engine.start();
+    server = new GBox2D.server.DemoServer();
 
     console.log('engine started');
 
-    for(var i = 0; i < 50 ; i ++) {
-        var x = (640/2) + Math.sin(i/5);
-        var y = i * -1*3;
-
-        // Make a square
-        engine._nodeFactory.createBox(x / 32, y / 32, 0, .5);
-    }
 }
