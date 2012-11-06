@@ -45,8 +45,8 @@ var g_gbserverengineinstance = null;
      implementing the gbengine class, a singleton to handle management of the box2d world, compile movements of box2d bodies, register and fire a custom contact listener and remove bodies from a queue
 
      */
-    GBox2D.server.GBServerEngine = function() {
-        this.init();
+    GBox2D.server.GBServerEngine = function(connection) {
+        this.init(connection);
 
     };
 
@@ -62,8 +62,8 @@ var g_gbserverengineinstance = null;
         /**
          * Function to setup networking (instantiate client or server net)
          */
-        setupNetwork : function() {
-            this.netChannel = new GBox2D.server.GBServerNet(this);
+        setupNetwork : function(connection) {
+            this.netChannel = new GBox2D.server.GBServerNet(this, connection);
         },
 
         /**
@@ -74,8 +74,10 @@ var g_gbserverengineinstance = null;
         /**
          initialize a new instance of the engine
          */
-        init : function() {
-            GBox2D.server.GBServerEngine.superclass.init.call(this);
+        init : function(connection) {
+            this.setupNetwork(connection);
+
+            this.nodeController = new GBox2D.core.GBNodeController();
 
         },
 

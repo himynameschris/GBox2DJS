@@ -22,30 +22,54 @@
 
 (function(){
 
-    var nextClientID = 0;
-
-    /**
-     implementing the GBServerNet class, a singleton to handle management of the
-     node.js express server and socket.io
-
-     */
-    GBox2D.server.GBServerNet = function(engine, connection) {
-        this.init(connection);
+    GBox2D.server.GBServer = function(engine) {
+        this.init();
         this.clients = new SortedLookupTable();
-        this.engineDelegate = engine;
+
     };
 
-    GBox2D.server.GBServerNet.prototype = {
+    GBox2D.server.GBServer.prototype = {
         server : null,
         express : null,
         app : null,
-        sockets : null,
-
         io : null,
+        sockets : null,
         clients : null,
+        viewPath : null,
+        routePath : null,
 
-        init : function(connection) {
-            this.io = connection;
+        init : function () {
+
+            this.express = require('express'),
+                this.server = this.express(),
+                this.app = this.server.listen(GBox2D.constants.GBServerNet.SERVER_PORT),
+                this.iolib = require('socket.io');
+
+            if(this.routePath != null) {
+                this.routes = require(this.routePath);
+                this.server.get('/', this.routes.index);
+            }
+
+            var that = this;
+            this.server.configure(function() {
+                console.log("dirname: " + __dirname + " viewpath: " + that.viewPath);
+                that.server.set('views', that.viewPath);
+                that.server.set('view engine', 'jade');
+                that.server.set('view options', {layout: false});
+                that.server.use(that.express.bodyParser());
+                //that.server.use(that.express.methodOverride());
+                that.server.use(that.server.router);
+                that.server.use(that.express.static(__dirname + '/public'));
+            });
+
+            this.io = this.iolib.listen(this.app);
+            this.io.set("log level", 0);
+
+            this.server.use('/', this.express.static(__dirname + '/../../') );
+
+            this.server.get('/api/hello', function(req,res){
+                res.send('Hello World');
+            });
 
             var that = this;
             this.io.on('connection', function (client) {
@@ -62,34 +86,15 @@
             });
 
         },
-        update : function(gameclock, data) {
 
-            //construct our payload
-            var payload = JSON.stringify(data);
+        createEngine : function () {
 
-            if(this.io === "undefined")
-            {
 
-            }else{
-                //TODO: compression by removing all non changes
-
-                //TODO: throttle emits with update rate
-                this.io.sockets.emit('update', payload);
-
-            };
 
         },
+
         onSocketConnection : function (clientConnection) {
 
-            console.log('log: user connected');
-
-            var newClient = new GBox2D.server.GBServerClient( clientConnection, this.getNextClientID());
-
-            this.clients.setObjectForKey(newClient, newClient.getClientID() );
-
-            this.engineDelegate.addPlayerNode(newClient);
-
-            clientConnection.emit("connected", {clientID : newClient.clientid});
 
         },
         onSocketClosed : function (clientConnection) {
@@ -99,8 +104,8 @@
         onReceiveMessage : function(clientConnection, data) {
 
 
-        },
-        getNextClientID: function() { return ++nextClientID }
+        }
+
     }
 
 })();
