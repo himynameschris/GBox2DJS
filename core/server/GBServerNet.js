@@ -85,7 +85,7 @@
 
             var newClient = new GBox2D.server.GBServerClient( clientConnection, this.getNextClientID());
 
-            this.clients.setObjectForKey(newClient, newClient.getClientID() );
+            this.clients.setObjectForKey(newClient, newClient.getSocketID() );
 
             this.engineDelegate.addPlayerNode(newClient);
 
