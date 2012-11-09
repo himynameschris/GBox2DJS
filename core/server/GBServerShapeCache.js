@@ -71,7 +71,9 @@ var fs = require('fs'),
         },
         init : function() {
 
-            this.parser = new xml2js.Parser({mergeAttrs : true});
+            this.parser = new xml2js.Parser({mergeAttrs : true,
+                                                explicitRoot : false,
+                                                explicitArray: false});
 
             this.parser.addListener('end', this.doneParsing);
 
