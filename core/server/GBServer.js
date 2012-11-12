@@ -40,39 +40,43 @@
 
         init : function () {
 
-            this.express = require('express'),
-                this.server = this.express(),
-                this.app = this.server.listen(GBox2D.constants.GBServerNet.SERVER_PORT),
-                this.iolib = require('socket.io');
+            var express = require('express'),
+                http = require('http'),
+                passport = require('passport'),
+                LocalStrategy = require('passport-local').Strategy,
+                server = express(),
+                iolib = require('socket.io');
 
             if(this.routePath != null) {
                 this.routes = require(this.routePath);
-                this.server.get('/', this.routes.index);
+                server.get('/', this.routes.index);
             }
 
-            var that = this;
-            this.server.configure(function() {
-                console.log("dirname: " + __dirname + " viewpath: " + that.viewPath);
-                that.server.set('views', that.viewPath);
-                that.server.set('view engine', 'jade');
-                that.server.set('view options', {layout: false});
-                that.server.use(that.express.bodyParser());
+            var viewPath = this.viewPath;
+            server.configure(function() {
+                console.log("dirname: " + __dirname + " viewpath: " + viewPath);
+                server.set('views', viewPath);
+                server.set('view engine', 'jade');
+                server.set('view options', {layout: false});
+                server.use(express.bodyParser());
                 //that.server.use(that.express.methodOverride());
-                that.server.use(that.server.router);
-                that.server.use(that.express.static(__dirname + '/public'));
+                server.use(server.router);
+                server.use(express.static(__dirname + '/public'));
             });
 
-            this.io = this.iolib.listen(this.app);
-            this.io.set("log level", 0);
+            var app = http.createServer(server).listen(GBox2D.constants.GBServerNet.SERVER_PORT);
 
-            this.server.use('/', this.express.static(__dirname + '/../../') );
+            var io = iolib.listen(app);
+            io.set("log level", 0);
 
-            this.server.get('/api/hello', function(req,res){
+            server.use('/', express.static(__dirname + '/../../') );
+
+            server.get('/api/hello', function(req,res){
                 res.send('Hello World');
             });
 
             var that = this;
-            this.io.on('connection', function (client) {
+            io.on('connection', function (client) {
                 that.onSocketConnection(client);
 
                 client.on('clientMessage', function (data) {
@@ -84,6 +88,13 @@
                 });
 
             });
+
+            this.express = express,
+                this.server = server,
+                this.iolib = iolib,
+                this.io = io,
+                this.passport = passport,
+                this.http = http;
 
         },
 
