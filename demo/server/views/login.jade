@@ -1,0 +1,38 @@
+doctype 5
+html
+  head
+    title #{title}
+    link(rel='stylesheet', href='/lib/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/lib/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/demo/server/stylesheets/style.css')
+
+  body
+
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          .brand #{vars.navbar}
+
+    .container
+      .row
+        .span12
+          h1(align="center") #{vars.message}
+            .div(align="center")
+                form(name="login", method="post", action="/login", class="form-horizontal")
+                    .div(class="control-group")
+                        p(class="help-block") Username:
+                        input(type="text", name="username")
+
+                    .div(class="control-group")
+                        p(class="help-block") Password:
+                        input(type="text", name="password")
+
+                    .div(class="control-group")
+                        input(type="submit", value="Submit", class="btn btn-primary")
+
+      .footer
+        p
+          b (C) Chris Hannon / channon.us
+
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js")
+    script(src="/lib/bootstrap/js/bootstrap.min.js")
