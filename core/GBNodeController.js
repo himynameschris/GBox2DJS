@@ -21,7 +21,10 @@
  ****************************************************************************/
 
 (function() {
-
+    /**
+     * Creates a node controller instance
+     * @class Manages nodes for either the server or the client
+     */
     GBox2D.core.GBNodeController = function() {
         this.nodes = new SortedLookupTable();
         this.players = new SortedLookupTable();
@@ -31,11 +34,19 @@
         nodes								: null,					// A SortedLookupTable for all entities
         players									: null,					// A SortedLookupTable for players only, stored using client.getClientid()
 
+        /**
+         * Adds a node to the registry
+         * @param node the node to add
+         */
         addNode: function(node) {
             this.nodes.setObjectForKey(node, node.nodeid);
 
         },
-
+        /**
+         * Updates a node by calling update description for the corresponding node
+         * @param nodeid the id of the node to update
+         * @param newDescription the description of the update
+         */
         updateNode: function(nodeid, newDescription) {
             var node = this.nodes.objectForKey( nodeid );
 
@@ -47,18 +58,27 @@
             }
 
         },
-
+        /**
+         * Removes a node from the registry and destroys it
+         * @param nodeid the id of the node to remove and dealloc
+         */
         removeNode: function(nodeid) {
             var node = this.nodes.objectForKey( nodeid );
 
             node.dealloc();
             this.nodes.remove( nodeid );
         },
-
+        /**
+         * Adds a player to the player registry
+         * @param player the player to add
+         */
         addPlayer: function(player) {
             this.players.setObjectForKey( player, player.getClientID() );
         },
-
+        /**
+         * Removes a player from the player registry and removes the players node
+         * @param clientid the id of the player
+         */
         removePlayer: function(clientid) {
             var player = this.players.objectForKey(clientid);
             if(!player) {
@@ -69,7 +89,10 @@
             this.removeNode( player._node.nodeid );
             this.players.remove(player.clientid);
         },
-
+        /**
+         * Prune the nodes the do not exist in the world state from the server
+         * @param activeNodes the active nodes, any existing node not on the list will be pruned
+         */
         pruneNodes: function(activeNodes) {
             var nodesKeysArray = this.nodes._keys;
             var i = nodesKeysArray.length;
@@ -100,7 +123,9 @@
                 totalRemoved++;
             }
         },
-
+        /**
+         * Clean up members (all nodes and players)
+         */
         dealloc: function() {
             this.players.forEach( function(key, node){
                 this.removePlayer(node.clientid);
@@ -117,10 +142,27 @@
 
             this.view = null;
         },
-
+        /**
+         * Get the node registry
+         * @return {SortedLookupTable} the current node registry
+         */
         getNodes: function() { return this.nodes },
+        /**
+         * Get the player registry
+         * @return {SortedLookupTable} the current player registry
+         */
         getPlayers: function() { return this.players; },
+        /**
+         * Lookup the node by id
+         * @param anEntityid the id to lookup
+         * @return {GBNode} the desired node or 'undefined'
+         */
         getNodeWithid: function( anEntityid ) { return this.nodes.objectForKey(anEntityid); },
+        /**
+         * Lookup the node by id
+         * @param anEntityid the id to lookup
+         * @return {GBNode} the desired node or 'undefined'
+         */
         getPlayerWithid: function( aClientid ) { return this.players.objectForKey(aClientid); }
 
     };

@@ -23,8 +23,10 @@
 (function(){
 
     /**
-     implementing the gbnode class, its purpose is to manage information necc to communicate sprite details to the client
-
+     * Creates a new node
+     * @class Represents the base node class
+     * @param nodeid the id of the node
+     * @param clientid the client id for clients
      */
     GBox2D.core.GBNode = function(nodeid, clientid) {
         this.init();
@@ -47,13 +49,16 @@
         nodeView    : null,
 
         /**
-         init the gbnode, setting members to defaults
+         Init the node, setting members to defaults
 
          */
         init : function() {
 
         },
 
+        /**
+         Construct a description of the node from its member values, override for custom members
+         */
         constructDescription: function(node)
         {
 
@@ -69,6 +74,9 @@
             return d;
         },
 
+        /**
+         Update position and rotation from description
+         */
         updateFromDescription : function (nodeDesc) {
 
             this.x = nodeDesc.x;
@@ -77,11 +85,17 @@
 
         },
 
+        /**
+         Set the current view to use
+         */
         setView : function (view) {
             this.nodeView = view;
         },
 
         ///// MEMORY
+        /**
+         Clean up members when destroyed
+         */
         dealloc: function() {
             this.position = null;
 

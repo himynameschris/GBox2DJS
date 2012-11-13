@@ -20,14 +20,18 @@
  THE SOFTWARE.
  ****************************************************************************/
 
+/**
+ *
+ * @private
+ */
 var g_gbclientinstance = null;
 
 (function(){
 
     /**
-     implementing the GBServerNet class, a singleton to handle management of the
-     node.js express server and socket.io
-
+     * Creates a new net channel
+     * @class Represents the base client net channel class
+     * @param aDelegate the engine delegate to handle game functions
      */
     GBox2D.client.GBClientNet = function(aDelegate) {
         this.serverUpdateBuffer = [];
@@ -42,6 +46,11 @@ var g_gbclientinstance = null;
         firstUpdate : null,
         outgoingMessages : [],
         nextMsgID : 0,
+
+        /**
+         * @return the singleton instance of gbengine for client usage
+         * @param aDelegate the engine delegate to handle game functions
+         */
         getInstance : function(aDelegate) {
             if(g_gbclientinstance == null) {
                 g_gbclientinstance = new GBox2D.client.GBClientNet(aDelegate);
@@ -50,6 +59,9 @@ var g_gbclientinstance = null;
 
             return g_gbclientinstance;
         },
+        /**
+         * Initializes the server net channel, setting methods to handle socket connects, disconnects and messages
+         */
         init : function() {
 
             this.socket = io.connect(GBox2D.constants.GBServerNet.SERVER_ADDRESS + ':' + GBox2D.constants.GBServerNet.SERVER_PORT);
@@ -59,6 +71,10 @@ var g_gbclientinstance = null;
             this.socket.on('update', this.serverUpdate);
 
         },
+        /**
+         * Callback to handle socket connection event and assign clientID received from server
+         * @param data the data received, containing the client's assigned ID
+         */
         onConnected : function (data) {
 
             console.log(data.clientID);
@@ -66,6 +82,10 @@ var g_gbclientinstance = null;
             g_gbclientinstance.delegate.clientID = data.clientID;
 
         },
+        /**
+         * Callback to handle socket message event from server
+         * @param data the update data received
+         */
         serverUpdate : function(data) {
 
             var that = GBox2D.client.GBClientNet.prototype.getInstance();
@@ -101,6 +121,9 @@ var g_gbclientinstance = null;
             }
 
         },
+        /**
+         * The update method called by the engine, used to send messages back to the server
+         */
         update : function() {
 
             for(var key in this.outgoingMessages) {
@@ -114,6 +137,12 @@ var g_gbclientinstance = null;
             }
 
         },
+        /**
+         * A generic AJAX method for the client to use
+         * @param url the URL to request
+         * @param ref reference back to the calling object
+         * @param cb callback on the reference onject to call
+         */
         ajax : function (url, ref, cb)
         {
             var xmlhttp;
@@ -135,12 +164,23 @@ var g_gbclientinstance = null;
                 ref[cb](xmlhttp.responseText);
             };
         },
+        /**
+         * Register the engine delegate
+         * @param aDelegate the engine delegate to use
+         */
         setDelegate : function(aDelegate) {
             this.delegate = aDelegate;
         },
+        /**
+         * Get the incremented next message ID
+         */
         getNextMsgID : function() {
             return ++this.nextMsgID;
         },
+        /**
+         * Queue a message to be sent on the next update
+         * @param message the message to be queued
+         */
         queueMessage : function(message) {
 
             this.outgoingMessages[this.getNextMsgID()] = message;

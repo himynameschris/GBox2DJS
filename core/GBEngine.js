@@ -20,13 +20,17 @@
  THE SOFTWARE.
  ****************************************************************************/
 
+/**
+ *
+ * @private
+ */
 var g_gbengineinstance = null;
 
 (function(){
 
     /**
-     implementing the gbengine class, a singleton to handle management of the box2d world, compile movements of box2d bodies, register and fire a custom contact listener and remove bodies from a queue
-
+     * Creates a new engine
+     * @class Represents the common engine between client and server
      */
     GBox2D.core.GBEngine = function() {
         this.init();
@@ -60,7 +64,7 @@ var g_gbengineinstance = null;
         setupCmdMap : function() { },
 
         /**
-         initialize a new instance of the engine
+         * Initializes a new instance of the engine
          */
         init : function() {
 
@@ -73,7 +77,7 @@ var g_gbengineinstance = null;
 
         /**
          * Start the engine and schedule updates
-         * @return {*}
+         *
          */
         start : function() {
             var that = this;
@@ -83,7 +87,8 @@ var g_gbengineinstance = null;
         },
 
         /**
-         @return the singleton instance of gbengine
+         * Returns the singleton instance if used, mostly in the client only
+         * @return the singleton instance of gbengine
          */
         getInstance : function() {
             if(g_gbengineinstance == null) {
@@ -93,7 +98,7 @@ var g_gbengineinstance = null;
         },
 
         /**
-         this method will be scheduled to be called at the frame rate interval
+         * This method will be scheduled to be called at the frame rate interval
          */
         update : function() {
             // Store previous time and update current
@@ -131,7 +136,15 @@ var g_gbengineinstance = null;
         },
 
         ///// Accessors
+        /**
+         * Get the engine's gameclock position
+         * @returns {int} the engine's gameclock position
+         */
         getGameClock: function() { return this.gameClock; },
+        /**
+         * Get the engine's clock tick
+         * @returns {int} the engine's clock tick
+         */
         getGameTick: function() { return this.gameTick; }
     };
 })();

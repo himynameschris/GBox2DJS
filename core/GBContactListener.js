@@ -19,14 +19,18 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+
+/**
+ *
+ * @private
+ */
 var Box2D = require('./../lib/cocos2d-html5/box2d/box2d.js');
 
 (function(){
 
     /**
-     implementing the GBServerNet class, a singleton to handle management of the
-     node.js express server and socket.io
-
+     * A Box2D contact listener
+     * @class Creates a new Box2D contact listener
      */
     GBox2D.core.GBContactListener = function() {
         this._contactListener = new Box2D.Dynamics.b2ContactListener();
@@ -39,8 +43,8 @@ var Box2D = require('./../lib/cocos2d-html5/box2d/box2d.js');
 
     GBox2D.core.GBContactListener.prototype = {
         _contactListener : null,
-        /*
-         * this will notify the objects contained in 'contact' of the contact type, if they
+        /**
+         * This will notify the objects contained in 'contact' of the contact type, if they
          * have registered with the contactregistry
          */
         notifyObjects : function (contact, contactType) {
@@ -70,19 +74,27 @@ var Box2D = require('./../lib/cocos2d-html5/box2d/box2d.js');
             }
 
         },
-
+        /**
+         * The callback used by Box2D at the beginning of a collision
+         */
         BeginContact : function (contact) {
             this.notifyObjects(contact, "begin");
         },
-
+        /**
+         * The callback used by Box2D at the end of a collision
+         */
         EndContact : function (contact) {
             this.notifyObjects(contact, "end");
         },
-
+        /**
+         * The callback used by Box2D before a collision
+         */
         PreSolve : function (contact, manifold) {
             this.notifyObjects(contact, "pre");
         },
-
+        /**
+         * The callback used by Box2D after a collision
+         */
         PostSolve : function (contact, manifold) {
             this.notifyObjects(contact, "post");
         }

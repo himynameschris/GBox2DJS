@@ -23,8 +23,11 @@
 (function(){
 
     /**
-     implementing the gbnode class, its purpose is to manage information necc to communicate sprite details to the client
-
+     * Creates a new client node
+     * @class Represents the base client node class
+     * @extends GBox2D.core.GBNode
+     * @param nodeDesc the description of the node
+     * @param sprite the node's sprite string
      */
     GBox2D.client.GBClientNode = function(nodeDesc, sprite) {
         this.init();
@@ -41,12 +44,18 @@
     GBox2D.client.GBClientNode.prototype = {
         sprite : null,
 
+        /**
+         * Initializes the client node
+         */
         init : function() {
 
             GBox2D.client.GBClientNode.superclass.init.call(this);
 
         },
 
+        /**
+         * Update the client's sprite position
+         */
         updateSprite : function() {
             //console.log('setting pos x: ' + this.x + ' y:' + this.y + ' for node: ' + this.nodeid);
             this.sprite.setPosition(cc.p(this.x, this.y));
@@ -54,6 +63,9 @@
             //console.log('sprite x: ' + this.sprite.getPositionX() + ' y: ' + this.sprite.getPositionY());
         },
 
+        /**
+         * Clean up the node members if needed
+         */
         dealloc: function() {
             this.sprite.removeFromParentAndCleanup(true);
         }

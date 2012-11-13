@@ -133,10 +133,14 @@ var g_demoserverengineinstance = null;
             }
 
         },
+        /*
+         Steps the Box2D world
+         */
         step: function( delta ) {
+            //step the world
 
-            GBox2D.server.DemoServerEngine.superclass.step.call(this, delta);
-
+            //var delta = (typeof delta == "undefined") ? 1/this._fps : delta;
+            this._world.Step(delta, delta * this._velocityIterationsPerSecond, delta * this._positionIterationsPerSecond);
         },
         /**
          * Resets an entity and drops it from the sky

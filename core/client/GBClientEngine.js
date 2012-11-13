@@ -20,15 +20,20 @@
  THE SOFTWARE.
  ****************************************************************************/
 
+/**
+ *
+ * @private
+ */
 var g_gbclientengineinstance = null;
 
 (function(){
 
+
     /**
-     implementing the gbengine class, a singleton to handle management of the box2d world,
-     compile movements of box2d bodies, register and fire a custom contact listener and
-     remove bodies from a queue
-     */
+     * Creates a new engine
+     * @class Represents the base client game engine
+     * @extends GBox2D.core.GBEngine
+    */
     GBox2D.client.GBClientEngine = function() {
         this.init();
     };
@@ -45,12 +50,15 @@ var g_gbclientengineinstance = null;
             this.netChannel = GBox2D.client.GBClientNet.prototype.getInstance(this);
         },
 
+        /**
+         * Set the view delegate on the server to handle sprite updates
+         */
         setViewDelegate : function(aDelegate) {
             this.viewDelegate = aDelegate;
         },
 
-        /*
-         * set game clock to server clock on connect
+        /**
+         * Set game clock to server clock on connect
          */
         netDidConnect : function() {
 
@@ -71,7 +79,7 @@ var g_gbclientengineinstance = null;
         },
 
         /**
-         @return the singleton instance of gbengine
+         @return the singleton instance of gbengine for client usage
          */
         getInstance : function() {
             if(g_gbclientengineinstance == null) {
@@ -81,7 +89,7 @@ var g_gbclientengineinstance = null;
         },
 
         /**
-         this method will be scheduled to be called at the frame rate interval
+         This method will be scheduled to be called at the frame rate interval
          in the client, it will be responsible for updating the display
          */
         update : function() {
@@ -101,14 +109,14 @@ var g_gbclientengineinstance = null;
 
         },
 
+        /**
+         * Accomplishes:
+         * get incoming update buffer, if smaller than 2 then return
+         * iterate through updates, looking for update before and after rendertime
+         * interpolate distance betw states
+         * @param renderTime the game time to render
+         */
         renderAtTime : function(renderTime) {
-
-            /*
-             Method:
-             -get incoming update buffer, if smaller than 2 then return
-             -iterate through updates, looking for update before and after rendertime
-             -interpolate distance betw states
-            */
 
             var buffer = this.netChannel.serverUpdateBuffer,
                 len = buffer.length;
@@ -211,6 +219,10 @@ var g_gbclientengineinstance = null;
 
         },
 
+        /**
+         * Generate a SortedLookupTable for all client nodes
+         * @param nodeDesc the description of the nodes to generate the tables from
+         */
         generateNodeTable : function (nodesDesc) {
 
             var table = new SortedLookupTable();
@@ -226,9 +238,11 @@ var g_gbclientengineinstance = null;
 
         },
 
+        /**
+         * Create a new client node from a node description
+         * @param nodeDesc the description of the nodes to generate the tables from
+         */
         createNodeFromDescription : function (nodeDesc) {
-
-            console.log('create it!');
 
             var view,sprite = null;
             if(nodeDesc.nodeView != null) {
@@ -244,11 +258,13 @@ var g_gbclientengineinstance = null;
             this.nodeController.addNode(node);
         },
 
+        /**
+         * Compile client input to send over the net
+         */
         compileInput : function () {
             //Override this
 
         }
-
 
     };
 

@@ -19,17 +19,22 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
- 
-//a generic node factory to help organize node creation
 
 (function() {
 
+    /** A generic node factory pattern
+     * @class A generic node factory to help organize node creation
+     */
     GBox2D.core.GBNodeFactory = function() {
 
     };
 
     GBox2D.core.GBNodeFactory.prototype = {
 
+        /**
+         * Node creation method
+         * @param type the type of node to create
+         */
         createNode: function(type) {
             //implement logic to create the node here
         }

@@ -19,6 +19,11 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+
+/**
+ *
+ * @private
+ */
 var Box2D = require('./../../lib/cocos2d-html5/box2d/box2d.js');
 
 // Shorthand "imports"
@@ -40,8 +45,11 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
 (function(){
 
     /**
-     implementing the gbnode class, its purpose is to manage information necc to communicate sprite details to the client
-
+     * Creates a new client node
+     * @class Represents the base client node class
+     * @extends GBox2D.core.GBNode
+     * @param nodeid the id of the node
+     * @param clientid the client id for clients
      */
     GBox2D.server.GBServerNode = function(nodeid, clientid) {
         this.nodeid = nodeid;
@@ -54,6 +62,9 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
         box2dBody   :   null,
         shouldDelete : false,
 
+        /**
+         * Update the position of the node based on the physics body
+         */
         updatePosition : function() {
             var pos = this.box2dBody.GetPosition();
             this.x = pos.x * GBox2D.constants.GBEngine.PHYSICS_SCALE;
@@ -63,11 +74,17 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
         },
 
+        /**
+         * Sets the physics body to be used by the node
+         */
         setBody : function(body) {
             this.box2dBody = body;
             body.SetUserData(this);
         },
 
+        /**
+         * Sets collision mask bits to enable/disable collisions by object type
+         */
         setCollisionMaskBits : function (bits) {
 
             var f = this.box2dBody.GetFixtureList();
@@ -83,6 +100,9 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
         },
 
+        /**
+         * Clean up the node's members on destruction
+         */
         dealloc : function() {
 
             delete this.box2dBody;

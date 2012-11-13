@@ -25,9 +25,10 @@
     var nextClientID = 0;
 
     /**
-     implementing the GBServerNet class, a singleton to handle management of the
-     node.js express server and socket.io
-
+     * Creates a new net channel
+     * @class Represents the base server net channel class
+     * @param engine the engine delegate
+     * @param connection the connection to be used by the engine and net channel
      */
     GBox2D.server.GBServerNet = function(engine, connection) {
         this.init(connection);
@@ -44,6 +45,10 @@
         io : null,
         clients : null,
 
+        /**
+         * Initializes the server net channel, setting methods to handle socket connects, disconnects and messages
+         * @param connection the connection to be used by the net channel
+         */
         init : function(connection) {
             this.io = connection;
 
@@ -62,6 +67,11 @@
             });
 
         },
+        /**
+         * The update method called by the engine at the desired rate to emit updates to the clients
+         * @param gameclock the clock position (optional)
+         * @param data the update payload
+         */
         update : function(gameclock, data) {
 
             //construct our payload
@@ -79,6 +89,10 @@
             };
 
         },
+        /**
+         * The update method called by the engine at the desired rate to emit updates to the clients
+         * @param clientConnection the client socket that connected
+         */
         onSocketConnection : function (clientConnection) {
 
             console.log('log: user connected');
@@ -92,14 +106,26 @@
             clientConnection.emit("connected", {clientID : newClient.clientid});
 
         },
+        /**
+         * The update method called by the engine at the desired rate to emit updates to the clients
+         * @param clientConnection the client socket that disconnected
+         */
         onSocketClosed : function (clientConnection) {
 
 
         },
+        /**
+         * The update method called by the engine at the desired rate to emit updates to the clients
+         * @param clientConnection the client socket that disconnected
+         * @param data the data received
+         */
         onReceiveMessage : function(clientConnection, data) {
 
 
         },
+        /**
+         * Return the next incremented client ID
+         */
         getNextClientID: function() { return ++nextClientID }
     }
 

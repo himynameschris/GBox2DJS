@@ -21,8 +21,12 @@
  ****************************************************************************/
 
 (function(){
+    /**
+     * Creates a new Server
+     * @class Represents the back end server
+     */
 
-    GBox2D.server.GBServer = function(engine) {
+    GBox2D.server.GBServer = function() {
         this.init();
         this.clients = new SortedLookupTable();
 
@@ -38,6 +42,10 @@
         viewPath : null,
         routePath : null,
 
+        /**
+         * Setup the nodejs server with express, passport and socket.io
+         *
+         */
         init : function () {
 
             var express = require('express'),
@@ -186,20 +194,37 @@
 
         },
 
+        /**
+         * Code to start the game engine from the server
+         *
+         */
+
         createEngine : function () {
 
 
 
         },
 
+        /**
+         * Handle socket.io connections
+         * This should be overridden
+         */
         onSocketConnection : function (clientConnection) {
 
 
         },
+        /**
+         * Handle socket.io connections
+         * This should be overridden
+         */
         onSocketClosed : function (clientConnection) {
 
 
         },
+        /**
+         * Handle socket.io receive message
+         * This should be overridden
+         */
         onReceiveMessage : function(clientConnection, data) {
 
 

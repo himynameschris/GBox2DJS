@@ -19,6 +19,10 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+/**
+ *
+ * @private
+ */
 var Box2D = require('./../../lib/cocos2d-html5/box2d/box2d.js');
 
 // Shorthand "imports"
@@ -37,6 +41,10 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2,
     b2EdgeShape = Box2D.Collision.Shapes.b2EdgeShape;
 b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
+/**
+ *
+ * @private
+ */
 var g_gbservershapecacheinstance = null;
 
 var fs = require('fs'),
@@ -45,9 +53,8 @@ var fs = require('fs'),
 (function(){
 
     /**
-     implementing the GBServerNet class, a singleton to handle management of the
-     node.js express server and socket.io
-
+     * Creates a new server shapecache
+     * @class Manages the shapecache from a PhysicsEditor source
      */
     GBox2D.server.GBServerShapeCache = function() {
         this.bodies = new SortedLookupTable();
@@ -69,6 +76,9 @@ var fs = require('fs'),
 
             return g_gbservershapecacheinstance;
         },
+        /**
+         * Initialize the shape cache
+         */
         init : function() {
 
             this.parser = new xml2js.Parser({mergeAttrs : true,
@@ -78,7 +88,11 @@ var fs = require('fs'),
             this.parser.addListener('end', this.doneParsing);
 
         },
-
+        /**
+         * Adds fictures to a body from a shape
+         * @param body the body to add fixtures to
+         * @param shape the shape
+         */
         addFixturesToBody : function(body, shape) {
 
             var def = g_gbservershapecacheinstance.bodies.objectForKey(shape);
@@ -95,6 +109,12 @@ var fs = require('fs'),
             }
 
         },
+        /**
+         * Load fixture defs from a file
+         * @param filename the name of the file
+         * @param instance the instance to cb to
+         * @param cb the callback to make when loading is done
+         */
         loadFromFile : function(filename, instance, cb) {
             if (cb !== 'undefined') {
                 instance.start = true;
@@ -108,7 +128,10 @@ var fs = require('fs'),
             });
 
         },
-
+        /**
+         * xml2js callback for done parsing
+         * @param result the result from the parse
+         */
         doneParsing : function(result) {
             this.ptmRatio = result.metadata.ptm_ratio;
 
@@ -319,11 +342,17 @@ var fs = require('fs'),
                 g_gbservershapecacheinstance.cb();
             }
         },
-
+        /**
+         * Sets the Pixel to Meter ratio
+         * @param ratio the ratio
+         */
         setPTM : function(ratio) {
             this.ptm = ratio;
         },
-
+        /**
+         * Sets the resource directory to read files from
+         * @param dir
+         */
         setResourceDir : function(dir) {
             this.resourceFolder = dir;
             console.log('resource dir set as: ' + this.resourceFolder);

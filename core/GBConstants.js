@@ -22,6 +22,15 @@
 
 (function(){
 
+    /**
+     * GBox2D Constants
+     * @class Holds GBox2D constants namespace
+     */
+
+    GBox2D.constants = function() {
+
+    }
+
     GBox2D.namespace("GBox2D.constants");
 
     GBox2D.constants.GBEngine = {

@@ -19,6 +19,11 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+
+/**
+ *
+ * @private
+ */
 var Box2D = require('./../../lib/cocos2d-html5/box2d/box2d.js');
 
 // Shorthand "imports"
@@ -37,13 +42,13 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2,
     b2EdgeShape = Box2D.Collision.Shapes.b2EdgeShape;
 b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
-var g_gbserverengineinstance = null;
-
 (function(){
 
     /**
-     implementing the gbengine class, a singleton to handle management of the box2d world, compile movements of box2d bodies, register and fire a custom contact listener and remove bodies from a queue
-
+     * Creates a new engine
+     * @class Represents the base server game engine
+     * @extends GBox2D.core.GBEngine
+     * @param connection the socket connection to be used
      */
     GBox2D.server.GBServerEngine = function(connection) {
         this.init(connection);
@@ -51,6 +56,7 @@ var g_gbserverengineinstance = null;
     };
 
     GBox2D.server.GBServerEngine.prototype = {
+        // Properties
         _world  : null,
         _contactListener : null,
         _velocityIterationsPerSecond    : 100,
@@ -58,9 +64,9 @@ var g_gbserverengineinstance = null;
         nextEntityID			: -1,
         _nodeFactory : null,
 
-        // Properties
         /**
          * Function to setup networking (instantiate client or server net)
+         * @param connection the socket connection to be used
          */
         setupNetwork : function(connection) {
             this.netChannel = new GBox2D.server.GBServerNet(this, connection);
@@ -72,7 +78,8 @@ var g_gbserverengineinstance = null;
         setupCmdMap : function() { },
 
         /**
-         initialize a new instance of the engine
+         * Initializes a new instance of the engine
+         * @param connection the socket connection to be used
          */
         init : function(connection) {
             this.setupNetwork(connection);
@@ -82,24 +89,9 @@ var g_gbserverengineinstance = null;
         },
 
         /**
-         * Creates the Box2D world with 4 walls around the edges
-         */
-        createBox2dWorld: function() {
-            //you should probably override this
-
-            //var m_world = new b2World(new b2Vec2(0, -10), true);
-            //m_world.SetWarmStarting(true);
-
-            //this._world = m_world;
-        },
-
-        /**
-         this method will be scheduled to be called at the frame rate interval
-         in the server, it will be responsible for stepping the physics world and pushing the world states
+         * Update at the desired frame rate
          */
         update : function() {
-           //accomplishes the tasks of calling the world step at a constant rate,
-           // updating the node positions, sending the world description to the net
             var delta = 16 / 1000;
             this.step( delta );
 
@@ -133,17 +125,29 @@ var g_gbserverengineinstance = null;
             }
 
         },
+
+        /**
+         * Step the physics or object world, should be overridden
+         * @param delta the change in world time
+         */
         step: function( delta ) {
             //step the world
 
             //var delta = (typeof delta == "undefined") ? 1/this._fps : delta;
-            this._world.Step(delta, delta * this._velocityIterationsPerSecond, delta * this._positionIterationsPerSecond);
+
         },
+        /**
+         Method to handle the adding of a player, should be overrode
+         @param client the client being added
+         */
         addPlayerNode : function (client) {
 
         },
 
         ///// Accessors
+        /**
+         Method to get the next ID to assign to an entity
+         */
         getNextEntityID: function() {
             return ++this.nextEntityID;
         }

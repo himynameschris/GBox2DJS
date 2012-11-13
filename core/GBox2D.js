@@ -19,80 +19,118 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+
+/**
+ * The GBox2D Namespace
+ * @class Holds GBox2D namespace functions such as extend and namespace creation
+ */
 GBox2D = (typeof GBox2D === 'undefined') ? {} : GBox2D;
 
 /**
- * Allows a package to create a namespace within GBox2D
- * From Javascript Patterns book
- * @param ns_string
+ * The GBox2D Namespace
+ * @class Holds GBox2D namespace functions such as extend and namespace creation
  */
-GBox2D.namespace = function(ns_string)
-{
-    var parts = ns_string.split('.'),
-        parent = GBox2D,
-        i = 0;
+(function(){
 
-    // strip redundant leading global
-    if (parts[0] === "GBox2D") {
-        parts = parts.slice(1);
-    }
+    GBox2D = function() {
 
-    var len = parts.length,
-        aPackage = null;
-    for (i = 0; i < len; i += 1) {
-        var singlePart = parts[i];
-        // create a property if it doesn't exist
-        if (typeof parent[singlePart] === "undefined") {
-            parent[singlePart] = {};
-        }
-        parent = parent[singlePart];
+    };
 
-    }
-    return parent;
-};
-
-/**
- * Allows a simple inheritance model
- * based on http://www.kevs3d.co.uk/dev/canvask3d/scripts/mathlib.js
- */
-GBox2D.extend = function(subc, superc, overrides)
-{
     /**
-     * @constructor
+     * Allows a package to create a namespace within GBox2D
+     * From Javascript Patterns book
+     * @param ns_string The namespace string
      */
-    var F = function() {};
-    var i;
+    GBox2D.namespace = function(ns_string)
+    {
+        var parts = ns_string.split('.'),
+            parent = GBox2D,
+            i = 0;
 
-    if (overrides) {
-        F.prototype = superc.prototype;
-        subc.prototype = new F();
-        subc.prototype.constructor = subc;
-        subc.superclass = superc.prototype;
-        if (superc.prototype.constructor == Object.prototype.constructor)   {
-            superc.prototype.constructor = superc;
+        // strip redundant leading global
+        if (parts[0] === "GBox2D") {
+            parts = parts.slice(1);
         }
-        for (i in overrides) {
-            if (overrides.hasOwnProperty(i)) {
-                subc.prototype[i] = overrides[i];
+
+        var len = parts.length,
+            aPackage = null;
+        for (i = 0; i < len; i += 1) {
+            var singlePart = parts[i];
+            // create a property if it doesn't exist
+            if (typeof parent[singlePart] === "undefined") {
+                parent[singlePart] = {};
             }
-        }
-    } else {
+            parent = parent[singlePart];
 
-        subc.prototype.constructor = subc;
-        subc.superclass= superc.prototype;
-        if (superc.prototype.constructor == Object.prototype.constructor)   {
-            superc.prototype.constructor = superc;
         }
-        for( i in superc.prototype ) {
-            if ( false==subc.prototype.hasOwnProperty(i)) {
-                subc.prototype[i]= superc.prototype[i];
+        return parent;
+    };
+
+    /**
+     * Allows a simple inheritance model
+     * based on http://www.kevs3d.co.uk/dev/canvask3d/scripts/mathlib.js
+     * @param subc The subclass
+     * @param superc The superclass to extend
+     * @param overrides Whether to override and remove the original functions
+     */
+    GBox2D.extend = function(subc, superc, overrides)
+    {
+
+        var F = function() {};
+        var i;
+
+        if (overrides) {
+            F.prototype = superc.prototype;
+            subc.prototype = new F();
+            subc.prototype.constructor = subc;
+            subc.superclass = superc.prototype;
+            if (superc.prototype.constructor == Object.prototype.constructor)   {
+                superc.prototype.constructor = superc;
             }
-        }
+            for (i in overrides) {
+                if (overrides.hasOwnProperty(i)) {
+                    subc.prototype[i] = overrides[i];
+                }
+            }
+        } else {
 
-    }
-};
+            subc.prototype.constructor = subc;
+            subc.superclass= superc.prototype;
+            if (superc.prototype.constructor == Object.prototype.constructor)   {
+                superc.prototype.constructor = superc;
+            }
+            for( i in superc.prototype ) {
+                if ( false==subc.prototype.hasOwnProperty(i)) {
+                    subc.prototype[i]= superc.prototype[i];
+                }
+            }
+
+        }
+    };
+})();
 
 //Define our namespaces
+
+/**
+ * @namespace Holds the 'core' namespace for items shared or extended by both client and server
+ */
+GBox2D.core = function() {
+    //for js-doc purposes
+}
 GBox2D.namespace("GBox2D.core");
+
+/**
+ * @namespace Holds the 'client' namespace for items shared or extended by both client and server
+ */
+GBox2D.client = function() {
+    //for js-doc purposes
+}
 GBox2D.namespace("GBox2D.client");
+
+/**
+ * @namespace Holds the 'server' namespace for items shared or extended by both client and server
+ */
+GBox2D.server = function() {
+    //for js-doc purposes
+}
 GBox2D.namespace("GBox2D.server");

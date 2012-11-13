@@ -21,6 +21,17 @@
  ****************************************************************************/
 
 (function() {
+
+    /**
+     * A class to hold contact info
+     * @class Creates a new contact with the given info
+     * @param ownNode the main node in the collision
+     * @param ownFixture the fixture that collided on the main node
+     * @param otherNode the other node in the collision
+     * @param otherFixture the fixture on the other node that collided
+     * @param contact the original contact
+     * @param contactType the type of the contact
+     */
     GBox2D.core.GBContact = function(ownNode, ownFixture, otherNode, otherFixture, contact, contactType) {
         this.ownNode = ownNode;
         this.ownFixture = ownFixture;

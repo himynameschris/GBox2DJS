@@ -20,7 +20,13 @@
  THE SOFTWARE.
  ****************************************************************************/
 (function() {
-
+    /**
+     * Creates a new world description
+     * @param world the world to create a description from
+     * @param nodes the nodes to include in the description
+     * @return {GBWorldNodeDescription}
+     * @class A container class to create and hold a world description
+     */
     GBox2D.core.GBWorldNodeDescription = function(world, nodes) {
         this.gameClock = world.getGameClock();
         this.gameTick = world.getGameTick();
@@ -35,7 +41,9 @@
         nodes   : null,
         gameClock   : 0,
         gameTick    : 0,
-
+        /**
+         * Creates a world description from the supplied world and node list
+         */
         createDescription	: function() {
             var worldDescription = [];//= new GBox2D.core.GBWorldNodeDescription(this, this.nodeController.getNodes());
 

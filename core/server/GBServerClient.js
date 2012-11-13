@@ -23,9 +23,8 @@
 (function(){
 
     /**
-     implementing the MonkeyJumpServerNet class to handle management of the
-     node.js express server and socket.io
-
+     * Creates a new Server Client
+     * @class Represents a client connected to the server
      */
     GBox2D.server.GBServerClient = function( aConnection, aClientid ) {
         this.clientid = aClientid;
