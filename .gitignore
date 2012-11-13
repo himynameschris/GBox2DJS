@@ -5,3 +5,4 @@ node_modules/
 server/res/private/
 lib/bootstrap/
 MonkeyJumpJS/
+out/
