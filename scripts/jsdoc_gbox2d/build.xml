@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="GBox2DJS-JsDoc" default="jsdoc" basedir=".">
+
+    <property name="src.dir" location="${basedir}/../../core"/>
+
+    <property name="jsdoc.dir" location="D:/Apps/jsdoc-toolkit"/>
+    <property name="rhino.dir" location="${jsdoc.dir}\java\classes"/>
+    <property name="out.dir" location="${basedir}\..\..\jsdoc\GBox2DTest"/>
+    <property name="finalout.dir" location="${basedir}\..\..\jsdoc\GBox2D"/>
+
+    <!-- Define the classpath for the Apache Ant task - needs Rhino as well. -->
+    <path id="jsdoc.classpath">
+        <pathelement path="${rhino.dir}/js.jar"/>
+        <pathelement path="${rhino.dir}/jsdoc-toolkit-ant-task-1.1.2.jar"/>
+    </path>
+
+    <!-- Define the Ant Task -->
+    <taskdef name="jsdoctoolkit" classname="uk.co.darrenhurley.ant.tasks.JsDocToolkit" classpathref="jsdoc.classpath"/>
+
+    <!-- This is the default target - it generates the JsDoc documents -->
+    <target name="jsdoc" depends="" description="Generate JsDoc.">
+        <jsdoctoolkit jsdochome="${jsdoc.dir}/" template="jsdoc" outputdir="${out.dir}" includeprivate="false">
+            <source file="${src.dir}/GBox2D.js"/>
+            <source file="${src.dir}/GBConstants.js"/>
+            <source file="${src.dir}/GBContact.js"/>
+            <source file="${src.dir}/GBContactListener.js"/>
+            <source file="${src.dir}/GBEngine.js"/>
+            <source file="${src.dir}/GBNode.js"/>
+            <source file="${src.dir}/GBNodeController.js"/>
+            <source file="${src.dir}/GBNodeFactory.js"/>
+            <source file="${src.dir}/GBWorldNodeDescription.js"/>
+            <source file="${src.dir}/server/GBServer.js"/>
+            <source file="${src.dir}/server/GBServerClient.js"/>
+            <source file="${src.dir}/server/GBServerEngine.js"/>
+            <source file="${src.dir}/server/GBServerShapeCache.js"/>
+            <source file="${src.dir}/server/GBServerNet.js"/>
+            <source file="${src.dir}/client/GBClientEngine.js"/>
+            <source file="${src.dir}/client/GBClientNet.js"/>
+            <source file="${src.dir}/server/GBServerNode.js"/>
+            <source file="${src.dir}/client/GBClientNode.js"/>
+        </jsdoctoolkit>
+    </target>
+
+    <target name="final" depends="" description="Generate JsDoc.">
+        <jsdoctoolkit jsdochome="${jsdoc.dir}/" template="jsdoc" outputdir="${finalout.dir}" includeprivate="false">
+            <source file="${src.dir}/GBox2D.js"/>
+            <source file="${src.dir}/GBConstants.js"/>
+            <source file="${src.dir}/GBContact.js"/>
+            <source file="${src.dir}/GBContactListener.js"/>
+            <source file="${src.dir}/GBEngine.js"/>
+            <source file="${src.dir}/GBNode.js"/>
+            <source file="${src.dir}/GBNodeController.js"/>
+            <source file="${src.dir}/GBNodeFactory.js"/>
+            <source file="${src.dir}/GBWorldNodeDescription.js"/>
+            <source file="${src.dir}/server/GBServer.js"/>
+            <source file="${src.dir}/server/GBServerClient.js"/>
+            <source file="${src.dir}/server/GBServerEngine.js"/>
+            <source file="${src.dir}/server/GBServerShapeCache.js"/>
+            <source file="${src.dir}/server/GBServerNet.js"/>
+            <source file="${src.dir}/client/GBClientEngine.js"/>
+            <source file="${src.dir}/client/GBClientNet.js"/>
+            <source file="${src.dir}/server/GBServerNode.js"/>
+            <source file="${src.dir}/client/GBClientNode.js"/>
+        </jsdoctoolkit>
+    </target>
+
+    <!-- Neat and Tidy, Tidy and Neat - best to clean up afterwards... -->
+    <target name="clean" description="Cleanup everything this build script creates.">
+        <delete dir="${out.dir}"/>
+        <delete dir="${finalout.dir}"/>
+    </target>
+</project>
