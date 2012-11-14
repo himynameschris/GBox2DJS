@@ -6,3 +6,4 @@ server/res/private/
 lib/bootstrap/
 MonkeyJumpJS/
 out/
+jsdoc/
