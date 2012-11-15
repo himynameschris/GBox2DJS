@@ -32,33 +32,63 @@
 
         this.init();
         this.clients = new SortedLookupTable();
+        this.games = new SortedLookupTable();
 
     };
 
     GBox2D.server.DemoServer.prototype = {
-        engine : null,
+        games : null,
 
         init : function () {
 
             GBox2D.server.DemoServer.superclass.init.call(this);
 
-            this.createEngine();
-
         },
 
-        createEngine : function () {
+        createEngine : function (req, res, next) {
 
-            this.engine = new GBox2D.server.DemoServerEngine(this.io);
+            //Get the next Game Engine ID
+            var gameID = req.server.getNextGameID();
 
-            this.engine.start();
+            //This will serve as the socket.io address for the client to connect to
+            var sock = req.server.io.of('/'+gameID);
+
+            //create our new game engine and pass its socket.io namespace
+            var engine = new GBox2D.server.DemoServerEngine(sock);
+
+            //set the engine's gameID
+            engine.gameID = gameID;
+
+            req.server.games.setObjectForKey(engine, gameID);
+
+            //pass the engine to the express req
+            req.gameEngine = engine;
+
+
 
             for(var i = 0; i < 50 ; i ++) {
                 var x = (640/2) + Math.sin(i/5);
                 var y = i * -1*3;
 
                 // Make a square
-                this.engine._nodeFactory.createBox(x / 32, y / 32, 0, .5);
+                engine._nodeFactory.createBox(x / 32, y / 32, 0, .5);
             }
+
+            engine.start();
+
+            next();
+
+        },
+
+        joinEngine : function (req, res, next) {
+
+            var engine = req.server.games.objectForKey(req.gameID);
+
+            engine.gameID = req.gameID;
+
+            req.gameEngine = engine;
+
+            next();
 
         },
 
@@ -66,7 +96,7 @@
 
             console.log('log: user connected');
 
-            var newClient = new GBox2D.server.GBServerClient( clientConnection, this.engine.netChannel.getNextClientID());
+            var newClient = new GBox2D.server.GBServerClient( clientConnection, this.getNextClientID());
 
             this.clients.setObjectForKey(newClient, newClient.getSocketID() );
 

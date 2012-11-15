@@ -64,7 +64,7 @@ var g_gbclientinstance = null;
          */
         init : function() {
 
-            this.socket = io.connect(GBox2D.constants.GBServerNet.SERVER_ADDRESS + ':' + GBox2D.constants.GBServerNet.SERVER_PORT);
+            this.socket = io.connect(GBox2D.constants.GBServerNet.SERVER_ADDRESS + ':' + GBox2D.constants.GBServerNet.SERVER_PORT + "/" + gameID);
 
             this.socket.on('connected', this.onConnected);
 
