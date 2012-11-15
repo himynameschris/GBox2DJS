@@ -84,7 +84,7 @@
                 //TODO: compression by removing all non changes
 
                 //TODO: throttle emits with update rate
-                this.io.sockets.emit('update', payload);
+                this.io.emit('update', payload);
 
             };
 
