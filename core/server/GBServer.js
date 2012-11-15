@@ -19,8 +19,15 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+function checkAuth(req,res,next){
+    if(req.user) next();//Forward the request so it can be handled by your router
+    else res.redirect('/login');//res.send(403);//send access denied
+}
 
 (function(){
+    var nextClientID = 0,
+        nextGameID = 1000;
+
     /**
      * Creates a new Server
      * @class Represents the back end server
@@ -55,37 +62,6 @@
                 server = express(),
                 iolib = require('socket.io');
 
-
-            var users = [
-                { id: 1, username: 'test', password: 'secret2', email: 'test@x.com' },
-                { id: 2, username: 'test2', password: 'secret2', email: 'test@x.com' },
-                { id: 3, username: 'test3', password: 'secret2', email: 'test@x.com' }
-            ];
-
-            function findById(id, fn) {
-                var idx = id - 1;
-                if (users[idx]) {
-                    fn(null, users[idx]);
-                } else {
-                    fn(new Error('User ' + id + ' does not exist'));
-                }
-            }
-
-            function findByUsername(username, fn) {
-                for (var i = 0, len = users.length; i < len; i++) {
-                    var user = users[i];
-                    if (user.username === username) {
-                        return fn(null, user);
-                    }
-                }
-                return fn(null, null);
-            }
-
-            function checkAuth(req,res,next){
-                if(req.user) next();//Forward the request so it can be handled by your router
-                else res.redirect('/login');//res.send(403);//send access denied
-            }
-
             // Passport session setup.
             //   To support persistent login sessions, Passport needs to be able to
             //   serialize users into and deserialize users out of the session.  Typically,
@@ -96,7 +72,7 @@
             });
 
             passport.deserializeUser(function(id, done) {
-                findById(id, function (err, user) {
+                GBox2D.constants.findById(id, function (err, user) {
                     done(err, user);
                 });
             });
@@ -115,7 +91,7 @@
                         // username, or the password is not correct, set the user to `false` to
                         // indicate failure and set a flash message.  Otherwise, return the
                         // authenticated `user`.
-                        findByUsername(username, function(err, user) {
+                        GBox2D.constants.findByUsername(username, function(err, user) {
                             if (err) { return done(err); }
                             if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
                             if (user.password != password) { return done(null, false, { message: 'Invalid password' }); }
@@ -144,8 +120,11 @@
                 server.use(server.router);
                 server.use(express.static(__dirname + '/public'));
                 server.use('/', express.static(__dirname + '/../../') );
+
+                server.set('user info', {currentUser : ''});
             });
 
+            var that = this;
             if(this.routePath != null) {
                 this.routes = require(this.routePath);
 
@@ -156,7 +135,34 @@
                         failureRedirect: '/login'})
                 );
 
-                server.get('/', checkAuth, this.routes.index);
+                server.post('/game', checkAuth, function(req,res,next) {
+
+                        var gameID = req.body["gameID"];
+                        req.server = that;
+
+                        var done = function() {
+                            next();
+                        }
+
+                        if(gameID == 0) {
+                            that.createEngine(req,res,done);
+                        } else {
+                            req.gameID = gameID;
+
+                            that.joinEngine(req,res,done);
+                        }
+                    },
+                    this.routes.game);
+
+                server.get('/game', checkAuth, this.routes.indexRedirect);
+
+                server.get('/', checkAuth, function(req,res,next) {
+
+                        req.server = that;
+                        next();
+
+                    },
+                    this.routes.index);
 
             }
 
@@ -170,8 +176,6 @@
             io.set("log level", 0);
 
 
-
-            var that = this;
             io.on('connection', function (client) {
                 that.onSocketConnection(client);
 
@@ -228,8 +232,17 @@
         onReceiveMessage : function(clientConnection, data) {
 
 
-        }
+        },
 
+        getNextClientID : function() {
+            return ++nextClientID;
+        },
+        getNextGameID : function() {
+            return ++nextGameID;
+        },
+        getServerGames : function() {
+            return this.games;
+        }
     }
 
 })();
