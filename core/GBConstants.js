@@ -48,6 +48,31 @@
         }
     }
 
+    GBox2D.constants.users = [
+        { id: 1, username: 'test', password: 'secret2', email: 'test@x.com' },
+        { id: 2, username: 'test2', password: 'secret2', email: 'test@x.com' },
+        { id: 3, username: 'test3', password: 'secret2', email: 'test@x.com' }
+    ];
+
+    GBox2D.constants.findById = function(id, fn){
+        var idx = id - 1;
+        if (GBox2D.constants.users[idx]) {
+            fn(null, GBox2D.constants.users[idx]);
+        } else {
+            fn(new Error('User ' + id + ' does not exist'));
+        }
+    }
+
+    GBox2D.constants.findByUsername = function(username, fn) {
+        for (var i = 0, len = GBox2D.constants.users.length; i < len; i++) {
+            var user = GBox2D.constants.users[i];
+            if (user.username === username) {
+                return fn(null, user);
+            }
+        }
+        return fn(null, null);
+    }
+
     GBox2D.constants.GBClientNet = {
         MAX_UPDATES : 100
 
